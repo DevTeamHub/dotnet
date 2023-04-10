@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<PackageId>DevTeam.GenericService.AspNetCore</PackageId>
+		<TargetFrameworks>$(BaseFrameworks)</TargetFrameworks>
+		<Description>Integration between GenericService and AspNetCore.</Description>
+		<PackageTags>Repository;EntityFramework;IQueryable;AspNetCore;</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Folder Include="src\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\GenericRepository\DevTeam.GenericRepository.AspNetCore\DevTeam.GenericRepository.AspNetCore.csproj" />
+		<ProjectReference Include="..\..\QueryMappings\DevTeam.QueryMappings.AspNetCore\DevTeam.QueryMappings.AspNetCore.csproj" />
+		<ProjectReference Include="..\DevTeam.GenericService\DevTeam.GenericService.csproj" />
+	</ItemGroup>
+
+</Project>

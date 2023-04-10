@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ApplyMappingException" xml:space="preserve">
+    <value>Exception has happened on attempt to apply mapping. See the Inner Exception for more details</value>
+    <comment>Exception describes some general exception on attempt to apply Select statement to IQueryable</comment>
+  </data>
+  <data name="ArgumentsAreNotNeeded" xml:space="preserve">
+    <value>The mapping doesn't need the arguments as an input, but you are passing it in Map() method. </value>
+    <comment>Exception that happens when user passes arguments, but mapping doesn't require them.</comment>
+  </data>
+  <data name="ArgumentsAreRequiredException" xml:space="preserve">
+    <value>Arguments can't be null for this overload of Map() method</value>
+    <comment>Exception will happen if args are null for one of overloads of Map method where args are required</comment>
+  </data>
+  <data name="ArgumentsHaventBeenPassed" xml:space="preserve">
+    <value>The mapping uses arguments as its input, so you need to pass the arguments into Map() method. </value>
+    <comment>Exception that happens when user forgot to pass arguments into Map method and mapping expression requires the arguments.</comment>
+  </data>
+  <data name="ArgumentsOfIncorrectType" xml:space="preserve">
+    <value>Mapping from type {0} to type {1} was found. But arguments of the mapping has different type from what has been provided: expected arguments of type {2}, but was {3}. </value>
+    <comment>Exception that happens when user passes arguments to Map() method, but mapping expects different type of arguments.</comment>
+  </data>
+  <data name="ContextHaventBeenInjected" xml:space="preserve">
+    <value>The mapping requires an instance of Database Context to be injected, so you need to use generic version of MappingService&lt;&gt; and provide the interface of the Database Context. </value>
+    <comment>Exception that happens when mapping expects the Database Context to be injected, but user uses non-generic version of MappingService that doesn't provide context.</comment>
+  </data>
+  <data name="ContextOfIncorrectType" xml:space="preserve">
+    <value>Mapping from type {0} to type {1} was found. But Database Context of the mapping has different type from what has been provided: expected Database Context of type {2}, but was {3}. </value>
+    <comment>Exception that happens when mapping expects the Database Context to be injected, but user uses incorrect generic version of MappingService&lt;&gt; with the Database Context of incorrect type.</comment>
+  </data>
+  <data name="ContextTypeIsDifferent" xml:space="preserve">
+    <value>The mapping uses another version of Database Context from what you povided as a Generic Parameter for MappingService&lt;&gt; </value>
+    <comment>Exception that happens when mapping expects the Database Context to be injected, but user uses incorrect generic version of MappingService&lt;&gt; with the Database Context of incorrect type.</comment>
+  </data>
+  <data name="GeneralInitializationException" xml:space="preserve">
+    <value>Exception has happened during mappings initialization. Please see Inner Exception to find more details.</value>
+    <comment>General exception message if any error has happened in MappingConfiguration class</comment>
+  </data>
+  <data name="GeneralMappingStorageException" xml:space="preserve">
+    <value>General exception has happened on attempt to create IMappingStorage instance of type {0}</value>
+    <comment>Any other exception when Activator.CreateInstance tried to create instance of IMappingStorage</comment>
+  </data>
+  <data name="InvalidCastMappingException" xml:space="preserve">
+    <value>Mapping from type {0} to type {1} was found. But the mapping's structure requires different input arguments from what have been passed into MappingService.  </value>
+    <comment>Map() method has 4 different overloads: mapping without paramteres, mapping with parameters, mapping with EF context available in it and mapping with both parameters and EF context. This exception will happen when incorrect version is used</comment>
+  </data>
+  <data name="MappingNotFoundException" xml:space="preserve">
+    <value>Mapping from {0} to {1} was not found</value>
+    <comment>Mapping for this 2 types wasn't found</comment>
+  </data>
+  <data name="MappingStorageSetupException" xml:space="preserve">
+    <value>Exception has happened inside of Setup method invokation on IMappingStorage of type {0}</value>
+    <comment>Exception will happen if any error happens in Setup method of IMappingStorage implementation</comment>
+  </data>
+  <data name="MoreThanOneMappingFoundException" xml:space="preserve">
+    <value>More than one mapping from {0} to {1} was found. If you have more than one mapping for the same model you can use Named Mappings (see documentation) or create different models for different mappings</value>
+    <comment>Exception will happen if you have more than one mapping from type A to type B and more than one of them without explicitl name (so we don't know exactly which mapping we need)</comment>
+  </data>
+  <data name="NameIsNullWhenSearchForNamedMappingException" xml:space="preserve">
+    <value>A few mappings from {0} to {1} were found, but 'name' argument wasn't passed into method. Can't choose correct one. Please pass 'name' argument explicitly</value>
+    <comment>Exception will happen if mapping was found, but mapping was registered with explicit name and you didn't pass any name into resolver</comment>
+  </data>
+  <data name="NoEmptyConstructorInitializationException" xml:space="preserve">
+    <value>Couldn't find empty constructor for IMappingStorage implementation: {0}</value>
+    <comment>Exception will happen if any of IMappingStorage implementations has non-default constructor and doesn't implement empty constructor</comment>
+  </data>
+</root>

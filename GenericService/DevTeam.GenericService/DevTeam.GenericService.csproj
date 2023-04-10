@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<PackageId>DevTeam.GenericService</PackageId>
+		<TargetFrameworks>$(BaseFrameworks)</TargetFrameworks>
+		<Description>Package provides integration between Generic Repository and Query Mappings for Entity Framework</Description>
+		<PackageTags>Repository;EntityFramework;IQueryable;</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Folder Include="src\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\GenericRepository\DevTeam.GenericRepository\DevTeam.GenericRepository.csproj" />
+		<ProjectReference Include="..\..\QueryMappings\DevTeam.QueryMappings\DevTeam.QueryMappings.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <PackageId>DevTeam.GenericRepository</PackageId>
+	  <TargetFrameworks>$(BaseFrameworks)</TargetFrameworks>
+	  <Description>Generic Repository implementation for Entity Framework.</Description>
+	  <PackageTags>Repository;EntityFramework;IQueryable;</PackageTags>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Extensions\DevTeam.Extensions.Abstractions\DevTeam.Extensions.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Extensions\DevTeam.Extensions.EntityFrameworkCore\DevTeam.Extensions.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+
+</Project>

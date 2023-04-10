@@ -1,0 +1,19 @@
+<Project>
+
+	<PropertyGroup>
+		<BaseFrameworks>netstandard2.0;netstandard2.1;net6;net7</BaseFrameworks>
+		<AllFrameworks>$(BaseFrameworks);netframework4.6</AllFrameworks>
+		<Version>3.6.0</Version>
+		<Authors>dimabezzubenkov, dev-team</Authors>
+		<RepositoryUrl>https://github.com/DevTeamHub/Packages</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<Company>Dev Team, Inc</Company>
+		<Copyright>Copyright (c) Dev Team, Inc 2023.</Copyright>
+		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
+		<DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+	</PropertyGroup>
+
+</Project>
