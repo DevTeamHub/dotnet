@@ -47,4 +47,4 @@ steps:
   inputs:
     command: custom
     custom: nuget
-    arguments: '$(Build.ArtifactStagingDirectory)/*.nupkg --api-key $(NugetKey)'
+    arguments: 'push $(Build.ArtifactStagingDirectory)/*.nupkg --api-key $(NugetKey)'
