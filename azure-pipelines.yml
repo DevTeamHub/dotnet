@@ -45,5 +45,6 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: 'Upload to NuGet'
   inputs:
-    command: 'nuget push'
+    command: custom
+    custom: nuget
     arguments: '$(Build.ArtifactStagingDirectory)/*.nupkg --api-key $(NugetKey)'
