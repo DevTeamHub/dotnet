@@ -1,4 +1,4 @@
-# Contributing to EntityFrameworkExtensions
+# Contributing to DevTeam packages
 
 We would love for you to contribute to this Project and help make it even better ! 
 As a contributor, here are the guidelines we would like you to follow:

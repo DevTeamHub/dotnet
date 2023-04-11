@@ -16,4 +16,8 @@
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<NoWarn>IDE0079</NoWarn>
+	</PropertyGroup>
+
 </Project>
