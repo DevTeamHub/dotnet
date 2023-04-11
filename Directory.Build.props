@@ -3,9 +3,9 @@
 	<PropertyGroup>
 		<BaseFrameworks>netstandard2.0;netstandard2.1;net6;net7</BaseFrameworks>
 		<AllFrameworks>$(BaseFrameworks);netframework4.6</AllFrameworks>
-		<Version>3.6.0</Version>
+		<Version>3.5.6</Version>
 		<Authors>dimabezzubenkov, dev-team</Authors>
-		<RepositoryUrl>https://github.com/DevTeamHub/Packages</RepositoryUrl>
+		<RepositoryUrl>https://github.com/DevTeamHub/dotnet</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<Company>Dev Team, Inc</Company>
 		<Copyright>Copyright (c) Dev Team, Inc 2023.</Copyright>
@@ -14,7 +14,25 @@
 		<DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
 		<PackageIcon>icon.png</PackageIcon>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+		<IncludeContentInPack>true</IncludeContentInPack>
 	</PropertyGroup>
+	<ItemGroup>
+		<None Include="$(MSBuildThisFileDirectory)LICENSE.md">
+			<Pack>true</Pack>
+			<PackagePath></PackagePath>
+			<Visible>False</Visible>
+		</None>
+		<None Include="$(MSBuildThisFileDirectory)icon.png">
+			<Pack>true</Pack>
+			<PackagePath></PackagePath>
+			<Visible>False</Visible>
+		</None>
+		<None Include="README.md">
+			<Pack>true</Pack>
+			<PackagePath></PackagePath>
+			<Visible>True</Visible>
+		</None>
+	</ItemGroup>
 
 	<PropertyGroup>
 		<NoWarn>IDE0079</NoWarn>

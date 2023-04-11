@@ -3,7 +3,6 @@ using DevTeam.QueryMappings.Helpers;
 using DevTeam.QueryMappings.Tests.Context.RentalContext.Entities;
 using DevTeam.QueryMappings.Tests.Context.RentalContext.Mappings.Arguments;
 using DevTeam.QueryMappings.Tests.Context.RentalContext.Models;
-using System.Linq;
 
 namespace DevTeam.QueryMappings.Tests.Context.RentalContext.Mappings
 {
@@ -42,9 +41,7 @@ namespace DevTeam.QueryMappings.Tests.Context.RentalContext.Mappings
 
             mappings.Add<Building, BuildingModel, IRentalContext>(MappingsNames.BuildingWithReviews, (query, context) => 
                 from building in query
-                join review in context.Set<Review>() on new { EntityId = building.Id, EntityTypeId = (int) EntityType.Building } 
-                                                     equals new { EntityId = review.EntityId, EntityTypeId = review.EntityTypeId }
-                                                     into reviews
+                let reviews = context.Set<Review>().Where(x => x.EntityId == building.Id && x.EntityTypeId == (int) EntityType.Building)
                 select new BuildingModel
                 {
                     Id = building.Id,
@@ -86,9 +83,7 @@ namespace DevTeam.QueryMappings.Tests.Context.RentalContext.Mappings
             {
                 return (query, context) =>
                     from building in query
-                    join review in context.Set<Review>() on new { EntityId = building.Id, EntityTypeId = (int)EntityType.Building }
-                                                         equals new { EntityId = review.EntityId, EntityTypeId = review.EntityTypeId }
-                                                         into reviews
+                    let reviews = context.Set<Review>().Where(x => x.EntityId == building.Id && x.EntityTypeId == (int)EntityType.Building)
                     let address = building.Address
                     select new BuildingStatisticsModel
                     {

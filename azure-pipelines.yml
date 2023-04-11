@@ -12,20 +12,23 @@ resources:
       type: github
       name: 'DevTeamHub/DevTeam.DevOps.Azure'
       endpoint: DevTeamHub
-      ref: refs/tags/v1.0.1
+      ref: refs/tags/v1.0.2
 
 variables:
   - group: Global
 
 pool:
-  vmImage: 'windows-2022'
+  vmImage: 'ubuntu-latest'
 
 steps:
-- template: publish-net-project.yml@templates
+ 
+- template: build-net-project.yml@templates
   parameters:
-    project: $(BackendName)
-    netFrameworkVersion: $(NetFrameworkVersion)
-    netSdkVersion: $(NetSdkVersion)
+    netSdkVersions: [$(PreviousVersion), $(CurrentVersion)]
     solution: $(Solution) 
     configuration: $(Configuration)
 
+- template: publish-nuget-packages.yml@templates
+  parameters:
+    key: $(NugetKey) 
+    configuration: $(Configuration)
