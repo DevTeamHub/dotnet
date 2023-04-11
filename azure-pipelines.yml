@@ -22,6 +22,12 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+- task: UseDotNet@2
+  displayName: 'Set .Net Core SDK'
+  inputs:
+    version: '6.x'
+    includePreviewVersions: true
+  
 - template: build-net-project.yml@templates
   parameters:
     netSdkVersion: $(NetSdkVersion)
