@@ -5,6 +5,7 @@
 
 trigger:
 - main
+- deploy
 
 resources:
   repositories:
