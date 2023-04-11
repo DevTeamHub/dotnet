@@ -29,22 +29,7 @@ steps:
     solution: $(Solution) 
     configuration: $(Configuration)
 
-- task: DotNetCoreCLI@2
-  displayName: 'Create Packages'
-  inputs:
-    command: pack
-    arguments: '--configuration $(Configuration) --output $(Build.ArtifactStagingDirectory)'
-
-- task: PublishPipelineArtifact@1
-  displayName: 'Publish Artifacts'
-  inputs:
-    targetPath: $(Build.ArtifactStagingDirectory)
-    artifactType: 'pipeline'
-    artifactName: 'Packages'
-
-- task: DotNetCoreCLI@2
-  displayName: 'Upload to NuGet'
-  inputs:
-    command: custom
-    custom: nuget
-    arguments: 'push $(Build.ArtifactStagingDirectory)/*.nupkg -s https://api.nuget.org/v3/index.json --api-key $(NugetKey)'
+- template: publish-nuget-packages.yml@templates
+  parameters:
+    key: $(NugetKey) 
+    configuration: $(Configuration)
