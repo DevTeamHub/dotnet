@@ -32,7 +32,7 @@ public partial class GenericService<TContext>
         return entity;
     }
 
-    public virtual TResult Add<TModel, TEntity, TResult, TKey>(TModel model, string? addMappingName = null, string? getMappingName = null)
+    public virtual TResult? Add<TModel, TEntity, TResult, TKey>(TModel model, string? addMappingName = null, string? getMappingName = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
@@ -40,7 +40,7 @@ public partial class GenericService<TContext>
         return Get<TEntity, TResult, TKey>(entity.Id, getMappingName);
     }
 
-    public virtual TResult Add<TModel, TEntity, TResult>(TModel model, string? addMappingName = null, string? getMappingName = null)
+    public virtual TResult? Add<TModel, TEntity, TResult>(TModel model, string? addMappingName = null, string? getMappingName = null)
         where TEntity : class, IEntity
     {
         return Add<TModel, TEntity, TResult, int>(model, addMappingName, getMappingName);
@@ -68,7 +68,7 @@ public partial class GenericService<TContext>
         return entity;
     }
 
-    public virtual async Task<TResult> AddAsync<TModel, TEntity, TResult, TKey>(TModel model, string? addMappingName = null, string? getMappingName = null)
+    public virtual async Task<TResult?> AddAsync<TModel, TEntity, TResult, TKey>(TModel model, string? addMappingName = null, string? getMappingName = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
@@ -76,7 +76,7 @@ public partial class GenericService<TContext>
         return await GetAsync<TEntity, TResult, TKey>(entity.Id, getMappingName);
     }
 
-    public virtual Task<TResult> AddAsync<TModel, TEntity, TResult>(TModel model, string? addMappingName = null, string? getMappingName = null)
+    public virtual Task<TResult?> AddAsync<TModel, TEntity, TResult>(TModel model, string? addMappingName = null, string? getMappingName = null)
         where TEntity : class, IEntity
     {
         return AddAsync<TModel, TEntity, TResult, int>(model, addMappingName, getMappingName);

@@ -54,67 +54,67 @@ public interface IRepository<TContext>
         where TEntity : class, IEntity;
     IQueryable<TEntity> QueryOne<TEntity, TArgs>(int id, TArgs args)
         where TEntity : class, IEntity;
-    TEntity Get<TEntity>(Expression<Func<TEntity, bool>> filter)
+    TEntity? Get<TEntity>(Expression<Func<TEntity, bool>> filter)
         where TEntity : class;
-    TEntity Get<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args)
+    TEntity? Get<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args)
         where TEntity : class;
-    Task<TEntity> GetAsync<TEntity>(Expression<Func<TEntity, bool>> filter)
+    Task<TEntity?> GetAsync<TEntity>(Expression<Func<TEntity, bool>> filter)
         where TEntity : class;
-    Task<TEntity> GetAsync<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args)
+    Task<TEntity?> GetAsync<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args)
         where TEntity : class;
-    TEntity Get<TEntity, TKey>(TKey id)
+    TEntity? Get<TEntity, TKey>(TKey id)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>;
-    TEntity Get<TEntity, TKey, TArgs>(TKey id, TArgs args)
+    TEntity? Get<TEntity, TKey, TArgs>(TKey id, TArgs args)
        where TEntity : class, IEntity<TKey>
        where TKey : IEquatable<TKey>;
-    Task<TEntity> GetAsync<TEntity, TKey>(TKey id)
+    Task<TEntity?> GetAsync<TEntity, TKey>(TKey id)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>;
-    Task<TEntity> GetAsync<TEntity, TKey, TArgs>(TKey id, TArgs args)
+    Task<TEntity?> GetAsync<TEntity, TKey, TArgs>(TKey id, TArgs args)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>;
-    TEntity Get<TEntity>(int id)
+    TEntity? Get<TEntity>(int id)
         where TEntity : class, IEntity;
-    TEntity Get<TEntity, TArgs>(int id, TArgs args)
+    TEntity? Get<TEntity, TArgs>(int id, TArgs args)
         where TEntity : class, IEntity;
-    Task<TEntity> GetAsync<TEntity>(int id)
+    Task<TEntity?> GetAsync<TEntity>(int id)
         where TEntity : class, IEntity;
-    Task<TEntity> GetAsync<TEntity, TArgs>(int id, TArgs args)
+    Task<TEntity?> GetAsync<TEntity, TArgs>(int id, TArgs args)
         where TEntity : class, IEntity;
-    TProperty GetProperty<TEntity, TProperty>(Expression<Func<TEntity, bool>> filter,
+    TProperty? GetProperty<TEntity, TProperty>(Expression<Func<TEntity, bool>> filter,
                                               Expression<Func<TEntity, TProperty>> selector)
         where TEntity : class;
-    TProperty GetProperty<TEntity, TProperty, TArgs>(Expression<Func<TEntity, bool>> filter,
+    TProperty? GetProperty<TEntity, TProperty, TArgs>(Expression<Func<TEntity, bool>> filter,
                                                      Expression<Func<TEntity, TProperty>> selector,
                                                      TArgs args)
         where TEntity : class;
-    Task<TProperty> GetPropertyAsync<TEntity, TProperty>(Expression<Func<TEntity, bool>> filter,
+    Task<TProperty?> GetPropertyAsync<TEntity, TProperty>(Expression<Func<TEntity, bool>> filter,
                                                          Expression<Func<TEntity, TProperty>> selector)
         where TEntity : class;
-    Task<TProperty> GetPropertyAsync<TEntity, TProperty, TArgs>(Expression<Func<TEntity, bool>> filter,
+    Task<TProperty?> GetPropertyAsync<TEntity, TProperty, TArgs>(Expression<Func<TEntity, bool>> filter,
                                                                 Expression<Func<TEntity, TProperty>> selector,
                                                                 TArgs args)
         where TEntity : class;
-    TProperty GetProperty<TEntity, TProperty, TKey>(TKey id, Expression<Func<TEntity, TProperty>> selector)
+    TProperty? GetProperty<TEntity, TProperty, TKey>(TKey id, Expression<Func<TEntity, TProperty>> selector)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>;
-    TProperty GetProperty<TEntity, TProperty, TKey, TArgs>(TKey id, Expression<Func<TEntity, TProperty>> selector, TArgs args)
+    TProperty? GetProperty<TEntity, TProperty, TKey, TArgs>(TKey id, Expression<Func<TEntity, TProperty>> selector, TArgs args)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>;
-    Task<TProperty> GetPropertyAsync<TEntity, TProperty, TKey>(TKey id, Expression<Func<TEntity, TProperty>> selector)
+    Task<TProperty?> GetPropertyAsync<TEntity, TProperty, TKey>(TKey id, Expression<Func<TEntity, TProperty>> selector)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>;
-    Task<TProperty> GetPropertyAsync<TEntity, TProperty, TKey, TArgs>(TKey id, Expression<Func<TEntity, TProperty>> selector, TArgs args)
+    Task<TProperty?> GetPropertyAsync<TEntity, TProperty, TKey, TArgs>(TKey id, Expression<Func<TEntity, TProperty>> selector, TArgs args)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>;
-    TProperty GetProperty<TEntity, TProperty>(int id, Expression<Func<TEntity, TProperty>> selector)
+    TProperty? GetProperty<TEntity, TProperty>(int id, Expression<Func<TEntity, TProperty>> selector)
         where TEntity : class, IEntity;
-    TProperty GetProperty<TEntity, TProperty, TArgs>(int id, Expression<Func<TEntity, TProperty>> selector, TArgs args)
+    TProperty? GetProperty<TEntity, TProperty, TArgs>(int id, Expression<Func<TEntity, TProperty>> selector, TArgs args)
         where TEntity : class, IEntity;
-    Task<TProperty> GetPropertyAsync<TEntity, TProperty>(int id, Expression<Func<TEntity, TProperty>> selector)
+    Task<TProperty?> GetPropertyAsync<TEntity, TProperty>(int id, Expression<Func<TEntity, TProperty>> selector)
         where TEntity : class, IEntity;
-    Task<TProperty> GetPropertyAsync<TEntity, TProperty, TArgs>(int id, Expression<Func<TEntity, TProperty>> selector, TArgs args)
+    Task<TProperty?> GetPropertyAsync<TEntity, TProperty, TArgs>(int id, Expression<Func<TEntity, TProperty>> selector, TArgs args)
         where TEntity : class, IEntity;
     bool Any<TEntity>(Expression<Func<TEntity, bool>>? filter = null)
         where TEntity : class;
@@ -178,7 +178,7 @@ public interface IRepository<TContext>
         where TEntity : class;
     Task DeleteAsync<TEntity>(Expression<Func<TEntity, bool>> filter)
         where TEntity : class;
-    void Delete<TEntity>(TEntity entity)
+    void Delete<TEntity>(TEntity? entity)
         where TEntity : class;
     void DeleteRange<TEntity>(Expression<Func<TEntity, bool>> filter)
         where TEntity : class;

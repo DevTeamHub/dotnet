@@ -1,7 +1,6 @@
-﻿namespace DevTeam.QueryMappings.Tests.Context.RentalContext.Mappings.Arguments
+﻿namespace DevTeam.QueryMappings.Tests.Context.RentalContext.Mappings.Arguments;
+
+public class ApartmentsArguments
 {
-    public class ApartmentsArguments
-    {
-        public string UnitOfMeasure { get; set; }
-    }
+    public string UnitOfMeasure { get; set; } = null!;
 }

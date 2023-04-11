@@ -62,7 +62,7 @@ namespace DevTeam.QueryMappings.Tests.Context.RentalContext.Mappings
             mappings.Add<Apartment, ApartmentReviewsModel, IRentalContext>((query, context) =>
                 from appartment in query
                 join review in context.Set<Review>() on new { EntityId = appartment.Id, EntityTypeId = (int)EntityType.Apartment }
-                                                     equals new { EntityId = review.EntityId, EntityTypeId = review.EntityTypeId }
+                                                     equals new { review.EntityId, review.EntityTypeId }
                                                      into reviews
                 select new ApartmentReviewsModel
                 {

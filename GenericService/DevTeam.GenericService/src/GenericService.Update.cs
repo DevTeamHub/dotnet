@@ -9,18 +9,21 @@ public partial class GenericService<TContext>
 {
     #region Update
 
-    public virtual TEntity Update<TModel, TEntity, TKey>(TKey id, TModel model, Action<TModel, TEntity> updateFunc)
+    public virtual TEntity? Update<TModel, TEntity, TKey>(TKey id, TModel model, Action<TModel, TEntity> updateFunc)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
         var entity = _writeRepository.Get<TEntity, TKey>(id);
+
+        if (entity == null) return null;
+
         updateFunc(model, entity);
         _writeRepository.Save();
 
         return entity;
     }
 
-    public virtual TResult Update<TModel, TEntity, TResult, TKey>(TKey id, TModel model, Action<TModel, TEntity> updateFunc)
+    public virtual TResult? Update<TModel, TEntity, TResult, TKey>(TKey id, TModel model, Action<TModel, TEntity> updateFunc)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
@@ -28,25 +31,28 @@ public partial class GenericService<TContext>
         return Get<TEntity, TResult, TKey>(id);
     }
 
-    public virtual TResult Update<TModel, TEntity, TResult>(int id, TModel model, Action<TModel, TEntity> updateFunc)
+    public virtual TResult? Update<TModel, TEntity, TResult>(int id, TModel model, Action<TModel, TEntity> updateFunc)
         where TEntity : class, IEntity
     {
         Update(id, model, updateFunc);
         return Get<TEntity, TResult>(id);
     }
 
-    public virtual async Task<TEntity> UpdateAsync<TModel, TEntity, TKey>(TKey id, TModel model, Action<TModel, TEntity> updateFunc)
+    public virtual async Task<TEntity?> UpdateAsync<TModel, TEntity, TKey>(TKey id, TModel model, Action<TModel, TEntity> updateFunc)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
         var entity = await _writeRepository.GetAsync<TEntity, TKey>(id);
+
+        if (entity == null) return null;
+
         updateFunc(model, entity);
         await _writeRepository.SaveAsync();
 
         return entity;
     }
 
-    public virtual async Task<TResult> UpdateAsync<TModel, TEntity, TResult, TKey>(TKey id, TModel model, Action<TModel, TEntity> updateFunc)
+    public virtual async Task<TResult?> UpdateAsync<TModel, TEntity, TResult, TKey>(TKey id, TModel model, Action<TModel, TEntity> updateFunc)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
@@ -54,7 +60,7 @@ public partial class GenericService<TContext>
         return await GetAsync<TEntity, TResult, TKey>(id);
     }
 
-    public virtual async Task<TResult> UpdateAsync<TModel, TEntity, TResult>(int id, TModel model, Action<TModel, TEntity> updateFunc)
+    public virtual async Task<TResult?> UpdateAsync<TModel, TEntity, TResult>(int id, TModel model, Action<TModel, TEntity> updateFunc)
         where TEntity : class, IEntity
     {
         await UpdateAsync(id, model, updateFunc);

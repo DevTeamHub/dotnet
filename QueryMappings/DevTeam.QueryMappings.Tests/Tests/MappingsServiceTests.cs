@@ -20,8 +20,8 @@ namespace DevTeam.QueryMappings.Tests.Tests
     [TestFixture]
     public class MappingServiceTests
     {
-        private IMappingService _service;
-        private RentalContext _context;
+        private IMappingService _service = null!;
+        private RentalContext _context = null!;
 
         [OneTimeSetUp]
         public void Init()
@@ -44,8 +44,8 @@ namespace DevTeam.QueryMappings.Tests.Tests
         [OneTimeTearDown]
         public void Clear()
         {
-            _context = null;
-            _service = null;
+            _context = null!;
+            _service = null!;
         }
 
         [Test]
@@ -310,7 +310,7 @@ namespace DevTeam.QueryMappings.Tests.Tests
                 var building = _context.Buildings.FirstOrDefault(x => x.Id == model.Building.Id);
 
                 Assert.IsNotNull(building);
-                Assert.AreEqual(model.Building.Id, building.Id);
+                Assert.AreEqual(model.Building.Id, building!.Id);
                 Assert.AreEqual(model.Building.Year, building.Year);
                 Assert.AreEqual(model.Building.Floors, building.Floors);
                 Assert.AreEqual(model.Building.IsLaundry, building.IsLaundry);
@@ -349,7 +349,7 @@ namespace DevTeam.QueryMappings.Tests.Tests
                 var building = _context.Buildings.FirstOrDefault(x => x.Id == model.Building.Id);
 
                 Assert.IsNotNull(building);
-                Assert.AreEqual(model.Building.Id, building.Id);
+                Assert.AreEqual(model.Building.Id, building!.Id);
                 Assert.AreEqual(model.Building.Year, building.Year);
                 Assert.AreEqual(model.Building.Floors, building.Floors);
                 Assert.AreEqual(model.Building.IsLaundry, building.IsLaundry);

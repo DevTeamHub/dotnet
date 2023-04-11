@@ -14,10 +14,10 @@ namespace DevTeam.GenericRepository.Tests.Tests;
 [TestFixture]
 public class RepositoryTests
 {
-    private ServiceProvider _serviceProvider;
-    private IRepository _repository;
-    private RentalContext _rentalContext;
-    private SecurityContext _securityContext;
+    private ServiceProvider _serviceProvider = null!;
+    private IRepository _repository = null!;
+    private RentalContext _rentalContext = null!;
+    private SecurityContext _securityContext = null!;
 
     [OneTimeSetUp]
     public void Init()
@@ -45,9 +45,9 @@ public class RepositoryTests
     {
         _rentalContext.Dispose();
         _securityContext.Dispose();
-        _rentalContext = null;
-        _securityContext = null;
-        _repository = null;
+        _rentalContext = null!;
+        _securityContext = null!;
+        _repository = null!;
     }
 
     [Test]

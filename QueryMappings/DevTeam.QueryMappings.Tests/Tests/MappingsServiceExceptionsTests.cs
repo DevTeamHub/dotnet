@@ -21,8 +21,8 @@ namespace DevTeam.QueryMappings.Tests.Tests
     [TestFixture]
     public class MappingServiceExceptionsTests
     {
-        private IMappingService _service;
-        private RentalContext _context;
+        private IMappingService _service = null!;
+        private RentalContext _context = null!;
 
         [OneTimeSetUp]
         public void Init()
@@ -45,8 +45,8 @@ namespace DevTeam.QueryMappings.Tests.Tests
         [OneTimeTearDown]
         public void Clear()
         {
-            _context = null;
-            _service = null;
+            _context = null!;
+            _service = null!;
         }
 
         /// <summary>
@@ -61,7 +61,8 @@ namespace DevTeam.QueryMappings.Tests.Tests
             exceptionMessage += Resources.ArgumentsHaventBeenPassed;
 
             var exception = Assert.Throws<MappingException>(method);
-            Assert.AreEqual(exception.Message, exceptionMessage);
+            Assert.IsNotNull(exception);
+            Assert.AreEqual(exception!.Message, exceptionMessage);
         }
 
         /// <summary>
@@ -76,7 +77,8 @@ namespace DevTeam.QueryMappings.Tests.Tests
             exceptionMessage += Resources.ArgumentsHaventBeenPassed;
 
             var exception = Assert.Throws<MappingException>(method);
-            Assert.AreEqual(exception.Message, exceptionMessage);
+            Assert.IsNotNull(exception);
+            Assert.AreEqual(exception!.Message, exceptionMessage);
         }
 
         /// <summary>
@@ -92,7 +94,8 @@ namespace DevTeam.QueryMappings.Tests.Tests
             var exceptionMessage = string.Format(Resources.ArgumentsOfIncorrectType, typeof(Apartment).Name, typeof(ApartmentShortModel).Name, typeof(ApartmentsArguments), typeof(BuildingArguments));
 
             var exception = Assert.Throws<MappingException>(method);
-            Assert.AreEqual(exception.Message, exceptionMessage);
+            Assert.IsNotNull(exception);
+            Assert.AreEqual(exception!.Message, exceptionMessage);
         }
 
         /// <summary>
@@ -108,7 +111,8 @@ namespace DevTeam.QueryMappings.Tests.Tests
             var exceptionMessage = string.Format(Resources.ArgumentsOfIncorrectType, typeof(Apartment).Name, typeof(ApartmentShortModel).Name, typeof(ApartmentsArguments), typeof(BuildingArguments));
 
             var exception = Assert.Throws<MappingException>(method);
-            Assert.AreEqual(exception.Message, exceptionMessage);
+            Assert.IsNotNull(exception);
+            Assert.AreEqual(exception!.Message, exceptionMessage);
         }
 
         /// <summary>
@@ -124,7 +128,8 @@ namespace DevTeam.QueryMappings.Tests.Tests
             exceptionMessage += Resources.ContextHaventBeenInjected;
 
             var exception = Assert.Throws<MappingException>(method);
-            Assert.AreEqual(exception.Message, exceptionMessage);
+            Assert.IsNotNull(exception);
+            Assert.AreEqual(exception!.Message, exceptionMessage);
         }
 
         /// <summary>
@@ -141,7 +146,8 @@ namespace DevTeam.QueryMappings.Tests.Tests
             exceptionMessage += Resources.ContextHaventBeenInjected;
 
             var exception = Assert.Throws<MappingException>(method);
-            Assert.AreEqual(exception.Message, exceptionMessage);
+            Assert.IsNotNull(exception);
+            Assert.AreEqual(exception!.Message, exceptionMessage);
         }
 
         /// <summary>
@@ -158,7 +164,8 @@ namespace DevTeam.QueryMappings.Tests.Tests
             exceptionMessage += Resources.ArgumentsAreNotNeeded;
 
             var exception = Assert.Throws<MappingException>(method);
-            Assert.AreEqual(exception.Message, exceptionMessage);
+            Assert.IsNotNull(exception);
+            Assert.AreEqual(exception!.Message, exceptionMessage);
         }
 
         /// <summary>
@@ -175,7 +182,8 @@ namespace DevTeam.QueryMappings.Tests.Tests
             exceptionMessage += Resources.ArgumentsAreNotNeeded;
 
             var exception = Assert.Throws<MappingException>(method);
-            Assert.AreEqual(exception.Message, exceptionMessage);
+            Assert.IsNotNull(exception);
+            Assert.AreEqual(exception!.Message, exceptionMessage);
         }
 
         /// <summary>
@@ -192,7 +200,8 @@ namespace DevTeam.QueryMappings.Tests.Tests
             exceptionMessage += Resources.ContextHaventBeenInjected;
 
             var exception = Assert.Throws<MappingException>(method);
-            Assert.AreEqual(exception.Message, exceptionMessage);
+            Assert.IsNotNull(exception);
+            Assert.AreEqual(exception!.Message, exceptionMessage);
         }
     }
 }

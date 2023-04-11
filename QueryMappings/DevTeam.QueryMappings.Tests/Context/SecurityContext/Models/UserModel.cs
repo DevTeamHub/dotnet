@@ -1,10 +1,9 @@
-﻿namespace DevTeam.QueryMappings.Tests.Context.RentalContext.Models
+﻿namespace DevTeam.QueryMappings.Tests.Context.RentalContext.Models;
+
+public class UserModel
 {
-    public class UserModel
-    {
-        public int Id { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public bool IsAdmin { get; set; }
-    }
+    public int Id { get; set; }
+    public string UserName { get; set; } = null!;
+    public string Password { get; set; } = null!;
+    public bool IsAdmin { get; set; }
 }

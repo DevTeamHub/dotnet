@@ -374,30 +374,5 @@ namespace DevTeam.QueryMappings.Tests.Tests
         public static List<Person> People => _people;
         public static List<Review> Reviews => _reviews;
         public static List<User> Users => _users;
-
-        static TestData()
-        {
-            Buildings.ForEach(building =>
-            {
-                building.Address = Addresses.SingleOrDefault(x => x.BuildingId == building.Id);
-                building.Appartments = Apartments.Where(x => x.BuildingId == building.Id).ToList();
-            });
-
-            Addresses.ForEach(address =>
-            {
-                address.Building = Buildings.SingleOrDefault(x => x.Id == address.BuildingId);
-            });
-
-            Apartments.ForEach(appartment =>
-            {
-                appartment.Building = Buildings.SingleOrDefault(x => x.Id == appartment.BuildingId);
-                appartment.Residents = People.Where(x => x.AppartmentId == appartment.Id).ToList();
-            });
-
-            People.ForEach(person =>
-            {
-                person.Appartment = Apartments.SingleOrDefault(x => x.Id == person.AppartmentId);
-            });
-        }
     }
 }

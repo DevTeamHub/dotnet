@@ -20,8 +20,8 @@ namespace DevTeam.QueryMappings.Tests.Tests
     [TestFixture]
     public class MappingsListTests
     {
-        private ServiceProvider _serviceProvider;
-        private IMappingsList _mappings;
+        private ServiceProvider _serviceProvider = null!;
+        private IMappingsList _mappings = null!;
 
         [OneTimeSetUp]
         public void Init()
@@ -42,7 +42,7 @@ namespace DevTeam.QueryMappings.Tests.Tests
         [OneTimeTearDown]
         public void Clear()
         {
-            _serviceProvider = null;
+            _serviceProvider = null!;
             _mappings.Clear();
         }
 
@@ -78,7 +78,8 @@ namespace DevTeam.QueryMappings.Tests.Tests
             var exceptionMessage = string.Format(Resources.MappingNotFoundException, typeof(Address).Name, typeof(BuildingModel).Name);
 
             var exception = Assert.Throws<MappingException>(method);
-            Assert.AreEqual(exception.Message, exceptionMessage);
+            Assert.IsNotNull(exception);
+            Assert.AreEqual(exception!.Message, exceptionMessage);
         }
 
         [Test]
@@ -88,7 +89,8 @@ namespace DevTeam.QueryMappings.Tests.Tests
             var exceptionMessage = string.Format(Resources.NameIsNullWhenSearchForNamedMappingException, typeof(Address).Name, typeof(AddressSummaryModel).Name);
 
             var exception = Assert.Throws<MappingException>(method);
-            Assert.AreEqual(exception.Message, exceptionMessage);
+            Assert.IsNotNull(exception);
+            Assert.AreEqual(exception!.Message, exceptionMessage);
         }
 
         [Test]
@@ -98,7 +100,8 @@ namespace DevTeam.QueryMappings.Tests.Tests
             var exceptionMessage = string.Format(Resources.MoreThanOneMappingFoundException, typeof(Address).Name, typeof(InvalidAddressMapping).Name);
 
             var exception = Assert.Throws<MappingException>(method);
-            Assert.AreEqual(exception.Message, exceptionMessage);
+            Assert.IsNotNull(exception);
+            Assert.AreEqual(exception!.Message, exceptionMessage);
         }
 
         [Test]
@@ -108,7 +111,8 @@ namespace DevTeam.QueryMappings.Tests.Tests
             var exceptionMessage = string.Format(Resources.MappingNotFoundException, typeof(Address).Name, typeof(AddressSummaryModel).Name);
 
             var exception = Assert.Throws<MappingException>(method);
-            Assert.AreEqual(exception.Message, exceptionMessage);
+            Assert.IsNotNull(exception);
+            Assert.AreEqual(exception!.Message, exceptionMessage);
         }
 
         [Test]
@@ -212,7 +216,8 @@ namespace DevTeam.QueryMappings.Tests.Tests
             var exceptionMessage = string.Format(Resources.NameIsNullWhenSearchForNamedMappingException, typeof(Address).Name, typeof(AddressSummaryModel).Name);
 
             var exception = Assert.Throws<MappingException>(method);
-            Assert.AreEqual(exception.Message, exceptionMessage);
+            Assert.IsNotNull(exception);
+            Assert.AreEqual(exception!.Message, exceptionMessage);
         }
 
         [Test]
@@ -222,7 +227,8 @@ namespace DevTeam.QueryMappings.Tests.Tests
             var exceptionMessage = string.Format(Resources.MoreThanOneMappingFoundException, typeof(Address).Name, typeof(InvalidAddressMapping).Name);
 
             var exception = Assert.Throws<MappingException>(method);
-            Assert.AreEqual(exception.Message, exceptionMessage);
+            Assert.IsNotNull(exception);
+            Assert.AreEqual(exception!.Message, exceptionMessage);
         }
 
         [Test]
