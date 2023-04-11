@@ -28,17 +28,3 @@ steps:
     solution: $(Solution) 
     configuration: $(Configuration)
 
-- task: DotNetCoreCLI@2
-  displayName: 'Create Packages'
-  inputs:
-    command: pack
-    arguments: '--configuration ${{ parameters.configuration }}'
-    workingDirectory: ${{ parameters.workingDir }}
-
-- task: DotNetCoreCLI@2
-  displayName: 'Publish Packages'
-  inputs:
-    command: build
-    arguments: '--configuration ${{ parameters.configuration }}'
-    workingDirectory: ${{ parameters.workingDir }}
-
