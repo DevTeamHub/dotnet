@@ -13,7 +13,7 @@ resources:
       type: github
       name: 'DevTeamHub/DevTeam.DevOps.Azure'
       endpoint: DevTeamHub
-      ref: refs/tags/v1.0.1
+      ref: refs/tags/v1.0.2
 
 variables:
   - group: Global
@@ -22,15 +22,10 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: UseDotNet@2
-  displayName: 'Set .Net Core SDK'
-  inputs:
-    version: '6.x'
-    includePreviewVersions: true
-  
+ 
 - template: build-net-project.yml@templates
   parameters:
-    netSdkVersion: $(NetSdkVersion)
+    netSdkVersions: [$(PreviousVersion), $(CurrentVersion)]
     solution: $(Solution) 
     configuration: $(Configuration)
 
@@ -38,4 +33,11 @@ steps:
   displayName: 'Create Packages'
   inputs:
     command: pack
-    arguments: '--configuration $(Configuration)'
+    arguments: '--configuration $(Configuration) --output $(Build.ArtifactStagingDirectory)'
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Artifacts'
+  inputs:
+    targetPath: $(Build.ArtifactStagingDirectory)
+    artifactType: 'pipeline'
+    artifactName: 'Packages'
