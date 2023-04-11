@@ -21,10 +21,8 @@ pool:
   vmImage: 'windows-2022'
 
 steps:
-- template: publish-net-project.yml@templates
+- template: build-net-project.yml@templates
   parameters:
-    project: $(BackendName)
-    netFrameworkVersion: $(NetFrameworkVersion)
     netSdkVersion: $(NetSdkVersion)
     solution: $(Solution) 
     configuration: $(Configuration)
