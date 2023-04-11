@@ -34,3 +34,8 @@ steps:
     solution: $(Solution) 
     configuration: $(Configuration)
 
+- task: DotNetCoreCLI@2
+  displayName: 'Create Packages'
+  inputs:
+    command: pack
+    arguments: '--configuration $(Configuration)'
