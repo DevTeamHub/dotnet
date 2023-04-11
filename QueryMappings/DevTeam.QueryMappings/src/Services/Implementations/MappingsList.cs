@@ -65,7 +65,7 @@ public class MappingsList : IMappingsList
     /// <param name="name">Name of the mapping, if we want to get mapping registered with some specific name. Should be null if we want to find mapping without name.</param>
     /// <returns>Instance of mapping with described direction. Null if mapping not found</returns>
     /// <exception cref="MappingException">Thrown if more than one mapping found and wasn't enough information to resolve which exactly is correct one.</exception>
-    private Mapping GetMapping<TFrom, TTo>(string? name = null)
+    private Mapping? GetMapping<TFrom, TTo>(string? name = null)
     {
         try
         {

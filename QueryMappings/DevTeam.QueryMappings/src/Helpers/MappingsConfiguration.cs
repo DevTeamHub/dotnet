@@ -50,7 +50,7 @@ public static class MappingsConfiguration
     /// <returns>Instance of <see cref="IMappingsStorage"/> implementation.</returns>
     /// <exception cref="MappingException">Thrown if we couldn't initialize mappings.</exception>
     /// <exception cref="MissingMethodException">Thrown if <see cref="IMappingsStorage"/> implementation doesn't have any empty constructor.</exception>
-    private static object CreateStorageInstance(Type storageType)
+    private static object? CreateStorageInstance(Type storageType)
     {
         try
         {
