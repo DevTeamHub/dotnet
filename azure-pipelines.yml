@@ -19,7 +19,7 @@ variables:
   - group: Global
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
 steps:
 - template: build-net-project.yml@templates
