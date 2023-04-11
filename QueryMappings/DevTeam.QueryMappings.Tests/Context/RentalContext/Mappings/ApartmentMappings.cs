@@ -3,7 +3,6 @@ using DevTeam.QueryMappings.Helpers;
 using DevTeam.QueryMappings.Tests.Context.RentalContext.Entities;
 using DevTeam.QueryMappings.Tests.Context.RentalContext.Mappings.Arguments;
 using DevTeam.QueryMappings.Tests.Context.RentalContext.Models;
-using System.Linq;
 
 namespace DevTeam.QueryMappings.Tests.Context.RentalContext.Mappings
 {
@@ -61,9 +60,7 @@ namespace DevTeam.QueryMappings.Tests.Context.RentalContext.Mappings
 
             mappings.Add<Apartment, ApartmentReviewsModel, IRentalContext>((query, context) =>
                 from appartment in query
-                join review in context.Set<Review>() on new { EntityId = appartment.Id, EntityTypeId = (int)EntityType.Apartment }
-                                                     equals new { review.EntityId, review.EntityTypeId }
-                                                     into reviews
+                let reviews = context.Set<Review>().Where(x => x.EntityId == appartment.Id && x.EntityTypeId == (int)EntityType.Apartment)
                 select new ApartmentReviewsModel
                 {
                     Id = appartment.Id,
