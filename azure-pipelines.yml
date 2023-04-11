@@ -19,7 +19,7 @@ variables:
   - group: Global
 
 pool:
-  vmImage: 'windows-2022'
+  vmImage: ubuntu-latest
 
 steps:
 - template: build-net-project.yml@templates
@@ -27,4 +27,18 @@ steps:
     netSdkVersion: $(NetSdkVersion)
     solution: $(Solution) 
     configuration: $(Configuration)
+
+- task: DotNetCoreCLI@2
+  displayName: 'Create Packages'
+  inputs:
+    command: pack
+    arguments: '--configuration ${{ parameters.configuration }}'
+    workingDirectory: ${{ parameters.workingDir }}
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish Packages'
+  inputs:
+    command: build
+    arguments: '--configuration ${{ parameters.configuration }}'
+    workingDirectory: ${{ parameters.workingDir }}
 
