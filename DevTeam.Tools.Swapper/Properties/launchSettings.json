@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DevTeam.Tools.Swapper": {
+      "commandName": "Project",
+      "commandLineArgs": "packages"
+    }
+  }
+}
