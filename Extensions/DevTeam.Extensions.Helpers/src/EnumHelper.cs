@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-namespace DevTeam.Helpers;
+namespace DevTeam.Extensions.Helpers;
 
 public static class EnumHelper
 {
@@ -22,7 +22,10 @@ public static class EnumHelper
     {
         var type = value.GetType();
         var name = Enum.GetName(type, value);
-        return type.GetField(name)
+
+        if (string.IsNullOrEmpty(name)) return null;
+
+        return type.GetField(name)!
             .GetCustomAttributes(false)
             .OfType<TAttribute>()
             .SingleOrDefault();
