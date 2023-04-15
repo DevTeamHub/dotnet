@@ -53,7 +53,7 @@ public class ProjectService
 
     private void SwapNodes(string swapFrom, string swapTo, Dictionary<string, string> lookup)
     {
-        var solutionPath = Path.GetDirectoryName(_options.SolutionPath) ?? AppContext.BaseDirectory;
+        var solutionPath = Path.GetDirectoryName(_options.SolutionPath) ?? Environment.CurrentDirectory;
         var projectFiles = Directory.GetFiles(solutionPath, "*.csproj", SearchOption.AllDirectories);
 
         foreach (var projectFile in projectFiles)

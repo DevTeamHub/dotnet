@@ -3,7 +3,6 @@
 	<PropertyGroup>
 		<PackageId>DevTeam.Tools.Swapper</PackageId>
 		<OutputType>Exe</OutputType>
-		<Version>1.0.3</Version>
 		<TargetFramework>net6.0</TargetFramework>
 		<ToolCommandName>swapper</ToolCommandName>
 		<Description>Helps to switch between Nuget packages and local projects during the development.</Description>
@@ -19,7 +18,6 @@
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
 	  <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
 	  <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
-	  <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
 	</ItemGroup>
 
 	<ItemGroup>

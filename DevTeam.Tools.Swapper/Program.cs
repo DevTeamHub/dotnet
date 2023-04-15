@@ -9,8 +9,13 @@ var commandLineConfig = new ConfigurationBuilder()
 
 var commandLineArgs = commandLineConfig.Get<CommandLineArgs>();
 
+if (string.IsNullOrEmpty(commandLineArgs!.Config))
+{
+    commandLineArgs.Config = Environment.CurrentDirectory;
+}
+
 var swapperConfig = new ConfigurationBuilder()
-    .AddJsonFile(commandLineArgs!.Config + "\\swapper.json")
+    .AddJsonFile(commandLineArgs.Config + "\\swapper.json")
     .Build();
 
 var swapperSection = swapperConfig.GetSection("Swapper"); 
@@ -18,7 +23,7 @@ var swapperSettings = swapperSection.Get<SwapperConfig>();
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile(swapperSettings!.BaseProjectPath + "\\swapper.json")
+    .AddJsonFile(swapperSettings!.BaseProjectPath + "\\swapper.json", true)
     .AddConfiguration(commandLineConfig)
     .AddConfiguration(swapperConfig)
     .Build();
@@ -27,11 +32,6 @@ if (commandLineArgs == null || string.IsNullOrEmpty(commandLineArgs.To))
 {
     Console.WriteLine("Please provide command line arguments!");
     return;
-}
-
-if (string.IsNullOrEmpty(commandLineArgs.Config))
-{
-    commandLineArgs.Config = AppContext.BaseDirectory;
 }
 
 var builder = new HostBuilder()
