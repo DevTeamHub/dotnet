@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<PackageId>DevTeam.Extensions.Helpers</PackageId>
+		<TargetFrameworks>$(AllFrameworks)</TargetFrameworks>
+		<Description>Common helpers for every project.</Description>
+		<PackageTags>Tools</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Folder Include="src\" />
+	</ItemGroup>
+
+</Project>
