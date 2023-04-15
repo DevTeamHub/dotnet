@@ -1,0 +1,38 @@
+{
+  "Swapper": {
+    "Projects": [
+      {
+        "PackageId": "DevTeam.Extensions.Abstractions",
+        "ProjectPath": "Extensions\\DevTeam.Extensions.Abstractions\\DevTeam.Extensions.Abstractions.csproj"
+      },
+      {
+        "PackageId": "DevTeam.EntityFrameworkExtensions",
+        "ProjectPath": "Extensions\\DevTeam.Extensions.EntityFrameworkCore\\DevTeam.Extensions.EntityFrameworkCore.csproj"
+      },
+      {
+        "PackageId": "DevTeam.GenericRepository",
+        "ProjectPath": "GenericRepository\\DevTeam.GenericRepository\\DevTeam.GenericRepository.csproj"
+      },
+      {
+        "PackageId": "DevTeam.GenericRepository.AspNetCore",
+        "ProjectPath": "GenericRepository\\DevTeam.GenericRepository.AspNetCore\\DevTeam.GenericRepository.AspNetCore.csproj"
+      },
+      {
+        "PackageId": "DevTeam.GenericService",
+        "ProjectPath": "GenericService\\DevTeam.GenericService\\DevTeam.GenericService.csproj"
+      },
+      {
+        "PackageId": "DevTeam.GenericService.AspNetCore",
+        "ProjectPath": "GenericService\\DevTeam.GenericService.AspNetCore\\DevTeam.GenericService.AspNetCore.csproj"
+      },
+      {
+        "PackageId": "DevTeam.QueryMappings",
+        "ProjectPath": "QueryMappings\\DevTeam.QueryMappings\\DevTeam.QueryMappings.csproj"
+      },
+      {
+        "PackageId": "DevTeam.QueryMappings.AspNetCore",
+        "ProjectPath": "QueryMappings\\DevTeam.QueryMappings.AspNetCore\\DevTeam.QueryMappings.AspNetCore.csproj"
+      }
+    ]
+  }
+}

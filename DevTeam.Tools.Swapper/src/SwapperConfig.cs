@@ -9,5 +9,6 @@ public class Project
 public class SwapperConfig
 {
     public string SolutionPath { get; set; } = null!;
+    public string? BaseProjectPath { get; set; }
     public List<Project> Projects { get; set; } = new();
 }
