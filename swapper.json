@@ -10,6 +10,10 @@
         "ProjectPath": "Extensions\\DevTeam.Extensions.EntityFrameworkCore\\DevTeam.Extensions.EntityFrameworkCore.csproj"
       },
       {
+        "PackageId": "DevTeam.Extensions.Helpers",
+        "ProjectPath": "Extensions\\DevTeam.Extensions.Helpers\\DevTeam.Extensions.Helpers.csproj"
+      },
+      {
         "PackageId": "DevTeam.GenericRepository",
         "ProjectPath": "GenericRepository\\DevTeam.GenericRepository\\DevTeam.GenericRepository.csproj"
       },
