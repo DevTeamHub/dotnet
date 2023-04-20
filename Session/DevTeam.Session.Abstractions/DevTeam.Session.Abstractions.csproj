@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<PackageId>DevTeam.Session.Abstractions</PackageId>
+		<TargetFrameworks>$(AllFrameworks)</TargetFrameworks>
+		<Description>Package provides simple way to manage and mock current session state.</Description>
+		<PackageTags>Session;AspNetCore</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+
+</Project>
