@@ -4,7 +4,6 @@ using DevTeam.Session.Abstractions;
 using DevTeam.UserContext.Asbtractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using System;
 
 namespace DevTeam.UserContext;
