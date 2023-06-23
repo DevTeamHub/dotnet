@@ -4,23 +4,21 @@ using DevTeam.GenericRepository.Tests.Context.RentalContext.Entities;
 using DevTeam.GenericRepository.Tests.Context.SecurityContext;
 using DevTeam.GenericRepository.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DevTeam.GenericRepository.Tests.Tests;
+namespace DevTeam.GenericRepository.Tests;
 
-[Category("Repository")]
-[TestOf(typeof(Repository))]
-[TestFixture]
+[TestCategory("Repository")]
+[TestClass]
 public class RepositoryTests
 {
-    private ServiceProvider _serviceProvider = null!;
-    private IRepository _repository = null!;
-    private RentalContext _rentalContext = null!;
-    private SecurityContext _securityContext = null!;
+    private static ServiceProvider _serviceProvider = null!;
+    private static IRepository _repository = null!;
+    private static RentalContext _rentalContext = null!;
+    private static SecurityContext _securityContext = null!;
 
-    [OneTimeSetUp]
-    public void Init()
+    [ClassInitialize]
+    public static void Init(TestContext testContext)
     {
         var services = new ServiceCollection();
 
@@ -40,8 +38,8 @@ public class RepositoryTests
         _securityContext = new SecurityContext("OriginalSecurity");
     }
 
-    [OneTimeTearDown]
-    public void Clear()
+    [ClassCleanup]
+    public static void Clear()
     {
         _rentalContext.Dispose();
         _securityContext.Dispose();
@@ -50,55 +48,55 @@ public class RepositoryTests
         _repository = null!;
     }
 
-    [Test]
+    [TestMethod]
     public void Should_Correctly_Resolve_Different_Repositories()
     {
         var standard = _serviceProvider.GetRequiredService<IRepository>();
         var rental = _serviceProvider.GetRequiredService<IRepository<IRentalContext>>();
         var security = _serviceProvider.GetRequiredService<IRepository<ISecurityContext>>();
 
-        Assert.IsInstanceOf<Repository>(standard);
-        Assert.IsInstanceOf<Repository<IRentalContext>>(rental);
-        Assert.IsInstanceOf<Repository<ISecurityContext>>(security);
+        Assert.IsInstanceOfType(standard, typeof(Repository));
+        Assert.IsInstanceOfType(rental, typeof(Repository<IRentalContext>));
+        Assert.IsInstanceOfType(security, typeof(Repository<ISecurityContext>));
     }
 
-    [Test]
+    [TestMethod]
     public void Should_Correctly_Resolve_Different_Read_Only_Repositories()
     {
         var standard = _serviceProvider.GetRequiredService<IReadOnlyRepository>();
         var rental = _serviceProvider.GetRequiredService<IReadOnlyRepository<IRentalContext>>();
         var security = _serviceProvider.GetRequiredService<IReadOnlyRepository<ISecurityContext>>();
 
-        Assert.IsInstanceOf<ReadOnlyRepository>(standard);
-        Assert.IsInstanceOf<ReadOnlyRepository<IRentalContext>>(rental);
-        Assert.IsInstanceOf<ReadOnlyRepository<ISecurityContext>>(security);
+        Assert.IsInstanceOfType(standard, typeof(ReadOnlyRepository));
+        Assert.IsInstanceOfType(rental, typeof(ReadOnlyRepository<IRentalContext>));
+        Assert.IsInstanceOfType(security, typeof(ReadOnlyRepository<ISecurityContext>));
     }
 
-    [Test]
+    [TestMethod]
     public void Should_Correctly_Resolve_Different_Soft_Delete_Repositories()
     {
         var standard = _serviceProvider.GetRequiredService<ISoftDeleteRepository>();
         var rental = _serviceProvider.GetRequiredService<ISoftDeleteRepository<IRentalContext>>();
         var security = _serviceProvider.GetRequiredService<ISoftDeleteRepository<ISecurityContext>>();
 
-        Assert.IsInstanceOf<SoftDeleteRepository>(standard);
-        Assert.IsInstanceOf<SoftDeleteRepository<IRentalContext>>(rental);
-        Assert.IsInstanceOf<SoftDeleteRepository<ISecurityContext>>(security);
+        Assert.IsInstanceOfType(standard, typeof(SoftDeleteRepository));
+        Assert.IsInstanceOfType(rental, typeof(SoftDeleteRepository<IRentalContext>));
+        Assert.IsInstanceOfType(security, typeof(SoftDeleteRepository<ISecurityContext>));
     }
 
-    [Test]
+    [TestMethod]
     public void Should_Correctly_Resolve_Different_Read_Only_Delete_Repositories()
     {
         var standard = _serviceProvider.GetRequiredService<IReadOnlyDeleteRepository>();
         var rental = _serviceProvider.GetRequiredService<IReadOnlyDeleteRepository<IRentalContext>>();
         var security = _serviceProvider.GetRequiredService<IReadOnlyDeleteRepository<ISecurityContext>>();
 
-        Assert.IsInstanceOf<ReadOnlyDeleteRepository>(standard);
-        Assert.IsInstanceOf<ReadOnlyDeleteRepository<IRentalContext>>(rental);
-        Assert.IsInstanceOf<ReadOnlyDeleteRepository<ISecurityContext>>(security);
+        Assert.IsInstanceOfType(standard, typeof(ReadOnlyDeleteRepository));
+        Assert.IsInstanceOfType(rental, typeof(ReadOnlyDeleteRepository<IRentalContext>));
+        Assert.IsInstanceOfType(security, typeof(ReadOnlyDeleteRepository<ISecurityContext>));
     }
 
-    [Test]
+    [TestMethod]
     public void Should_Return_Only_Not_Deleted_Items()
     {
         var entities = _rentalContext.People.ToList();
@@ -107,7 +105,7 @@ public class RepositoryTests
         var modelsQuery = _repository.GetList<Person>();
 
         Assert.IsNotNull(modelsQuery);
-        Assert.IsInstanceOf<IQueryable<Person>>(modelsQuery);
+        Assert.IsInstanceOfType(modelsQuery, typeof(IQueryable<Person>));
 
         var models = modelsQuery.ToList();
 

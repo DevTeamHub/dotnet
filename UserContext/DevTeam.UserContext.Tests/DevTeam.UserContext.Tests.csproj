@@ -10,19 +10,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="IdentityModel" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.16" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.5" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
-    <PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
+    <PackageReference Include="Moq" Version="4.18.4" />
     <PackageReference Include="coverlet.collector" Version="3.2.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Extensions\DevTeam.Extensions.EntityFrameworkCore\DevTeam.Extensions.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\DevTeam.QueryMappings.AspNetCore\DevTeam.QueryMappings.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\GenericService\DevTeam.GenericService.AspNetCore\DevTeam.GenericService.AspNetCore.csproj" />
+    <ProjectReference Include="..\DevTeam.UserContext\DevTeam.UserContext.csproj" />
   </ItemGroup>
 
 </Project>

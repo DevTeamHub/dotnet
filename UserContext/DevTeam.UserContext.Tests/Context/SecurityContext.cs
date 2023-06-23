@@ -1,8 +1,9 @@
 ﻿using DevTeam.Extensions.EntityFrameworkCore;
-using DevTeam.QueryMappings.Tests.Context.SecurityContext.Entities;
+using DevTeam.UserContext.Tests.Context.Entities;
+using DevTeam.UserContext.Tests.Tests;
 using Microsoft.EntityFrameworkCore;
 
-namespace DevTeam.QueryMappings.Tests.Mappings;
+namespace DevTeam.UserContext.Tests.Context;
 
 public interface ISecurityContext : IDbContext
 {
