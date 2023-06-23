@@ -345,12 +345,12 @@ public class Repository<TContext> : IRepository<TContext>
     {
         var item = Context.Entry(entity);
 
-        if (item is IEntity entry)
+        if (item.Entity is IEntity entry)
         {
             var local = Context.Set<TEntity>().Local.Cast<IEntity>().FirstOrDefault(x => x.Id == entry.Id);
             if (local != null)
             {
-                Context.Entry(local).CurrentValues.SetValues(entity);
+                Context.Entry(local).CurrentValues.SetValues(entry);
                 return;
             }
         }
