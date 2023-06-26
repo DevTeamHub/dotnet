@@ -109,7 +109,7 @@ public partial class GenericService<TContext>
     public virtual void UpdateProperty<TEntity>(int id, string propertyName, object value)
         where TEntity : class, IEntity
     {
-        _writeRepository.UpdateProperty<TEntity, int>(id, propertyName, value);
+        _writeRepository.UpdateProperty<TEntity>(id, propertyName, value);
         _writeRepository.Save();
     }
 
@@ -155,7 +155,7 @@ public partial class GenericService<TContext>
     public virtual async Task UpdatePropertyAsync<TEntity>(int id, string propertyName, object value)
         where TEntity : class, IEntity
     {
-        await _writeRepository.UpdatePropertyAsync<TEntity, int>(id, propertyName, value);
+        await _writeRepository.UpdatePropertyAsync<TEntity>(id, propertyName, value);
         await _writeRepository.SaveAsync();
     }
 
