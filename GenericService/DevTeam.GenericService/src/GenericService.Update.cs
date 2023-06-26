@@ -73,6 +73,7 @@ public partial class GenericService<TContext>
         where TEntity : class
     {
         _writeRepository.UpdateProperty(selector, propertySelector, value);
+        _writeRepository.Save();
     }
 
     public virtual void UpdateProperty<TEntity, TProperty, TKey>(TKey id, Expression<Func<TEntity, TProperty>> propertySelector, TProperty value)
@@ -80,18 +81,21 @@ public partial class GenericService<TContext>
         where TKey : IEquatable<TKey>
     {
         _writeRepository.UpdateProperty(id, propertySelector, value);
+        _writeRepository.Save();
     }
 
     public virtual void UpdateProperty<TEntity, TProperty>(int id, Expression<Func<TEntity, TProperty>> propertySelector, TProperty value)
         where TEntity : class, IEntity
     {
         _writeRepository.UpdateProperty(id, propertySelector, value);
+        _writeRepository.Save();
     }
 
     public virtual void UpdateProperty<TEntity>(Expression<Func<TEntity, bool>> selector, string propertyName, object value)
         where TEntity : class
     {
         _writeRepository.UpdateProperty(selector, propertyName, value);
+        _writeRepository.Save();
     }
 
     public virtual void UpdateProperty<TEntity, TKey>(TKey id, string propertyName, object value)
@@ -99,52 +103,60 @@ public partial class GenericService<TContext>
         where TKey : IEquatable<TKey>
     {
         _writeRepository.UpdateProperty<TEntity, TKey>(id, propertyName, value);
+        _writeRepository.Save();
     }
 
     public virtual void UpdateProperty<TEntity>(int id, string propertyName, object value)
         where TEntity : class, IEntity
     {
-        UpdateProperty<TEntity, int>(id, propertyName, value);
+        _writeRepository.UpdateProperty<TEntity, int>(id, propertyName, value);
+        _writeRepository.Save();
     }
 
-    public virtual Task UpdatePropertyAsync<TEntity, TProperty>(Expression<Func<TEntity, bool>> selector,
+    public virtual async Task UpdatePropertyAsync<TEntity, TProperty>(Expression<Func<TEntity, bool>> selector,
                                                                 Expression<Func<TEntity, TProperty>> propertySelector,
                                                                 TProperty value)
         where TEntity : class
     {
-        return _writeRepository.UpdatePropertyAsync(selector, propertySelector, value);
+        await _writeRepository.UpdatePropertyAsync(selector, propertySelector, value);
+        await _writeRepository.SaveAsync();
     }
 
-    public virtual Task UpdatePropertyAsync<TEntity, TProperty, TKey>(TKey id, Expression<Func<TEntity, TProperty>> propertySelector, TProperty value)
+    public virtual async Task UpdatePropertyAsync<TEntity, TProperty, TKey>(TKey id, Expression<Func<TEntity, TProperty>> propertySelector, TProperty value)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
-        return _writeRepository.UpdatePropertyAsync(id, propertySelector, value);
+        await _writeRepository.UpdatePropertyAsync(id, propertySelector, value);
+        await _writeRepository.SaveAsync();
     }
 
-    public virtual Task UpdatePropertyAsync<TEntity, TProperty>(int id, Expression<Func<TEntity, TProperty>> propertySelector, TProperty value)
+    public virtual async Task UpdatePropertyAsync<TEntity, TProperty>(int id, Expression<Func<TEntity, TProperty>> propertySelector, TProperty value)
         where TEntity : class, IEntity
     {
-        return _writeRepository.UpdatePropertyAsync(id, propertySelector, value);
+        await _writeRepository.UpdatePropertyAsync(id, propertySelector, value);
+        await _writeRepository.SaveAsync();
     }
 
-    public virtual Task UpdatePropertyAsync<TEntity>(Expression<Func<TEntity, bool>> selector, string propertyName, object value)
+    public virtual async Task UpdatePropertyAsync<TEntity>(Expression<Func<TEntity, bool>> selector, string propertyName, object value)
         where TEntity : class
     {
-        return _writeRepository.UpdatePropertyAsync(selector, propertyName, value);
+        await _writeRepository.UpdatePropertyAsync(selector, propertyName, value);
+        await _writeRepository.SaveAsync();
     }
 
-    public virtual Task UpdatePropertyAsync<TEntity, TKey>(TKey id, string propertyName, object value)
+    public virtual async Task UpdatePropertyAsync<TEntity, TKey>(TKey id, string propertyName, object value)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
-        return _writeRepository.UpdatePropertyAsync<TEntity, TKey>(id, propertyName, value);
+        await _writeRepository.UpdatePropertyAsync<TEntity, TKey>(id, propertyName, value);
+        await _writeRepository.SaveAsync();
     }
 
-    public virtual Task UpdatePropertyAsync<TEntity>(int id, string propertyName, object value)
+    public virtual async Task UpdatePropertyAsync<TEntity>(int id, string propertyName, object value)
         where TEntity : class, IEntity
     {
-        return _writeRepository.UpdatePropertyAsync<TEntity, int>(id, propertyName, value);
+        await _writeRepository.UpdatePropertyAsync<TEntity, int>(id, propertyName, value);
+        await _writeRepository.SaveAsync();
     }
 
     #endregion
