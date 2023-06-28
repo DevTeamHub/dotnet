@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevTeam.GenericRepository.Tests.Context.RentalContext.Entities;
 
-public class Person : IDeleted
+public class Person : IEntity, IDeleted
 {
     [Key]
     public int Id { get; set; }
