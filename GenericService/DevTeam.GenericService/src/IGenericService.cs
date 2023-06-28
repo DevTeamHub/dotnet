@@ -194,7 +194,7 @@ public interface IGenericService<TContext>
     TResult? Update<TModel, TEntity, TResult, TKey>(TKey id, TModel model, Action<TModel, TEntity> updateFunc)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>;
-    TResult? Update<TModel, TEntity, TResult>(int id, TModel model, Action<TModel, TEntity> updateFunc)
+    TEntity? Update<TModel, TEntity>(int id, TModel model, Action<TModel, TEntity> updateFunc) 
         where TEntity : class, IEntity;
     Task<TEntity?> UpdateAsync<TModel, TEntity, TKey>(TKey id, TModel model, Action<TModel, TEntity> updateFunc)
         where TEntity : class, IEntity<TKey>
@@ -202,7 +202,7 @@ public interface IGenericService<TContext>
     Task<TResult?> UpdateAsync<TModel, TEntity, TResult, TKey>(TKey id, TModel model, Action<TModel, TEntity> updateFunc)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>;
-    Task<TResult?> UpdateAsync<TModel, TEntity, TResult>(int id, TModel model, Action<TModel, TEntity> updateFunc)
+    Task<TEntity?> UpdateAsync<TModel, TEntity>(int id, TModel model, Action<TModel, TEntity> updateFunc) 
         where TEntity : class, IEntity;
     void UpdateProperty<TEntity, TProperty>(Expression<Func<TEntity, bool>> selector,
                                                            Expression<Func<TEntity, TProperty>> propertySelector,
