@@ -1,14 +1,12 @@
 ﻿using DevTeam.QueryMappings.Tests.Context.RentalContext;
 using DevTeam.QueryMappings.Tests.Context.RentalContext.Entities;
 using DevTeam.QueryMappings.Tests.Context.SecurityContext.Entities;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace DevTeam.QueryMappings.Tests.Tests
+namespace DevTeam.QueryMappings.Tests;
+
+public static class TestData
 {
-    public static class TestData
-    {
-        private static readonly List<Address> _addresses = new()
+    private static readonly List<Address> _addresses = new()
         {
             new Address
             {
@@ -34,7 +32,7 @@ namespace DevTeam.QueryMappings.Tests.Tests
             }
         };
 
-        private static readonly List<Building> _buildings = new()
+    private static readonly List<Building> _buildings = new()
         {
             new Building
             {
@@ -54,7 +52,7 @@ namespace DevTeam.QueryMappings.Tests.Tests
             }
         };
 
-        private static readonly List<Apartment> _apartments = new()
+    private static readonly List<Apartment> _apartments = new()
         {
             new Apartment
             {
@@ -135,7 +133,7 @@ namespace DevTeam.QueryMappings.Tests.Tests
             }
         };
 
-        private static readonly List<Person> _people = new()
+    private static readonly List<Person> _people = new()
         {
             new Person
             {
@@ -227,7 +225,7 @@ namespace DevTeam.QueryMappings.Tests.Tests
             }
         };
 
-        private static readonly List<Review> _reviews = new()
+    private static readonly List<Review> _reviews = new()
         {
             new Review
             {
@@ -343,7 +341,7 @@ namespace DevTeam.QueryMappings.Tests.Tests
             }
         };
 
-        private static readonly List<User> _users = new()
+    private static readonly List<User> _users = new()
         {
             new User
             {
@@ -368,11 +366,10 @@ namespace DevTeam.QueryMappings.Tests.Tests
             }
         };
 
-        public static List<Address> Addresses => _addresses;
-        public static List<Apartment> Apartments => _apartments;
-        public static List<Building> Buildings => _buildings;
-        public static List<Person> People => _people;
-        public static List<Review> Reviews => _reviews;
-        public static List<User> Users => _users;
-    }
+    public static List<Address> Addresses => _addresses;
+    public static List<Apartment> Apartments => _apartments;
+    public static List<Building> Buildings => _buildings;
+    public static List<Person> People => _people;
+    public static List<Review> Reviews => _reviews;
+    public static List<User> Users => _users;
 }

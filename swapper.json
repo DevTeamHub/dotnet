@@ -36,6 +36,22 @@
       {
         "PackageId": "DevTeam.QueryMappings.AspNetCore",
         "ProjectPath": "QueryMappings\\DevTeam.QueryMappings.AspNetCore\\DevTeam.QueryMappings.AspNetCore.csproj"
+      },
+      {
+        "PackageId": "DevTeam.Session.Abstractions",
+        "ProjectPath": "Session\\DevTeam.Session.Abstractions\\DevTeam.Session.Abstractions.csproj"
+      },
+      {
+        "PackageId": "DevTeam.Session",
+        "ProjectPath": "Session\\DevTeam.Session\\DevTeam.Session.csproj"
+      },
+      {
+        "PackageId": "DevTeam.UserContext.Abstractions",
+        "ProjectPath": "UserContext\\DevTeam.UserContext.Abstractions\\DevTeam.UserContext.Abstractions.csproj"
+      },
+      {
+        "PackageId": "DevTeam.UserContext",
+        "ProjectPath": "UserContext\\DevTeam.UserContext\\DevTeam.UserContext.csproj"
       }
     ]
   }

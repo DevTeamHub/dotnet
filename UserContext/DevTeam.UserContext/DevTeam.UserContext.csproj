@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<PackageId>DevTeam.UserContext</PackageId>
+		<TargetFrameworks>$(AllFrameworks)</TargetFrameworks>
+		<Description>Package provides injectable abstractions to manage current authenticated user data</Description>
+		<PackageTags>Identity;AspNetCore</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7'">
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6'">
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'netframework4.6.2'">
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\GenericService\DevTeam.GenericService\DevTeam.GenericService.csproj" />
+	  <ProjectReference Include="..\..\Session\DevTeam.Session\DevTeam.Session.csproj" />
+	  <ProjectReference Include="..\DevTeam.UserContext.Abstractions\DevTeam.UserContext.Abstractions.csproj" />
+	</ItemGroup>
+
+</Project>

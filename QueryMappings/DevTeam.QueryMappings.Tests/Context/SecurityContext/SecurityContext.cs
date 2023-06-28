@@ -1,6 +1,5 @@
 ﻿using DevTeam.Extensions.EntityFrameworkCore;
 using DevTeam.QueryMappings.Tests.Context.SecurityContext.Entities;
-using DevTeam.QueryMappings.Tests.Tests;
 using Microsoft.EntityFrameworkCore;
 
 namespace DevTeam.QueryMappings.Tests.Mappings;

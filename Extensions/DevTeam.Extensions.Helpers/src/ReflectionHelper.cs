@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DevTeam.Helpers;
+namespace DevTeam.Extensions.Helpers;
 
 public static class ReflectionHelper
 {

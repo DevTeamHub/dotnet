@@ -1,5 +1,4 @@
 ﻿using DevTeam.QueryMappings.Helpers;
-using NUnit.Framework;
 using DevTeam.QueryMappings.Tests.Mappings;
 using DevTeam.QueryMappings.Tests.Context.RentalContext;
 using DevTeam.QueryMappings.Tests.Context.RentalContext.Mappings;
@@ -9,20 +8,18 @@ using DevTeam.QueryMappings.Tests.Context.RentalContext.Mappings.Arguments;
 using Microsoft.Extensions.DependencyInjection;
 using DevTeam.QueryMappings.AspNetCore;
 using DevTeam.QueryMappings.Services.Interfaces;
-using DevTeam.QueryMappings.Services.Implementations;
 
-namespace DevTeam.QueryMappings.Tests.Tests;
+namespace DevTeam.QueryMappings.Tests;
 
-[Category("GenericMappingService")]
-[TestOf(typeof(MappingService<>))]
-[TestFixture]
+[TestCategory("GenericMappingService")]
+[TestClass]
 public class GenericMappingServiceTests
 {
-    private IMappingService<IRentalContext> _service = null!;
-    private RentalContext _context = null!;
+    private static IMappingService<IRentalContext> _service = null!;
+    private static RentalContext _context = null!;
 
-    [OneTimeSetUp]
-    public void Init()
+    [ClassInitialize]
+    public static void Init(TestContext testContext)
     {
         var services = new ServiceCollection();
 
@@ -39,14 +36,14 @@ public class GenericMappingServiceTests
         MappingsConfiguration.Register(mappings, typeof(AddressMappings).Assembly);
     }
 
-    [OneTimeTearDown]
-    public void Clear()
+    [ClassCleanup]
+    public static void Clear()
     {
         _context = null!;
         _service = null!;
     }
 
-    [Test]
+    [TestMethod]
     public void Should_Convert_Address_Query_Into_Models()
     {
         var entities = _context.Addresses.ToList();
@@ -55,7 +52,7 @@ public class GenericMappingServiceTests
         var modelsQuery = _service.Map<Address, AddressModel>(query);
 
         Assert.IsNotNull(modelsQuery);
-        Assert.IsInstanceOf<IQueryable<AddressModel>>(modelsQuery);
+        Assert.IsInstanceOfType(modelsQuery, typeof(IQueryable<AddressModel>));
 
         var models = modelsQuery.ToList();
 
@@ -76,7 +73,7 @@ public class GenericMappingServiceTests
         }
     }
 
-    [Test]
+    [TestMethod]
     public void Should_Convert_Address_Item_Into_Model_Object()
     {
         var entity = _context.Addresses.First();
@@ -84,7 +81,7 @@ public class GenericMappingServiceTests
         var model = _service.Map<Address, AddressModel>(entity);
 
         Assert.IsNotNull(model);
-        Assert.IsInstanceOf<AddressModel>(model);
+        Assert.IsInstanceOfType(model, typeof(AddressModel));
 
         Assert.AreEqual(model.Id, entity.Id);
         Assert.AreEqual(model.State, entity.State);
@@ -95,7 +92,7 @@ public class GenericMappingServiceTests
         Assert.AreEqual(model.City, entity.City);
     }
 
-    [Test]
+    [TestMethod]
     public void Should_Convert_Addresses_List_Into_Model_Objects()
     {
         var entities = _context.Addresses.ToList();
@@ -103,7 +100,7 @@ public class GenericMappingServiceTests
         var models = _service.Map<Address, AddressModel>(entities);
 
         Assert.IsNotNull(models);
-        Assert.IsInstanceOf<List<AddressModel>>(models);
+        Assert.IsInstanceOfType(models, typeof(List<AddressModel>));
 
         Assert.AreEqual(entities.Count, models.Count);
 
@@ -122,7 +119,7 @@ public class GenericMappingServiceTests
         }
     }
 
-    [Test]
+    [TestMethod]
     public void Should_Convert_Address_Query_Into_Short_Model_Using_Named_Mappings()
     {
         var entities = _context.Addresses.ToList();
@@ -131,12 +128,12 @@ public class GenericMappingServiceTests
         var shortModelsQuery = _service.Map<Address, AddressSummaryModel>(query, MappingsNames.ShortAddressFormat);
 
         Assert.IsNotNull(shortModelsQuery);
-        Assert.IsInstanceOf<IQueryable<AddressSummaryModel>>(shortModelsQuery);
+        Assert.IsInstanceOfType(shortModelsQuery, typeof(IQueryable<AddressSummaryModel>));
 
         var extendedModelsQuery = _service.Map<Address, AddressSummaryModel>(query, MappingsNames.ExtendedAddressFormat);
 
         Assert.IsNotNull(extendedModelsQuery);
-        Assert.IsInstanceOf<IQueryable<AddressSummaryModel>>(extendedModelsQuery);
+        Assert.IsInstanceOfType(extendedModelsQuery, typeof(IQueryable<AddressSummaryModel>));
 
         var shortModels = shortModelsQuery.ToList();
 
@@ -160,7 +157,7 @@ public class GenericMappingServiceTests
         }
     }
 
-    [Test]
+    [TestMethod]
     public void Should_Convert_Address_Item_Into_Short_Model_Using_Named_Mappings()
     {
         var entity = _context.Addresses.First();
@@ -168,12 +165,12 @@ public class GenericMappingServiceTests
         var shortModel = _service.Map<Address, AddressSummaryModel>(entity, MappingsNames.ShortAddressFormat);
 
         Assert.IsNotNull(shortModel);
-        Assert.IsInstanceOf<AddressSummaryModel>(shortModel);
+        Assert.IsInstanceOfType(shortModel, typeof(AddressSummaryModel));
 
         var extendedModel = _service.Map<Address, AddressSummaryModel>(entity, MappingsNames.ExtendedAddressFormat);
 
         Assert.IsNotNull(extendedModel);
-        Assert.IsInstanceOf<AddressSummaryModel>(extendedModel);
+        Assert.IsInstanceOfType(extendedModel, typeof(AddressSummaryModel));
 
         Assert.AreEqual(shortModel.Id, entity.Id);
         Assert.AreEqual(shortModel.Address, entity.BuildingNumber + " " + entity.Street + ", " + entity.City);
@@ -182,7 +179,7 @@ public class GenericMappingServiceTests
         Assert.AreEqual(extendedModel.Address, entity.BuildingNumber + " " + entity.Street + ", " + entity.City + ", " + entity.State + ", " + entity.Country + ", " + entity.ZipCode);
     }
 
-    [Test]
+    [TestMethod]
     public void Should_Convert_Addresses_List_Into_Short_Models_List_Using_Named_Mappings()
     {
         var entities = _context.Addresses.ToList();
@@ -190,12 +187,12 @@ public class GenericMappingServiceTests
         var shortModelsQuery = _service.Map<Address, AddressSummaryModel>(entities, MappingsNames.ShortAddressFormat);
 
         Assert.IsNotNull(shortModelsQuery);
-        Assert.IsInstanceOf<List<AddressSummaryModel>>(shortModelsQuery);
+        Assert.IsInstanceOfType(shortModelsQuery, typeof(List<AddressSummaryModel>));
 
         var extendedModelsQuery = _service.Map<Address, AddressSummaryModel>(entities, MappingsNames.ExtendedAddressFormat);
 
         Assert.IsNotNull(extendedModelsQuery);
-        Assert.IsInstanceOf<List<AddressSummaryModel>>(extendedModelsQuery);
+        Assert.IsInstanceOfType(extendedModelsQuery, typeof(List<AddressSummaryModel>));
 
         var shortModels = shortModelsQuery.ToList();
 
@@ -219,7 +216,7 @@ public class GenericMappingServiceTests
         }
     }
 
-    [Test]
+    [TestMethod]
     public void Should_Convert_Appartments_Query_Into_Model_And_Apply_Arguments()
     {
         var entities = _context.Apartments.ToList();
@@ -229,7 +226,7 @@ public class GenericMappingServiceTests
         var modelsQuery = _service.Map<Apartment, ApartmentShortModel, ApartmentsArguments>(query, arguments);
 
         Assert.IsNotNull(modelsQuery);
-        Assert.IsInstanceOf<IQueryable<ApartmentShortModel>>(modelsQuery);
+        Assert.IsInstanceOfType(modelsQuery, typeof(IQueryable<ApartmentShortModel>));
 
         var models = modelsQuery.ToList();
 
@@ -248,7 +245,7 @@ public class GenericMappingServiceTests
         }
     }
 
-    [Test]
+    [TestMethod]
     public void Should_Convert_Appartments_List_Into_Model_And_Apply_Arguments()
     {
         var entities = _context.Apartments.ToList();
@@ -257,7 +254,7 @@ public class GenericMappingServiceTests
         var models = _service.Map<Apartment, ApartmentShortModel, ApartmentsArguments>(entities, arguments);
 
         Assert.IsNotNull(models);
-        Assert.IsInstanceOf<List<ApartmentShortModel>>(models);
+        Assert.IsInstanceOfType(models, typeof(List<ApartmentShortModel>));
 
         Assert.AreEqual(entities.Count, models.Count);
 
@@ -274,7 +271,7 @@ public class GenericMappingServiceTests
         }
     }
 
-    [Test]
+    [TestMethod]
     public void Should_Convert_Appartments_Query_Into_Model_And_Apply_Arguments_Using_Named_Mapping()
     {
         var entities = _context.Apartments.ToList();
@@ -284,7 +281,7 @@ public class GenericMappingServiceTests
         var modelsQuery = _service.Map<Apartment, ApartmentModel, ApartmentsArguments>(query, arguments, MappingsNames.AppartmentsWithBuilding);
 
         Assert.IsNotNull(modelsQuery);
-        Assert.IsInstanceOf<IQueryable<ApartmentModel>>(modelsQuery);
+        Assert.IsInstanceOfType(modelsQuery, typeof(IQueryable<ApartmentModel>));
 
         var models = modelsQuery.ToList();
 
@@ -316,7 +313,7 @@ public class GenericMappingServiceTests
         }
     }
 
-    [Test]
+    [TestMethod]
     public void Should_Convert_Appartments_List_Into_Model_And_Apply_Arguments_Using_Named_Mapping()
     {
         var entities = _context.Apartments.ToList();
@@ -325,7 +322,7 @@ public class GenericMappingServiceTests
         var models = _service.Map<Apartment, ApartmentModel, ApartmentsArguments>(entities, arguments, MappingsNames.AppartmentsWithBuilding);
 
         Assert.IsNotNull(models);
-        Assert.IsInstanceOf<List<ApartmentModel>>(models);
+        Assert.IsInstanceOfType(models, typeof(List<ApartmentModel>));
 
         Assert.AreEqual(entities.Count, models.Count);
 
@@ -355,7 +352,7 @@ public class GenericMappingServiceTests
         }
     }
 
-    [Test]
+    [TestMethod]
     public void Should_Convert_Appartments_Into_Model_And_Attach_Reviews_Info_Using_EF_Context()
     {
         var entities = _context.Apartments.ToList();
@@ -364,7 +361,7 @@ public class GenericMappingServiceTests
         var modelsQuery = _service.Map<Apartment, ApartmentReviewsModel>(query);
 
         Assert.IsNotNull(modelsQuery);
-        Assert.IsInstanceOf<IQueryable<ApartmentReviewsModel>>(modelsQuery);
+        Assert.IsInstanceOfType(modelsQuery, typeof(IQueryable<ApartmentReviewsModel>));
 
         var models = modelsQuery.ToList();
 
@@ -398,7 +395,7 @@ public class GenericMappingServiceTests
         }
     }
 
-    [Test]
+    [TestMethod]
     public void Should_Convert_Building_Into_Model_Using_Named_Mapping_And_Attach_Reviews_Info_Using_EF_Context()
     {
         var entities = _context.Buildings.ToList();
@@ -407,7 +404,7 @@ public class GenericMappingServiceTests
         var modelsQuery = _service.Map<Building, BuildingModel>(query, MappingsNames.BuildingWithReviews);
 
         Assert.IsNotNull(modelsQuery);
-        Assert.IsInstanceOf<IQueryable<BuildingModel>>(modelsQuery);
+        Assert.IsInstanceOfType(modelsQuery, typeof(IQueryable<BuildingModel>));
 
         var models = modelsQuery.ToList();
 
@@ -475,7 +472,7 @@ public class GenericMappingServiceTests
         }
     }
 
-    [Test]
+    [TestMethod]
     public void Should_Get_Budilding_Statistics_Using_Arguments_And_EF_Context()
     {
         var entities = _context.Buildings.ToList();
@@ -485,7 +482,7 @@ public class GenericMappingServiceTests
         var modelsQuery = _service.Map<Building, BuildingStatisticsModel, BuildingArguments>(query, arguments);
 
         Assert.IsNotNull(modelsQuery);
-        Assert.IsInstanceOf<IQueryable<BuildingStatisticsModel>>(modelsQuery);
+        Assert.IsInstanceOfType(modelsQuery, typeof(IQueryable<BuildingStatisticsModel>));
 
         var models = modelsQuery.ToList();
 
