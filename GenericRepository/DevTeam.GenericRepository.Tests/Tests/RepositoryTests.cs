@@ -5,6 +5,7 @@ using DevTeam.GenericRepository.Tests.Context.SecurityContext;
 using DevTeam.GenericRepository.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
 namespace DevTeam.GenericRepository.Tests;
 
@@ -132,5 +133,20 @@ public class RepositoryTests
                 Assert.AreEqual(entity.IsDeleted, true);
             }
         }
+    }
+
+    [TestMethod]
+    public void Should_Update_Propery_With_Id_And_Property_Selector()
+    {
+        const string newName = "TestName";
+        var entity = _rentalContext.People.Where(x => x.IsDeleted == false).First();
+        var entityFirstName = entity.FirstName;
+
+        _repository.UpdateProperty<Person, string>(entity.Id, x => x.FirstName, newName);
+        _repository.Save();
+
+        var updatedEntity = _rentalContext.People.Where(x => x.Id == entity.Id).First();
+        Assert.AreNotEqual(entityFirstName, updatedEntity.FirstName);
+        Assert.AreEqual(updatedEntity.FirstName, newName);
     }
 }
