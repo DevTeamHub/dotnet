@@ -54,7 +54,7 @@
         "ProjectPath": "UserContext\\DevTeam.UserContext\\DevTeam.UserContext.csproj"
       },
       {
-        "PackageId": "DevTeam.EntityFrameworkCore.Relational",
+        "PackageId": "DevTeam.Extensions.EntityFrameworkCore.Relational",
         "ProjectPath": "Extensions\\DevTeam.Extensions.EntityFrameworkCore.Relational\\DevTeam.Extensions.EntityFrameworkCore.Relational.csproj"
       }
     ]

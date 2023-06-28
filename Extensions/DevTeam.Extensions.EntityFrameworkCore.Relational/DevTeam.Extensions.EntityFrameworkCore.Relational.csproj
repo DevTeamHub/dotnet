@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>DevTeam.EntityFrameworkCore.Relational</PackageId>
+    <PackageId>DevTeam.Extensions.EntityFrameworkCore.Relational</PackageId>
     <TargetFrameworks>$(BaseFrameworks)</TargetFrameworks>
     <Description>Common extensions for entities for every project using Entity Framework with Relational Db</Description>
     <PackageTags>EntityFramework;IQueryable;Expression;Relational</PackageTags>
