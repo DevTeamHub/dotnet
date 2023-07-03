@@ -26,7 +26,7 @@ public class CommandErrorLogInterceptor : DbCommandInterceptor
         {
             var parameters = command.Parameters.Cast<DbParameter>().Select(x => $"{x.ParameterName}: {x.Value}");
 
-            eventData.Exception.Data.Add("SQL", command.CommandText);
+            eventData.Exception.Data.Add("SQL", command.CommandText.Replace("\n", "").Replace("\r", ""));
             eventData.Exception.Data.Add("Parameters", string.Join(", ", parameters));
             if (command.Transaction != null)
                 eventData.Exception.Data.Add("Isolation level", command.Transaction.IsolationLevel.ToString());
