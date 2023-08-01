@@ -31,10 +31,11 @@ public partial class GenericService<TContext>
         return Get<TEntity, TResult, TKey>(id);
     }
 
-    public virtual TEntity? Update<TModel, TEntity>(int id, TModel model, Action<TModel, TEntity> updateFunc)
+    public virtual TResult? Update<TModel, TEntity, TResult>(int id, TModel model, Action<TModel, TEntity> updateFunc)
         where TEntity : class, IEntity
     {
-        return Update<TModel, TEntity, int>(id, model, updateFunc);
+        Update(id, model, updateFunc);
+        return Get<TEntity, TResult>(id);
     }
 
     public virtual async Task<TEntity?> UpdateAsync<TModel, TEntity, TKey>(TKey id, TModel model, Action<TModel, TEntity> updateFunc)
@@ -59,10 +60,11 @@ public partial class GenericService<TContext>
         return await GetAsync<TEntity, TResult, TKey>(id);
     }
 
-    public virtual async Task<TEntity?> UpdateAsync<TModel, TEntity>(int id, TModel model, Action<TModel, TEntity> updateFunc)
+    public virtual async Task<TResult?> UpdateAsync<TModel, TEntity, TResult>(int id, TModel model, Action<TModel, TEntity> updateFunc)
         where TEntity : class, IEntity
     {
-        return await UpdateAsync<TModel, TEntity, int>(id, model, updateFunc);
+        await UpdateAsync(id, model, updateFunc);
+        return await GetAsync<TEntity, TResult>(id);
     }
 
     public virtual void UpdateProperty<TEntity, TProperty>(Expression<Func<TEntity, bool>> selector,
