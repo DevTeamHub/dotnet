@@ -1,4 +1,4 @@
-﻿namespace DevTeam.GenericRepository.Tests.Context;
+﻿namespace DevTeam.GenericService.Tests.Context;
 
 public enum EntityType
 {

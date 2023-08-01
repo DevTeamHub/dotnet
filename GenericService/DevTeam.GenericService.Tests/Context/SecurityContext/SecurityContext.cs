@@ -1,9 +1,9 @@
 ﻿using DevTeam.Extensions.EntityFrameworkCore;
-using DevTeam.GenericRepository.Tests.Context.SecurityContext.Entities;
-using DevTeam.GenericRepository.Tests.Tests;
+using DevTeam.GenericService.Tests.Context.SecurityContext.Entities;
+using DevTeam.GenericService.Tests.Tests;
 using Microsoft.EntityFrameworkCore;
 
-namespace DevTeam.GenericRepository.Tests.Context.SecurityContext;
+namespace DevTeam.GenericService.Tests.Context.SecurityContext;
 
 public interface ISecurityContext : IDbContext
 {

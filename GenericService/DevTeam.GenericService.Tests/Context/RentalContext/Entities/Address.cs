@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DevTeam.Extensions.Abstractions;
 using System.ComponentModel.DataAnnotations;
 
-namespace DevTeam.GenericRepository.Tests.Context.RentalContext.Entities;
+namespace DevTeam.GenericService.Tests.Context.RentalContext.Entities;
 
-public class Address
+public class Address : IEntity
 {
     [Key]
     public int Id { get; set; }

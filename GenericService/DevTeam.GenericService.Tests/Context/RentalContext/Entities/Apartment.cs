@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DevTeam.GenericRepository.Tests.Context.RentalContext.Entities;
+namespace DevTeam.GenericService.Tests.Context.RentalContext.Entities;
 
 public class Apartment
 {

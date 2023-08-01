@@ -1,9 +1,9 @@
 ﻿using DevTeam.Extensions.EntityFrameworkCore;
-using DevTeam.GenericRepository.Tests.Context.RentalContext.Entities;
-using DevTeam.GenericRepository.Tests.Tests;
+using DevTeam.GenericService.Tests.Context.RentalContext.Entities;
+using DevTeam.GenericService.Tests.Tests;
 using Microsoft.EntityFrameworkCore;
 
-namespace DevTeam.GenericRepository.Tests.Context.RentalContext;
+namespace DevTeam.GenericService.Tests.Context.RentalContext;
 
 public interface IRentalContext : IDbContext 
 {

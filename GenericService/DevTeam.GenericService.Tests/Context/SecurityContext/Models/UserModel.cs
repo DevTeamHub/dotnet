@@ -1,6 +1,6 @@
-﻿namespace DevTeam.GenericService.Tests.Context.SecurityContext.Entities;
+﻿namespace DevTeam.GenericService.Tests.Context.RentalContext.Models;
 
-public class User
+public class UserModel
 {
     public int Id { get; set; }
     public string UserName { get; set; } = null!;
