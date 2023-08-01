@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DevTeam.Helpers;
+namespace DevTeam.Extensions.Helpers;
 
 public static class MimeHelper
 {

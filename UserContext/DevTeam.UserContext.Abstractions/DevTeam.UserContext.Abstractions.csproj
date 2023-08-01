@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<PackageId>DevTeam.UserContext.Abstractions</PackageId>
+		<TargetFrameworks>$(AllFrameworks)</TargetFrameworks>
+		<Description>Package provides injectable abstractions to manage current user of the app</Description>
+		<PackageTags>Identity</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Folder Include="src\" />
+	</ItemGroup>
+
+</Project>
