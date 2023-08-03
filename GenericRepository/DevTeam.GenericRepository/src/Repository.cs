@@ -381,7 +381,7 @@ public class Repository<TContext> : IRepository<TContext>
         where TEntity : class, IEntity
     {
 
-        UpdateProperty(id, propertySelector, value);
+        UpdateProperty<TEntity, TProperty, int>(id, propertySelector, value);
     }
 
     public virtual void UpdateProperty<TEntity>(Expression<Func<TEntity, bool>> selector, string propertyName, object value)
@@ -429,7 +429,7 @@ public class Repository<TContext> : IRepository<TContext>
     public virtual Task UpdatePropertyAsync<TEntity, TProperty>(int id, Expression<Func<TEntity, TProperty>> propertySelector, TProperty value)
         where TEntity : class, IEntity
     {
-        return UpdatePropertyAsync(id, propertySelector, value);
+        return UpdatePropertyAsync<TEntity, TProperty, int>(id, propertySelector, value);
     }
 
     public virtual async Task UpdatePropertyAsync<TEntity>(Expression<Func<TEntity, bool>> selector, string propertyName, object value)

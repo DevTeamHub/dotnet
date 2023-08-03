@@ -33,6 +33,7 @@ public partial class GenericService<TContext>
 
     public virtual TResult? Update<TModel, TEntity, TResult>(int id, TModel model, Action<TModel, TEntity> updateFunc)
         where TEntity : class, IEntity
+        where TResult : class
     {
         Update(id, model, updateFunc);
         return Get<TEntity, TResult>(id);
@@ -62,6 +63,7 @@ public partial class GenericService<TContext>
 
     public virtual async Task<TResult?> UpdateAsync<TModel, TEntity, TResult>(int id, TModel model, Action<TModel, TEntity> updateFunc)
         where TEntity : class, IEntity
+        where TResult : class
     {
         await UpdateAsync(id, model, updateFunc);
         return await GetAsync<TEntity, TResult>(id);
