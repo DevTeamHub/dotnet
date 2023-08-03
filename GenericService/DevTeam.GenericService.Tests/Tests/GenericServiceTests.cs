@@ -77,7 +77,12 @@ public class GenericServiceTests
 
         Assert.AreEqual(sourceModel.Street, result.Street);
         Assert.AreNotEqual(sourceModel.State, result.State);
-        //Assert.AreEqual(returnResult, entityResult);
+        
+        Assert.AreEqual(returnResult.Building, entityResult.Building);
+        Assert.AreEqual(returnResult.State, entityResult.State);
+        Assert.AreEqual(returnResult.Street, entityResult.Street);
+        Assert.AreEqual(returnResult.City, entityResult.City);
+        Assert.AreEqual(returnResult.Country, entityResult.Country);
     }
 
     [TestMethod]
