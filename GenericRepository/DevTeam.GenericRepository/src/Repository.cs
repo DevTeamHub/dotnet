@@ -7,36 +7,45 @@ using System.Threading.Tasks;
 using DevTeam.Extensions.Abstractions;
 using DevTeam.Extensions.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DevTeam.GenericRepository;
 
-public class Repository : Repository<IDbContext>, IRepository
+public class Repository : Repository<IDbContext, QueryOptions>, IRepository
 {
-    public Repository(IDbContext context)
-        : base(context)
+    public Repository(IDbContext context, IServiceProvider serviceProvider, QueryOptions options )
+        : base(context, serviceProvider, options)
     { }
 }
 
-public class Repository<TContext> : IRepository<TContext>
+public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
     where TContext : IDbContext
+    where TOptions : QueryOptions, new()
 {
     protected readonly TContext Context;
+    protected readonly TOptions DefaultOptions;
+    private readonly IServiceProvider _serviceProvider;
 
-    public Repository(TContext context)
+    public Repository(TContext context, IServiceProvider serviceProvider, TOptions? options = null)
     {
         Context = context;
+        DefaultOptions = options ?? new TOptions();
+        _serviceProvider = serviceProvider;
     }
 
-    protected virtual IQueryable<TEntity> GetQuery<TEntity>()
+    protected virtual IQueryable<TEntity> GetQuery<TEntity>(TOptions? options = null)
         where TEntity : class
     {
-        return Context.Set<TEntity>().AsQueryable();
+        options ??= DefaultOptions;
+        return options.isReadOnly ? Context.Set<TEntity>().AsNoTracking() : Context.Set<TEntity>().AsQueryable();
     }
 
-    protected virtual IQueryable<TEntity> GetQuery<TEntity, TArgs>(TArgs args)
+    protected virtual IQueryable<TEntity> GetQuery<TEntity, TArgs>(TArgs args, TOptions? options = null)
         where TEntity : class
     {
-        return GetQuery<TEntity>();
+        var queryExtensions = _serviceProvider
+            .GetServices(typeof(QueryExtension<,>));
+        return GetQuery<TEntity>(options);
     }
 
     private static IQueryable<TEntity> InternalQuery<TEntity>(IQueryable<TEntity> query)
@@ -49,21 +58,22 @@ public class Repository<TContext> : IRepository<TContext>
         return query;
     }
 
-    public virtual IQueryable<TEntity> Query<TEntity>()
+    public virtual IQueryable<TEntity> Query<TEntity>(TOptions? options = null)
         where TEntity : class
     {
-        var query = GetQuery<TEntity>();
+        options ??= DefaultOptions;
+        var query = GetQuery<TEntity>(options);
         return InternalQuery(query);
     }
 
-    public virtual IQueryable<TEntity> Query<TEntity, TArgs>(TArgs args)
+    public virtual IQueryable<TEntity> Query<TEntity, TArgs>(TArgs args, TOptions? options = null)
         where TEntity : class
     {
-        var query = GetQuery<TEntity, TArgs>(args);
+        var query = GetQuery<TEntity, TArgs>(args, options);
         return InternalQuery(query);
     }
 
-    public virtual IQueryable<TEntity> GetList<TEntity>(Expression<Func<TEntity, bool>>? filter = null)
+    public virtual IQueryable<TEntity> GetList<TEntity>(Expression<Func<TEntity, bool>>? filter = null, TOptions? options = null)
         where TEntity : class
     {
         var query = Query<TEntity>();
@@ -76,45 +86,45 @@ public class Repository<TContext> : IRepository<TContext>
         return query;
     }
 
-    public virtual IQueryable<TEntity> GetList<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args)
+    public virtual IQueryable<TEntity> GetList<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class
     {
-        return Query<TEntity, TArgs>(args).Where(filter);
+        return Query<TEntity, TArgs>(args, options).Where(filter);
     }
 
-    public virtual IQueryable<TEntity> QueryOne<TEntity, TKey>(TKey id)
+    public virtual IQueryable<TEntity> QueryOne<TEntity, TKey>(TKey id, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
         return GetList<TEntity>(x => x.Id.Equals(id));
     }
 
-    public virtual IQueryable<TEntity> QueryOne<TEntity, TKey, TArgs>(TKey id, TArgs args)
+    public virtual IQueryable<TEntity> QueryOne<TEntity, TKey, TArgs>(TKey id, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
-        return GetList<TEntity, TArgs>(x => x.Id.Equals(id), args);
+        return GetList<TEntity, TArgs>(x => x.Id.Equals(id), args, options);
     }
 
-    public virtual IQueryable<TEntity> QueryOne<TEntity>(int id)
+    public virtual IQueryable<TEntity> QueryOne<TEntity>(int id, TOptions? options = null)
         where TEntity : class, IEntity
     {
         return QueryOne<TEntity, int>(id);
     }
 
-    public virtual IQueryable<TEntity> QueryOne<TEntity, TArgs>(int id, TArgs args)
+    public virtual IQueryable<TEntity> QueryOne<TEntity, TArgs>(int id, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity
     {
         return QueryOne<TEntity, int, TArgs>(id, args);
     }
 
-    public virtual TEntity? Get<TEntity>(Expression<Func<TEntity, bool>> filter)
+    public virtual TEntity? Get<TEntity>(Expression<Func<TEntity, bool>> filter, TOptions? options = null)
         where TEntity : class
     {
         return GetList(filter).FirstOrDefault();
     }
 
-    public virtual TEntity? Get<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args)
+    public virtual TEntity? Get<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class
     {
         return GetList(filter, args).FirstOrDefault();

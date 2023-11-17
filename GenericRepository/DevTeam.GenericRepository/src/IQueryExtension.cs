@@ -1,8 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace DevTeam.GenericRepository;
 
-public interface IQueryExtension
+public interface IQueryExtension<TEntity, TSettings> 
+    where TSettings : QueryOptions
 {
-    public IQueryable<TEntity> Apply<TEntity>(IQueryable<TEntity> query); 
+    public Func<TSettings, bool> CanApply { get; }
+    public IQueryable<TEntity> ApplyExtension(IQueryable<TEntity> query);
 }

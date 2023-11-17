@@ -4,10 +4,12 @@ using System.Linq.Expressions;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using DevTeam.GenericRepository;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DevTeam.GenericService;
 
-public partial class GenericService<TContext>
+public partial class GenericService<TContext, TOptions>
 {
     #region Get One
 
@@ -19,14 +21,14 @@ public partial class GenericService<TContext>
         return _mappings.Map<TEntity, TModel>(query, mappingName);
     }
 
-    public virtual IQueryable<TModel> QueryOne<TEntity, TModel, TKey, TArgs>(TKey id, TArgs args, string? mappingName = null)
+    public virtual IQueryable<TModel> QueryOne<TEntity, TModel, TKey, TArgs>(TKey id, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
         where TArgs : IServiceArgs
     {
         var query = args.Type == ArgumentType.Mapping
-            ? _readRepository.QueryOne<TEntity, TKey>(id)
-            : _readRepository.QueryOne<TEntity, TKey, TArgs>(id, args);
+            ? _readRepository.QueryOne<TEntity, TKey>(id, options)
+            : _readRepository.QueryOne<TEntity, TKey, TArgs>(id, args, options);
 
         return args.Type == ArgumentType.Query
             ? _mappings.Map<TEntity, TModel>(query, mappingName)
@@ -39,11 +41,11 @@ public partial class GenericService<TContext>
         return QueryOne<TEntity, TModel, int>(id, mappingName);
     }
 
-    public virtual IQueryable<TModel> QueryOne<TEntity, TModel, TArgs>(int id, TArgs args, string? mappingName = null)
+    public virtual IQueryable<TModel> QueryOne<TEntity, TModel, TArgs>(int id, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class, IEntity
         where TArgs : IServiceArgs
     {
-        return QueryOne<TEntity, TModel, int, TArgs>(id, args, mappingName);
+        return QueryOne<TEntity, TModel, int, TArgs>(id, args, mappingName, options);
     }
 
     public virtual TModel? Get<TEntity, TModel>(Expression<Func<TEntity, bool>> filter, string? mappingName = null)
@@ -131,12 +133,12 @@ public partial class GenericService<TContext>
 #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
     }
 
-    public virtual Task<TModel?> GetAsync<TEntity, TModel, TArgs>(int id, TArgs args, string? mappingName = null)
+    public virtual Task<TModel?> GetAsync<TEntity, TModel, TArgs>(int id, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class, IEntity
         where TArgs : IServiceArgs
     {
 #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
-        return QueryOne<TEntity, TModel, TArgs>(id, args, mappingName).FirstOrDefaultAsync();
+        return QueryOne<TEntity, TModel, TArgs>(id, args, mappingName, options).FirstOrDefaultAsync();
 #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
     }
 

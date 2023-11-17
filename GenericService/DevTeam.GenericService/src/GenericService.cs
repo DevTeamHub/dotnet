@@ -1,32 +1,34 @@
 ﻿using DevTeam.Extensions.EntityFrameworkCore;
 using DevTeam.GenericRepository;
 using DevTeam.QueryMappings.Services.Interfaces;
+using System.Diagnostics;
 
 namespace DevTeam.GenericService;
 
-public class SoftDeleteGenericService : SoftDeleteGenericService<IDbContext>, ISoftDeleteGenericService
+public class SoftDeleteGenericService : SoftDeleteGenericService<IDbContext, QueryOptions>, ISoftDeleteGenericService
 {
     public SoftDeleteGenericService(
         IMappingService<IDbContext> mappings,
-        ISoftDeleteRepository<IDbContext> repository,
-        IReadOnlyDeleteRepository<IDbContext> readRepository)
+        ISoftDeleteRepository<IDbContext, QueryOptions> repository,
+        IReadOnlyDeleteRepository<IDbContext, QueryOptions> readRepository)
         : base(mappings, repository, readRepository)
     {
     }
 }
 
-public class SoftDeleteGenericService<TContext> : GenericService<TContext>, ISoftDeleteGenericService<TContext>
+public class SoftDeleteGenericService<TContext, TOptions> : GenericService<TContext, TOptions>, ISoftDeleteGenericService<TContext, TOptions>
     where TContext : IDbContext
+    where TOptions : QueryOptions
 {
     public SoftDeleteGenericService(
         IMappingService<TContext> mappings,
-        ISoftDeleteRepository<TContext> repository,
-        IReadOnlyDeleteRepository<TContext> readRepository)
+        ISoftDeleteRepository<TContext, TOptions> repository,
+        IReadOnlyDeleteRepository<TContext, TOptions> readRepository)
         : base(mappings, repository, readRepository)
     { }
 }
 
-public partial class GenericService : GenericService<IDbContext>, IGenericService
+public partial class GenericService : GenericService<IDbContext, QueryOptions>, IGenericService
 {
     public GenericService(
         IMappingService<IDbContext> mappings,
@@ -36,17 +38,18 @@ public partial class GenericService : GenericService<IDbContext>, IGenericServic
     { }
 }
 
-public partial class GenericService<TContext> : IGenericService<TContext>
+public partial class GenericService<TContext, TOptions> : IGenericService<TContext, TOptions>
     where TContext : IDbContext
+    where TOptions : QueryOptions
 {
     private readonly IMappingService _mappings;
-    private readonly IReadOnlyRepository<TContext> _readRepository;
-    private readonly IRepository<TContext> _writeRepository;
+    private readonly IReadOnlyRepository<TContext, TOptions> _readRepository;
+    private readonly IRepository<TContext, TOptions> _writeRepository;
 
     public GenericService(
         IMappingService<TContext> mappings,
-        IRepository<TContext> repository,
-        IReadOnlyRepository<TContext> readRepository)
+        IRepository<TContext, TOptions> repository,
+        IReadOnlyRepository<TContext, TOptions> readRepository)
     {
         _mappings = mappings;
         _readRepository = readRepository;

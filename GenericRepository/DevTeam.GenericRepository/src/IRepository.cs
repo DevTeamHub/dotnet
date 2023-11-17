@@ -9,54 +9,58 @@ using DevTeam.Extensions.EntityFrameworkCore;
 
 namespace DevTeam.GenericRepository;
 
-public interface IReadOnlyRepository<TContext> : IRepository<TContext>
+public interface IReadOnlyRepository<TContext, TOptions> : IRepository<TContext, TOptions>
         where TContext : IDbContext
+        where TOptions : QueryOptions
 { }
 
-public interface IReadOnlyRepository : IReadOnlyRepository<IDbContext>
+public interface IReadOnlyRepository : IReadOnlyRepository<IDbContext, QueryOptions>
 { }
 
-public interface ISoftDeleteRepository<TContext> : IRepository<TContext>
+public interface ISoftDeleteRepository<TContext, TOptions> : IRepository<TContext, TOptions>
     where TContext : IDbContext
+    where TOptions : QueryOptions
 { }
 
-public interface ISoftDeleteRepository : ISoftDeleteRepository<IDbContext>
+public interface ISoftDeleteRepository : ISoftDeleteRepository<IDbContext, QueryOptions>
 { }
 
-public interface IReadOnlyDeleteRepository<TContext> : IReadOnlyRepository<TContext>
+public interface IReadOnlyDeleteRepository<TContext, TOptions> : IReadOnlyRepository<TContext, TOptions>
     where TContext : IDbContext
+    where TOptions : QueryOptions
 { }
 
-public interface IReadOnlyDeleteRepository : IReadOnlyDeleteRepository<IDbContext>
+public interface IReadOnlyDeleteRepository : IReadOnlyDeleteRepository<IDbContext, QueryOptions>
 { }
 
-public interface IRepository : IRepository<IDbContext>
+public interface IRepository : IRepository<IDbContext, QueryOptions>
 { }
 
-public interface IRepository<TContext>
+public interface IRepository<TContext, TOptions>
     where TContext : IDbContext
+    where TOptions : QueryOptions
 {
-    IQueryable<TEntity> Query<TEntity>()
+    IQueryable<TEntity> Query<TEntity>(TOptions? options = null)
         where TEntity : class;
-    IQueryable<TEntity> Query<TEntity, TArgs>(TArgs args)
+    IQueryable<TEntity> Query<TEntity, TArgs>(TArgs args, TOptions? options = null)
         where TEntity : class;
-    IQueryable<TEntity> GetList<TEntity>(Expression<Func<TEntity, bool>>? filter = null)
+    IQueryable<TEntity> GetList<TEntity>(Expression<Func<TEntity, bool>>? filter = null, TOptions? options = null)
         where TEntity : class;
-    IQueryable<TEntity> GetList<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args)
+    IQueryable<TEntity> GetList<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class;
-    IQueryable<TEntity> QueryOne<TEntity, TKey>(TKey id)
+    IQueryable<TEntity> QueryOne<TEntity, TKey>(TKey id, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>;
-    IQueryable<TEntity> QueryOne<TEntity, TKey, TArgs>(TKey id, TArgs args)
+    IQueryable<TEntity> QueryOne<TEntity, TKey, TArgs>(TKey id, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>;
-    IQueryable<TEntity> QueryOne<TEntity>(int id)
+    IQueryable<TEntity> QueryOne<TEntity>(int id, TOptions? options = null)
         where TEntity : class, IEntity;
-    IQueryable<TEntity> QueryOne<TEntity, TArgs>(int id, TArgs args)
+    IQueryable<TEntity> QueryOne<TEntity, TArgs>(int id, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity;
-    TEntity? Get<TEntity>(Expression<Func<TEntity, bool>> filter)
+    TEntity? Get<TEntity>(Expression<Func<TEntity, bool>> filter, TOptions? options = null)
         where TEntity : class;
-    TEntity? Get<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args)
+    TEntity? Get<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class;
     Task<TEntity?> GetAsync<TEntity>(Expression<Func<TEntity, bool>> filter)
         where TEntity : class;

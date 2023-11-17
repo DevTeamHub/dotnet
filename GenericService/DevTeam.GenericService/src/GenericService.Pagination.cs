@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DevTeam.GenericService;
 
-public partial class GenericService<TContext>
+public partial class GenericService<TContext, TOptions>
 {
     public virtual Task<List<TModel>> Search<TEntity, TModel, TSearchModel>(ISearchService<TEntity, TSearchModel> searchService, TSearchModel searchModel, string? mappingName = null)
     where TEntity : class

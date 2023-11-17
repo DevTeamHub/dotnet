@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DevTeam.GenericService;
 
-public partial class GenericService<TContext>
+public partial class GenericService<TContext, TOptions>
 {
     #region Delete
 

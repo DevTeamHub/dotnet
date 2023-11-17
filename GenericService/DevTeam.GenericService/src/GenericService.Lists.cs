@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevTeam.GenericService;
 
-public partial class GenericService<TContext>
+public partial class GenericService<TContext, TOptions>
 {
     public virtual IQueryable<TModel> QueryList<TEntity, TModel>(Expression<Func<TEntity, bool>>? filter = null, string? mappingName = null)
         where TEntity : class

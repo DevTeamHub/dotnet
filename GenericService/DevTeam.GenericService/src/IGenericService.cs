@@ -1,5 +1,6 @@
 ﻿using DevTeam.Extensions.Abstractions;
 using DevTeam.Extensions.EntityFrameworkCore;
+using DevTeam.GenericRepository;
 using DevTeam.GenericService.Pagination;
 using System;
 using System.Collections.Generic;
@@ -9,18 +10,20 @@ using System.Threading.Tasks;
 
 namespace DevTeam.GenericService;
 
-public interface ISoftDeleteGenericService : ISoftDeleteGenericService<IDbContext>
+public interface ISoftDeleteGenericService : ISoftDeleteGenericService<IDbContext, QueryOptions>
 { }
 
-public interface ISoftDeleteGenericService<TContext> : IGenericService<TContext>
+public interface ISoftDeleteGenericService<TContext, TOptions> : IGenericService<TContext, TOptions>
     where TContext : IDbContext
+    where TOptions : QueryOptions
 { }
 
-public interface IGenericService : IGenericService<IDbContext>
+public interface IGenericService : IGenericService<IDbContext, QueryOptions>
 { }
 
-public interface IGenericService<TContext>
+public interface IGenericService<TContext, TOptions>
     where TContext : IDbContext
+    where TOptions : QueryOptions
 {
     IQueryable<TModel> QueryList<TEntity, TModel>(Expression<Func<TEntity, bool>>? filter = null, string? mappingName = null)
         where TEntity : class;
@@ -63,13 +66,13 @@ public interface IGenericService<TContext>
     IQueryable<TModel> QueryOne<TEntity, TModel, TKey>(TKey id, string? mappingName = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>;
-    IQueryable<TModel> QueryOne<TEntity, TModel, TKey, TArgs>(TKey id, TArgs args, string? mappingName = null)
+    IQueryable<TModel> QueryOne<TEntity, TModel, TKey, TArgs>(TKey id, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
         where TArgs : IServiceArgs;
     IQueryable<TModel> QueryOne<TEntity, TModel>(int id, string? mappingName = null)
         where TEntity : class, IEntity;
-    IQueryable<TModel> QueryOne<TEntity, TModel, TArgs>(int id, TArgs args, string? mappingName = null)
+    IQueryable<TModel> QueryOne<TEntity, TModel, TArgs>(int id, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class, IEntity
         where TArgs : IServiceArgs;
     TModel? Get<TEntity, TModel>(Expression<Func<TEntity, bool>> filter, string? mappingName = null)
@@ -103,7 +106,7 @@ public interface IGenericService<TContext>
         where TArgs : IServiceArgs;
     Task<TModel?> GetAsync<TEntity, TModel>(int id, string? mappingName = null)
         where TEntity : class, IEntity;
-    Task<TModel?> GetAsync<TEntity, TModel, TArgs>(int id, TArgs args, string? mappingName = null)
+    Task<TModel?> GetAsync<TEntity, TModel, TArgs>(int id, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class, IEntity
         where TArgs : IServiceArgs;
     TProperty? GetProperty<TEntity, TProperty>(Expression<Func<TEntity, bool>> filter,
