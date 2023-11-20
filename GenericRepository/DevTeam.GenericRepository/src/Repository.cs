@@ -43,9 +43,9 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
     protected virtual IQueryable<TEntity> GetQuery<TEntity, TArgs>(TArgs args, TOptions? options = null)
         where TEntity : class
     {
-        var queryExtensions = _serviceProvider
-            .GetServices(typeof(QueryExtension<,>));
-        return GetQuery<TEntity>(options);
+        options ??= DefaultOptions;
+        var query = GetQuery<TEntity>(options);
+       return query;
     }
 
     private static IQueryable<TEntity> InternalQuery<TEntity>(IQueryable<TEntity> query)
@@ -69,8 +69,17 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
     public virtual IQueryable<TEntity> Query<TEntity, TArgs>(TArgs args, TOptions? options = null)
         where TEntity : class
     {
-        var query = GetQuery<TEntity, TArgs>(args, options);
-        return InternalQuery(query);
+        var query = GetQuery<TEntity>(options);
+
+        var queryExtensions = _serviceProvider
+            .GetServices(typeof(IQueryExtension<TEntity, TOptions>))
+            .Cast<IQueryExtension<TEntity, TOptions>>()
+            .Where(x => x.CanApply(options))
+            .ToList();
+
+        query = queryExtensions.Aggregate(query, (q, extension) => extension.ApplyExtension(q));
+
+        return query;
     }
 
     public virtual IQueryable<TEntity> GetList<TEntity>(Expression<Func<TEntity, bool>>? filter = null, TOptions? options = null)

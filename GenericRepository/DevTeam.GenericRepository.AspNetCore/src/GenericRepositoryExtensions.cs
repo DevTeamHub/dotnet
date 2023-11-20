@@ -25,7 +25,7 @@ public static class GenericRepositoryExtensions
             .AddScoped(typeof(IReadOnlyDeleteRepository<,>), typeof(ReadOnlyDeleteRepository<,>))
             .AddScoped<IReadOnlyDeleteRepository, ReadOnlyDeleteRepository>()
             .AddScoped<QueryOptions>()
-            .AddScoped<IQueryExtension<IDeleted, QueryOptions>, IsDeletedQueryExtension>();
+            .AddScoped<IQueryExtension<IDeleted, QueryOptions>, IsDeletedQueryExtension<IDeleted>>();
 
         return services;
     }
