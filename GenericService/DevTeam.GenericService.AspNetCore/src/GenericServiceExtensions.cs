@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using DevTeam.QueryMappings.Base;
+﻿using DevTeam.GenericRepository.AspNetCore;
 using DevTeam.QueryMappings.AspNetCore;
-using DevTeam.GenericRepository.AspNetCore;
+using DevTeam.QueryMappings.Base;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 namespace DevTeam.GenericService.AspNetCore;

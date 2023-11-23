@@ -3,10 +3,11 @@ using System.Linq;
 
 namespace DevTeam.GenericRepository;
 
-public interface IQueryExtension<TEntity, TSettings> 
-    where TSettings : QueryOptions
+public interface IQueryExtension<TEntity, TOptions> 
+    where TOptions : QueryOptions
 {
     public Type Type { get; }
-    public Func<TSettings, bool> CanApply { get; }
+
+    public Func<TOptions, bool> CanApply { get; }
     public IQueryable<TEntity> ApplyExtension(IQueryable<TEntity> query);
 }

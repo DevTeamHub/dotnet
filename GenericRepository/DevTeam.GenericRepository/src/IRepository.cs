@@ -17,23 +17,39 @@ public interface IReadOnlyRepository<TContext, TOptions> : IRepository<TContext,
 public interface IReadOnlyRepository : IReadOnlyRepository<IDbContext, QueryOptions>
 { }
 
+public interface IReadOnlyRepository<TOptions> : IReadOnlyRepository<IDbContext, TOptions>
+    where TOptions : QueryOptions, new()
+{ }
+
 public interface ISoftDeleteRepository<TContext, TOptions> : IRepository<TContext, TOptions>
     where TContext : IDbContext
-    where TOptions : QueryOptions
+    where TOptions : QueryOptions, new()
 { }
 
 public interface ISoftDeleteRepository : ISoftDeleteRepository<IDbContext, QueryOptions>
 { }
 
+public interface ISoftDeleteRepository<TOptions> : ISoftDeleteRepository<IDbContext, TOptions>
+    where TOptions : QueryOptions, new()
+{ }
+
 public interface IReadOnlyDeleteRepository<TContext, TOptions> : IReadOnlyRepository<TContext, TOptions>
     where TContext : IDbContext
-    where TOptions : QueryOptions
+    where TOptions : QueryOptions, new()
 { }
 
 public interface IReadOnlyDeleteRepository : IReadOnlyDeleteRepository<IDbContext, QueryOptions>
 { }
 
+public interface IReadOnlyDeleteRepository<TOptions> : IReadOnlyDeleteRepository<IDbContext, TOptions>
+    where TOptions : QueryOptions, new()
+{ }
+
 public interface IRepository : IRepository<IDbContext, QueryOptions>
+{ }
+
+public interface IRepository<TOptions> : IRepository<IDbContext, TOptions>
+    where TOptions : QueryOptions
 { }
 
 public interface IRepository<TContext, TOptions>

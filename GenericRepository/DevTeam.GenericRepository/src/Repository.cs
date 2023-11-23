@@ -13,7 +13,15 @@ namespace DevTeam.GenericRepository;
 
 public class Repository : Repository<IDbContext, QueryOptions>, IRepository
 {
-    public Repository(IDbContext context, IServiceProvider serviceProvider, QueryOptions options )
+    public Repository(IDbContext context, IServiceProvider serviceProvider, QueryOptions? options = null)
+        : base(context, serviceProvider, options)
+    { }
+}
+
+public class Repository<TOptions> : Repository<IDbContext, TOptions>, IRepository<TOptions>
+    where TOptions : QueryOptions, new()
+{
+    public Repository(IDbContext context, IServiceProvider serviceProvider, TOptions? options = null)
         : base(context, serviceProvider, options)
     { }
 }
@@ -45,7 +53,7 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
     {
         options ??= DefaultOptions;
         var query = GetQuery<TEntity>(options);
-       return query;
+        return query;
     }
 
     private static IQueryable<TEntity> InternalQuery<TEntity>(IQueryable<TEntity> query)
@@ -69,6 +77,7 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
     public virtual IQueryable<TEntity> Query<TEntity, TArgs>(TArgs args, TOptions? options = null)
         where TEntity : class
     {
+        options ??= DefaultOptions;
         var query = GetQuery<TEntity>(options);
 
         var queryExtensions = _serviceProvider

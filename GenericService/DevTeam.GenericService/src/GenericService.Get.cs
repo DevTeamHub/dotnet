@@ -1,11 +1,9 @@
 ﻿using DevTeam.Extensions.Abstractions;
-using System;
-using System.Linq.Expressions;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using DevTeam.GenericRepository;
-using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace DevTeam.GenericService;
 

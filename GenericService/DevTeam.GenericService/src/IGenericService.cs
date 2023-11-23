@@ -15,15 +15,19 @@ public interface ISoftDeleteGenericService : ISoftDeleteGenericService<IDbContex
 
 public interface ISoftDeleteGenericService<TContext, TOptions> : IGenericService<TContext, TOptions>
     where TContext : IDbContext
-    where TOptions : QueryOptions
+    where TOptions : QueryOptions, new()
 { }
 
 public interface IGenericService : IGenericService<IDbContext, QueryOptions>
 { }
 
+public interface IGenericService<TOptions> : IGenericService<IDbContext, TOptions>
+    where TOptions : QueryOptions, new()
+{ }
+
 public interface IGenericService<TContext, TOptions>
     where TContext : IDbContext
-    where TOptions : QueryOptions
+    where TOptions : QueryOptions, new()
 {
     IQueryable<TModel> QueryList<TEntity, TModel>(Expression<Func<TEntity, bool>>? filter = null, string? mappingName = null)
         where TEntity : class;
