@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<PackageId>DevTeam.Messaging.Emails</PackageId>
+		<PackageId>DevTeam.Messaging.Smtp</PackageId>
 		<TargetFrameworks>$(BaseFrameworks)</TargetFrameworks>
 		<Description>A standard set of services to send emails.</Description>
 		<PackageTags>Email;</PackageTags>

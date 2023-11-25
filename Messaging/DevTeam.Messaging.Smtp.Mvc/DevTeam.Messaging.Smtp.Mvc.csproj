@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<PackageId>DevTeam.Messaging.Emails.Mvc</PackageId>
+		<PackageId>DevTeam.Messaging.Smtp.Mvc</PackageId>
 		<TargetFrameworks>$(BaseFrameworks)</TargetFrameworks>
 		<Description>A standard set of services to generate email templates using Razor engine and send them via email.</Description>
 		<PackageTags>Email;Razor;</PackageTags>
@@ -13,7 +13,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\DevTeam.Messaging.Emails\DevTeam.Messaging.Emails.csproj" />
+	  <ProjectReference Include="..\DevTeam.Messaging.Smtp\DevTeam.Messaging.Smtp.csproj" />
 	</ItemGroup>
 
 </Project>
