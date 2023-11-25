@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<PackageId>DevTeam.Messaging.Emails</PackageId>
+		<TargetFrameworks>$(BaseFrameworks)</TargetFrameworks>
+		<Description>A standard set of services to send emails.</Description>
+		<PackageTags>Email;</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="MailKit" Version="4.3.0" />
+	  <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
+	</ItemGroup>
+
+</Project>
