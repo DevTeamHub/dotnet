@@ -16,6 +16,18 @@ public class SoftDeleteGenericService : SoftDeleteGenericService<IDbContext, Que
     }
 }
 
+public class SoftDeleteGenericService<TOptions> : SoftDeleteGenericService<IDbContext, TOptions>, ISoftDeleteGenericService<TOptions>
+    where TOptions : QueryOptions, new()
+{
+    public SoftDeleteGenericService(
+        IMappingService<IDbContext> mappings,
+        ISoftDeleteRepository<IDbContext, TOptions> repository,
+        IReadOnlyDeleteRepository<IDbContext, TOptions> readRepository)
+        : base(mappings, repository, readRepository)
+    {
+    }
+}
+
 public class SoftDeleteGenericService<TContext, TOptions> : GenericService<TContext, TOptions>, ISoftDeleteGenericService<TContext, TOptions>
     where TContext : IDbContext
     where TOptions : QueryOptions, new()

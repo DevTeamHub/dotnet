@@ -45,7 +45,8 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
         where TEntity : class
     {
         options ??= DefaultOptions;
-        return options.isReadOnly ? Context.Set<TEntity>().AsNoTracking() : Context.Set<TEntity>().AsQueryable();
+        var query = options.isReadOnly ? Context.Set<TEntity>().AsNoTracking() : Context.Set<TEntity>().AsQueryable();
+        return !options.isDeleted ? InternalQuery(query) : query;
     }
 
     protected virtual IQueryable<TEntity> GetQuery<TEntity, TArgs>(TArgs args, TOptions? options = null)
@@ -71,7 +72,16 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
     {
         options ??= DefaultOptions;
         var query = GetQuery<TEntity>(options);
-        return InternalQuery(query);
+
+        var queryExtensions = _serviceProvider
+            .GetServices(typeof(IQueryExtension<TEntity, TOptions>))
+            .Cast<IQueryExtension<TEntity, TOptions>>()
+            .Where(x => x.CanApply(options))
+            .ToList();    
+
+        query = queryExtensions.Aggregate(query, (q, extension) => extension.ApplyExtension(q));
+
+        return query;
     }
 
     public virtual IQueryable<TEntity> Query<TEntity, TArgs>(TArgs args, TOptions? options = null)
@@ -94,7 +104,7 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
     public virtual IQueryable<TEntity> GetList<TEntity>(Expression<Func<TEntity, bool>>? filter = null, TOptions? options = null)
         where TEntity : class
     {
-        var query = Query<TEntity>();
+        var query = Query<TEntity>(options);
 
         if (filter != null)
         {
@@ -107,14 +117,14 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
     public virtual IQueryable<TEntity> GetList<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class
     {
-        return Query<TEntity, TArgs>(args, options).Where(filter);
+        return Query<TEntity, TArgs>(args,options).Where(filter);
     }
 
     public virtual IQueryable<TEntity> QueryOne<TEntity, TKey>(TKey id, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
-        return GetList<TEntity>(x => x.Id.Equals(id));
+        return GetList<TEntity>(x => x.Id.Equals(id), options);
     }
 
     public virtual IQueryable<TEntity> QueryOne<TEntity, TKey, TArgs>(TKey id, TArgs args, TOptions? options = null)
@@ -127,217 +137,220 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
     public virtual IQueryable<TEntity> QueryOne<TEntity>(int id, TOptions? options = null)
         where TEntity : class, IEntity
     {
-        return QueryOne<TEntity, int>(id);
+        return QueryOne<TEntity, int>(id, options);
     }
 
     public virtual IQueryable<TEntity> QueryOne<TEntity, TArgs>(int id, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity
     {
-        return QueryOne<TEntity, int, TArgs>(id, args);
+        return QueryOne<TEntity, int, TArgs>(id, args, options);
     }
 
     public virtual TEntity? Get<TEntity>(Expression<Func<TEntity, bool>> filter, TOptions? options = null)
         where TEntity : class
     {
-        return GetList(filter).FirstOrDefault();
+        return GetList(filter, options).FirstOrDefault();
     }
 
     public virtual TEntity? Get<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class
     {
-        return GetList(filter, args).FirstOrDefault();
+        return GetList(filter, args, options).FirstOrDefault();
     }
 
-    public virtual Task<TEntity?> GetAsync<TEntity>(Expression<Func<TEntity, bool>> filter)
+    public virtual Task<TEntity?> GetAsync<TEntity>(Expression<Func<TEntity, bool>> filter, TOptions? options = null)
         where TEntity : class
     {
 #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
-        return GetList(filter).FirstOrDefaultAsync();
+        return GetList(filter, options).FirstOrDefaultAsync();
 #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
     }
 
-    public virtual Task<TEntity?> GetAsync<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args)
+    public virtual Task<TEntity?> GetAsync<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class
     {
 #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
-        return GetList(filter, args).FirstOrDefaultAsync();
+        return GetList(filter, args, options).FirstOrDefaultAsync();
 #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
     }
 
-    public virtual TEntity? Get<TEntity, TKey>(TKey id)
+    public virtual TEntity? Get<TEntity, TKey>(TKey id, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
-        return Get<TEntity>(x => x.Id.Equals(id));
+        return Get<TEntity>(x => x.Id.Equals(id), options);
     }
 
-    public virtual TEntity? Get<TEntity, TKey, TArgs>(TKey id, TArgs args)
+    public virtual TEntity? Get<TEntity, TKey, TArgs>(TKey id, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
-        return Get<TEntity, TArgs>(x => x.Id.Equals(id), args);
+        return Get<TEntity, TArgs>(x => x.Id.Equals(id), args, options);
     }
 
-    public virtual Task<TEntity?> GetAsync<TEntity, TKey>(TKey id)
+    public virtual Task<TEntity?> GetAsync<TEntity, TKey>(TKey id, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
-        return GetAsync<TEntity>(x => x.Id.Equals(id));
+        return GetAsync<TEntity>(x => x.Id.Equals(id), options);
     }
 
-    public virtual Task<TEntity?> GetAsync<TEntity, TKey, TArgs>(TKey id, TArgs args)
+    public virtual Task<TEntity?> GetAsync<TEntity, TKey, TArgs>(TKey id, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
-        return GetAsync<TEntity, TArgs>(x => x.Id.Equals(id), args);
+        return GetAsync<TEntity, TArgs>(x => x.Id.Equals(id), args, options);
     }
 
-    public virtual TEntity? Get<TEntity>(int id)
+    public virtual TEntity? Get<TEntity>(int id, TOptions? options = null)
         where TEntity : class, IEntity
     {
-        return Get<TEntity, int>(id);
+        return Get<TEntity, int>(id, options);
     }
 
-    public virtual TEntity? Get<TEntity, TArgs>(int id, TArgs args)
+    public virtual TEntity? Get<TEntity, TArgs>(int id, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity
     {
-        return Get<TEntity, int, TArgs>(id, args);
+        return Get<TEntity, int, TArgs>(id, args, options);
     }
 
-    public virtual Task<TEntity?> GetAsync<TEntity>(int id)
+    public virtual Task<TEntity?> GetAsync<TEntity>(int id, TOptions? options = null)
         where TEntity : class, IEntity
     {
-        return GetAsync<TEntity, int>(id);
+        return GetAsync<TEntity, int>(id, options);
     }
 
-    public virtual Task<TEntity?> GetAsync<TEntity, TArgs>(int id, TArgs args)
+    public virtual Task<TEntity?> GetAsync<TEntity, TArgs>(int id, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity
     {
-        return GetAsync<TEntity, int, TArgs>(id, args);
+        return GetAsync<TEntity, int, TArgs>(id, args, options);
     }
 
     public virtual TProperty? GetProperty<TEntity, TProperty>(Expression<Func<TEntity, bool>> filter,
-                                                             Expression<Func<TEntity, TProperty>> selector)
+                                                             Expression<Func<TEntity, TProperty>> selector,
+                                                             TOptions? options = null)
         where TEntity : class
     {
-        return GetList(filter).Select(selector).FirstOrDefault();
+        return GetList(filter, options).Select(selector).FirstOrDefault();
     }
 
     public virtual TProperty? GetProperty<TEntity, TProperty, TArgs>(Expression<Func<TEntity, bool>> filter,
                                                                      Expression<Func<TEntity, TProperty>> selector,
-                                                                     TArgs args)
+                                                                     TArgs args,
+                                                                     TOptions? options = null)
         where TEntity : class
     {
-        return GetList(filter, args).Select(selector).FirstOrDefault();
+        return GetList(filter, args, options).Select(selector).FirstOrDefault();
     }
 
     public virtual Task<TProperty?> GetPropertyAsync<TEntity, TProperty>(Expression<Func<TEntity, bool>> filter,
-                                                                         Expression<Func<TEntity, TProperty>> selector)
+                                                                         Expression<Func<TEntity, TProperty>> selector,
+                                                                         TOptions? options = null)
         where TEntity : class
     {
 #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
-        return GetList(filter).Select(selector).FirstOrDefaultAsync();
+        return GetList(filter, options).Select(selector).FirstOrDefaultAsync();
 #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
     }
 
     public virtual Task<TProperty?> GetPropertyAsync<TEntity, TProperty, TArgs>(Expression<Func<TEntity, bool>> filter,
                                                                                 Expression<Func<TEntity, TProperty>> selector,
-                                                                                TArgs args)
+                                                                                TArgs args, TOptions? options = null)
         where TEntity : class
     {
 #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
-        return GetList(filter, args).Select(selector).FirstOrDefaultAsync();
+        return GetList(filter, args, options).Select(selector).FirstOrDefaultAsync();
 #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
     }
 
-    public virtual TProperty? GetProperty<TEntity, TProperty, TKey>(TKey id, Expression<Func<TEntity, TProperty>> selector)
+    public virtual TProperty? GetProperty<TEntity, TProperty, TKey>(TKey id, Expression<Func<TEntity, TProperty>> selector, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
-        return GetProperty(x => x.Id.Equals(id), selector);
+        return GetProperty(x => x.Id.Equals(id), selector, options);
     }
 
-    public virtual TProperty? GetProperty<TEntity, TProperty, TKey, TArgs>(TKey id, Expression<Func<TEntity, TProperty>> selector, TArgs args)
+    public virtual TProperty? GetProperty<TEntity, TProperty, TKey, TArgs>(TKey id, Expression<Func<TEntity, TProperty>> selector, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
-        return GetProperty(x => x.Id.Equals(id), selector, args);
+        return GetProperty(x => x.Id.Equals(id), selector, args, options);
     }
 
-    public virtual Task<TProperty?> GetPropertyAsync<TEntity, TProperty, TKey>(TKey id, Expression<Func<TEntity, TProperty>> selector)
+    public virtual Task<TProperty?> GetPropertyAsync<TEntity, TProperty, TKey>(TKey id, Expression<Func<TEntity, TProperty>> selector, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
-        return GetPropertyAsync(x => x.Id.Equals(id), selector);
+        return GetPropertyAsync(x => x.Id.Equals(id), selector, options);
     }
 
-    public virtual Task<TProperty?> GetPropertyAsync<TEntity, TProperty, TKey, TArgs>(TKey id, Expression<Func<TEntity, TProperty>> selector, TArgs args)
+    public virtual Task<TProperty?> GetPropertyAsync<TEntity, TProperty, TKey, TArgs>(TKey id, Expression<Func<TEntity, TProperty>> selector, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
-        return GetPropertyAsync(x => x.Id.Equals(id), selector, args);
+        return GetPropertyAsync(x => x.Id.Equals(id), selector, args, options);
     }
 
-    public virtual TProperty? GetProperty<TEntity, TProperty>(int id, Expression<Func<TEntity, TProperty>> selector)
+    public virtual TProperty? GetProperty<TEntity, TProperty>(int id, Expression<Func<TEntity, TProperty>> selector, TOptions? options = null)
         where TEntity : class, IEntity
     {
-        return GetProperty<TEntity, TProperty, int>(id, selector);
+        return GetProperty<TEntity, TProperty, int>(id, selector, options);
     }
 
-    public virtual TProperty? GetProperty<TEntity, TProperty, TArgs>(int id, Expression<Func<TEntity, TProperty>> selector, TArgs args)
+    public virtual TProperty? GetProperty<TEntity, TProperty, TArgs>(int id, Expression<Func<TEntity, TProperty>> selector, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity
     {
-        return GetProperty<TEntity, TProperty, int, TArgs>(id, selector, args);
+        return GetProperty<TEntity, TProperty, int, TArgs>(id, selector, args, options);
     }
 
-    public virtual Task<TProperty?> GetPropertyAsync<TEntity, TProperty>(int id, Expression<Func<TEntity, TProperty>> selector)
+    public virtual Task<TProperty?> GetPropertyAsync<TEntity, TProperty>(int id, Expression<Func<TEntity, TProperty>> selector, TOptions? options = null)
         where TEntity : class, IEntity
     {
-        return GetPropertyAsync<TEntity, TProperty, int>(id, selector);
+        return GetPropertyAsync<TEntity, TProperty, int>(id, selector, options);
     }
 
-    public virtual Task<TProperty?> GetPropertyAsync<TEntity, TProperty, TArgs>(int id, Expression<Func<TEntity, TProperty>> selector, TArgs args)
+    public virtual Task<TProperty?> GetPropertyAsync<TEntity, TProperty, TArgs>(int id, Expression<Func<TEntity, TProperty>> selector, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity
     {
-        return GetPropertyAsync<TEntity, TProperty, int, TArgs>(id, selector, args);
+        return GetPropertyAsync<TEntity, TProperty, int, TArgs>(id, selector, args, options);
     }
 
-    public virtual bool Any<TEntity>(Expression<Func<TEntity, bool>>? filter = null)
+    public virtual bool Any<TEntity>(Expression<Func<TEntity, bool>>? filter = null, TOptions? options = null)
         where TEntity : class
     {
-        var query = Query<TEntity>();
+        var query = Query<TEntity>(options);
         return filter != null ? query.Any(filter) : query.Any();
     }
 
-    public virtual bool Any<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args)
+    public virtual bool Any<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class
     {
-        return Query<TEntity, TArgs>(args).Any(filter);
+        return Query<TEntity>(options).Any(filter);
     }
 
-    public virtual bool Any<TEntity, TArgs>(TArgs args)
+    public virtual bool Any<TEntity, TArgs>(TArgs args, TOptions? options = null)
         where TEntity : class
     {
-        return Query<TEntity, TArgs>(args).Any();
+        return Query<TEntity>(options).Any();
     }
 
-    public virtual Task<bool> AnyAsync<TEntity>(Expression<Func<TEntity, bool>>? filter = null)
+    public virtual Task<bool> AnyAsync<TEntity>(Expression<Func<TEntity, bool>>? filter = null, TOptions? options = null)
         where TEntity : class
     {
-        var query = Query<TEntity>();
+        var query = Query<TEntity>(options);
         return filter != null ? query.AnyAsync(filter) : query.AnyAsync();
     }
 
-    public virtual Task<bool> AnyAsync<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args)
+    public virtual Task<bool> AnyAsync<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class
     {
-        return Query<TEntity, TArgs>(args).AnyAsync(filter);
+        return Query<TEntity>(options).AnyAsync(filter);
     }
 
-    public virtual Task<bool> AnyAsync<TEntity, TArgs>(TArgs args)
+    public virtual Task<bool> AnyAsync<TEntity, TArgs>(TArgs args, TOptions? options = null)
         where TEntity : class
     {
-        return Query<TEntity, TArgs>(args).AnyAsync();
+        return Query<TEntity>(options).AnyAsync();
     }
 
     public virtual TEntity Add<TEntity>(TEntity entity)
@@ -436,8 +449,8 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
     }
 
     public virtual async Task UpdatePropertyAsync<TEntity, TProperty>(Expression<Func<TEntity, bool>> selector,
-                                                           Expression<Func<TEntity, TProperty>> propertySelector,
-                                                           TProperty value)
+                                                                      Expression<Func<TEntity, TProperty>> propertySelector,
+                                                                      TProperty value)
         where TEntity : class
     {
         var entity = await GetAsync(selector);
@@ -460,7 +473,9 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
         return UpdatePropertyAsync<TEntity, TProperty, int>(id, propertySelector, value);
     }
 
-    public virtual async Task UpdatePropertyAsync<TEntity>(Expression<Func<TEntity, bool>> selector, string propertyName, object value)
+    public virtual async Task UpdatePropertyAsync<TEntity>(Expression<Func<TEntity, bool>> selector, 
+                                                           string propertyName, 
+                                                           object value)
         where TEntity : class
     {
         var entity = await GetAsync(selector);

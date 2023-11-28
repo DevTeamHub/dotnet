@@ -8,8 +8,8 @@ namespace DevTeam.GenericRepository
         where TEntity : IDeleted
         where TOptions : QueryOptions
     {
-        public override Func<TOptions, bool> CanApply => x => !x.isDeleted;
+        public override Func<TOptions, bool> CanApply => x => x.isDeleted;
 
-        public override IQueryable<TEntity> ApplyExtension(IQueryable<TEntity> query) => query.Where(x => !x.IsDeleted);
+        public override IQueryable<TEntity> ApplyExtension(IQueryable<TEntity> query) => query.Where(x => x.IsDeleted);
     }
 }
