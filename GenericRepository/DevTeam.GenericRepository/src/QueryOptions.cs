@@ -5,7 +5,7 @@
         public QueryOptions() 
         {
             isDeleted = false;
-            isReadOnly = true;
+            isReadOnly = false;
         }
         public bool isDeleted {  get; set; }
         public bool isReadOnly {  get; set; }

@@ -80,6 +80,11 @@ public class GenericServiceTests
 
         var entityResult = _repository.Get<Address>(modelId + 1);
 
+        Assert.IsNotNull(entityResult);
+        Assert.IsNotNull(sourceModel);
+        Assert.IsNotNull(result);
+        Assert.IsNotNull(returnResult);
+
         Assert.AreEqual(sourceModel.Street, result.Street);
         Assert.AreNotEqual(sourceModel.State, result.State);
         
@@ -106,6 +111,10 @@ public class GenericServiceTests
 
         var result = _service.Get<Address, AddressModel>(modelId + 1);
         var sourceModel = _service.Get<Address, AddressModel>(modelId);
+
+        Assert.IsNotNull(sourceModel);
+        Assert.IsNotNull(result);
+        Assert.IsNotNull(returnResult);
 
         Assert.AreEqual(sourceModel.Street, result.Street);
         Assert.AreNotEqual(sourceModel.State, result.State);
