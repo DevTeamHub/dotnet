@@ -29,6 +29,7 @@ public class RepositoryTests
             .AddDbContext<IRentalContext, RentalContext>()
             .AddDbContext<ISecurityContext, SecurityContext>()
             .AddScoped(typeof(IQueryExtension<Person, TestQueryOptions>), typeof(IsDeletedQueryExtension<Person, TestQueryOptions>))
+            .AddScoped(typeof(IQueryExtension<Person, TestQueryOptions>), typeof(IsReadOnlyQueryExtension<Person, TestQueryOptions>))
             .AddGenericRepository();
 
         _serviceProvider = services.BuildServiceProvider();

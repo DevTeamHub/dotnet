@@ -36,7 +36,9 @@ public class GenericServiceTests
             .AddScoped(typeof(IRepository<TestQueryOptions>), typeof(Repository<TestQueryOptions>))
             .AddScoped(typeof(ISoftDeleteGenericService<TestQueryOptions>), typeof(SoftDeleteGenericService<TestQueryOptions>))
             .AddScoped(typeof(IReadOnlyRepository<TestQueryOptions>), typeof(ReadOnlyRepository<TestQueryOptions>))
-            .AddScoped(typeof(IQueryExtension<Person, TestQueryOptions>), typeof(IsDeletedQueryExtension<Person, TestQueryOptions>));
+            .AddScoped(typeof(IQueryExtension<Person, TestQueryOptions>), typeof(IsDeletedQueryExtension<Person, TestQueryOptions>))
+            .AddScoped(typeof(IQueryExtension<Address, TestQueryOptions>), typeof(IsReadOnlyQueryExtension<Address, TestQueryOptions>))
+            .AddScoped(typeof(IQueryExtension<Person, TestQueryOptions>), typeof(IsReadOnlyQueryExtension<Person, TestQueryOptions>));
 
         _serviceProvider = services.BuildServiceProvider();
 

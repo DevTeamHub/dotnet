@@ -45,16 +45,14 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
         where TEntity : class
     {
         options ??= DefaultOptions;
-        var query = options.isReadOnly ? Context.Set<TEntity>().AsNoTracking() : Context.Set<TEntity>().AsQueryable();
+        var query = Context.Set<TEntity>().AsQueryable();
         return !options.isDeleted ? InternalQuery(query) : query;
     }
 
     protected virtual IQueryable<TEntity> GetQuery<TEntity, TArgs>(TArgs args, TOptions? options = null)
         where TEntity : class
     {
-        options ??= DefaultOptions;
-        var query = GetQuery<TEntity>(options);
-        return query;
+        return GetQuery<TEntity>(options); 
     }
 
     private static IQueryable<TEntity> InternalQuery<TEntity>(IQueryable<TEntity> query)
@@ -77,6 +75,7 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
             .GetServices(typeof(IQueryExtension<TEntity, TOptions>))
             .Cast<IQueryExtension<TEntity, TOptions>>()
             .Where(x => x.CanApply(options))
+            .OrderBy(x => x.Order)
             .ToList();    
 
         query = queryExtensions.Aggregate(query, (q, extension) => extension.ApplyExtension(q));
@@ -87,18 +86,7 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
     public virtual IQueryable<TEntity> Query<TEntity, TArgs>(TArgs args, TOptions? options = null)
         where TEntity : class
     {
-        options ??= DefaultOptions;
-        var query = GetQuery<TEntity>(options);
-
-        var queryExtensions = _serviceProvider
-            .GetServices(typeof(IQueryExtension<TEntity, TOptions>))
-            .Cast<IQueryExtension<TEntity, TOptions>>()
-            .Where(x => x.CanApply(options))
-            .ToList();
-
-        query = queryExtensions.Aggregate(query, (q, extension) => extension.ApplyExtension(q));
-
-        return query;
+        return Query<TEntity>(options);
     }
 
     public virtual IQueryable<TEntity> GetList<TEntity>(Expression<Func<TEntity, bool>>? filter = null, TOptions? options = null)
