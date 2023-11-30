@@ -4,10 +4,11 @@
     {
         public QueryOptions() 
         {
-            isDeleted = false;
-            isReadOnly = false;
+            IncludeDeleted = false;
+            IsReadOnly = false;
         }
-        public bool isDeleted {  get; set; }
-        public bool isReadOnly {  get; set; }
+
+        public bool IncludeDeleted {  get; set; }
+        public bool IsReadOnly {  get; set; }
     }
 }

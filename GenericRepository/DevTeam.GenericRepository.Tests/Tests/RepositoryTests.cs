@@ -28,8 +28,8 @@ public class RepositoryTests
             .AddDbContext<IDbContext, RentalContext>()
             .AddDbContext<IRentalContext, RentalContext>()
             .AddDbContext<ISecurityContext, SecurityContext>()
-            .AddScoped(typeof(IQueryExtension<Person, TestQueryOptions>), typeof(IsDeletedQueryExtension<Person, TestQueryOptions>))
-            .AddScoped(typeof(IQueryExtension<Person, TestQueryOptions>), typeof(IsReadOnlyQueryExtension<Person, TestQueryOptions>))
+            .AddScoped(typeof(IQueryExtension<,>), typeof(IncludeDeletedQueryExtension<,>))
+            .AddScoped(typeof(IQueryExtension<,>), typeof(IsReadOnlyQueryExtension<,>))
             .AddGenericRepository();
 
         _serviceProvider = services.BuildServiceProvider();
@@ -130,8 +130,7 @@ public class RepositoryTests
                 Assert.AreEqual(entity.Email, model.Email);
                 Assert.AreEqual(entity.Phone, model.Phone);
                 Assert.AreEqual(entity.IsDeleted, false);
-            }
-            else
+            } else
             {
                 Assert.AreEqual(entity.IsDeleted, true);
             }
@@ -154,13 +153,13 @@ public class RepositoryTests
     }
 
     [TestMethod]
-    public void Should_Return_List_Of_Deleted_Items()
+    public void Should_Return_List_Of_Items_Included_Deleted()
     {
         var entities = _rentalContext.People.ToList();
 
         var options = new TestQueryOptions
         {
-            isDeleted = true,
+            IncludeDeleted = true,
         };
         var modelsQuery = _repository.GetList<Person>(null, options);
 
@@ -169,7 +168,7 @@ public class RepositoryTests
 
         var models = modelsQuery.ToList();
 
-        Assert.AreEqual(entities.Count(x => x.IsDeleted), models.Count);
+        Assert.AreEqual(entities.Count, models.Count);
 
         foreach (var entity in entities)
         {
@@ -185,11 +184,7 @@ public class RepositoryTests
                 Assert.AreEqual(entity.Gender, model.Gender);
                 Assert.AreEqual(entity.Email, model.Email);
                 Assert.AreEqual(entity.Phone, model.Phone);
-                Assert.AreEqual(entity.IsDeleted, true);
-            }
-            else
-            {
-                Assert.AreEqual(entity.IsDeleted, false);
+                Assert.AreEqual(entity.IsDeleted, model.IsDeleted);
             }
         }
     }
@@ -203,7 +198,7 @@ public class RepositoryTests
         {
             var options = new TestQueryOptions
             {
-                isDeleted = true,
+                IncludeDeleted = true,
             };
             var model = _repository.Get<Person>(searchEntity.Id, options);
 

@@ -8,7 +8,9 @@ namespace DevTeam.GenericRepository
         where TEntity : class
         where TOptions : QueryOptions
     {
-        public override Func<TOptions, bool> CanApply => x => x.isReadOnly;
+        public override int Order => 0;
+
+        public override Func<TOptions, bool> CanApply => x => x.IsReadOnly;
 
         public override IQueryable<TEntity> ApplyExtension(IQueryable<TEntity> query) => query.AsNoTracking();
     }

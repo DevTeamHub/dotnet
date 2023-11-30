@@ -36,9 +36,8 @@ public class GenericServiceTests
             .AddScoped(typeof(IRepository<TestQueryOptions>), typeof(Repository<TestQueryOptions>))
             .AddScoped(typeof(ISoftDeleteGenericService<TestQueryOptions>), typeof(SoftDeleteGenericService<TestQueryOptions>))
             .AddScoped(typeof(IReadOnlyRepository<TestQueryOptions>), typeof(ReadOnlyRepository<TestQueryOptions>))
-            .AddScoped(typeof(IQueryExtension<Person, TestQueryOptions>), typeof(IsDeletedQueryExtension<Person, TestQueryOptions>))
-            .AddScoped(typeof(IQueryExtension<Address, TestQueryOptions>), typeof(IsReadOnlyQueryExtension<Address, TestQueryOptions>))
-            .AddScoped(typeof(IQueryExtension<Person, TestQueryOptions>), typeof(IsReadOnlyQueryExtension<Person, TestQueryOptions>));
+            .AddScoped(typeof(IQueryExtension<,>), typeof(IncludeDeletedQueryExtension<,>))
+            .AddScoped(typeof(IQueryExtension<,>), typeof(IsReadOnlyQueryExtension<,>));
 
         _serviceProvider = services.BuildServiceProvider();
 
@@ -130,20 +129,21 @@ public class GenericServiceTests
     }
 
     [TestMethod]
-    public void Should_Return_Deleted_Items()
+    public void Should_Return_Items_Included_Deleted()
     {
         var entities = _rentalContext.People.ToList();
 
         var options = new TestQueryOptions
         {
-            isDeleted = true,
+            IncludeDeleted = true,
+            IsReadOnly = true,
         };
         var models = _service.GetList<Person, PersonModel>(null, null, options);
 
         Assert.IsNotNull(models);
         Assert.IsInstanceOfType(models, typeof(List<PersonModel>));
 
-        Assert.AreEqual(entities.Count(x => x.IsDeleted), models.Count);
+        Assert.AreEqual(entities.Count, models.Count);
 
         foreach (var entity in entities)
         {
@@ -157,11 +157,7 @@ public class GenericServiceTests
                 Assert.AreEqual(entity.Gender, model.Gender);
                 Assert.AreEqual(entity.Email, model.Email);
                 Assert.AreEqual(entity.Phone, model.Phone);
-                Assert.AreEqual(entity.IsDeleted, true);
-            }
-            else
-            {
-                Assert.AreEqual(entity.IsDeleted, false);
+                Assert.AreEqual(entity.IsDeleted, model.IsDeleted);
             }
         }
     }

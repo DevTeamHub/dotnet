@@ -41,35 +41,11 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
         _serviceProvider = serviceProvider;
     }
 
-    protected virtual IQueryable<TEntity> GetQuery<TEntity>(TOptions? options = null)
-        where TEntity : class
-    {
-        options ??= DefaultOptions;
-        var query = Context.Set<TEntity>().AsQueryable();
-        return !options.isDeleted ? InternalQuery(query) : query;
-    }
-
-    protected virtual IQueryable<TEntity> GetQuery<TEntity, TArgs>(TArgs args, TOptions? options = null)
-        where TEntity : class
-    {
-        return GetQuery<TEntity>(options); 
-    }
-
-    private static IQueryable<TEntity> InternalQuery<TEntity>(IQueryable<TEntity> query)
-    {
-        if (typeof(IDeleted).IsAssignableFrom(typeof(TEntity)))
-        {
-            query = ((IQueryable<IDeleted>)query).Where(x => !x.IsDeleted).Cast<TEntity>();
-        }
-
-        return query;
-    }
-
     public virtual IQueryable<TEntity> Query<TEntity>(TOptions? options = null)
         where TEntity : class
     {
         options ??= DefaultOptions;
-        var query = GetQuery<TEntity>(options);
+        var query = Context.Set<TEntity>().AsQueryable();
 
         var queryExtensions = _serviceProvider
             .GetServices(typeof(IQueryExtension<TEntity, TOptions>))

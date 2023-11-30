@@ -26,12 +26,7 @@ namespace DevTeam.GenericRepository
         public SoftDeleteRepository(TContext context, IServiceProvider serviceProvider, TOptions? options = null)
             : base(context, serviceProvider, options)
         {
-            DefaultOptions.isDeleted = true;
-        }
-
-        public override IQueryable<TEntity> Query<TEntity>(TOptions? options = null)
-        {
-            return GetQuery<TEntity>();
+            DefaultOptions.IncludeDeleted = true;
         }
     }
 }

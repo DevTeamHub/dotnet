@@ -17,6 +17,7 @@ namespace DevTeam.GenericService.Tests.Context.RentalContext.Mappings
                 Gender = x.Gender,
                 Email = x.Email,
                 Age = x.Age,
+                IsDeleted = x.IsDeleted
             });
         }
     }

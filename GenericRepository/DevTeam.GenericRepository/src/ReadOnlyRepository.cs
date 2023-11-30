@@ -27,7 +27,7 @@ namespace DevTeam.GenericRepository
         public ReadOnlyRepository(TContext context, IServiceProvider serviceProvider, TOptions? options = null)
             : base(context, serviceProvider, options)
         {
-            DefaultOptions.isReadOnly = true;
+            DefaultOptions.IsReadOnly = true;
         }
     }
 }
