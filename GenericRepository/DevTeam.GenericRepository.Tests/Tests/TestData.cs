@@ -1,4 +1,5 @@
 ﻿using DevTeam.GenericRepository.Tests.Context;
+using DevTeam.GenericRepository.Tests.Context.RentalContext;
 using DevTeam.GenericRepository.Tests.Context.RentalContext.Entities;
 using DevTeam.GenericRepository.Tests.Context.SecurityContext.Entities;
 
@@ -138,7 +139,7 @@ public static class TestData
             new Person
             {
                 Id = 1,
-                AppartmentId = 1,
+                ApartmentId = 1,
                 FirstName = "Matthew",
                 LastName = "Anderson",
                 Gender = (int)Gender.Male,
@@ -150,19 +151,19 @@ public static class TestData
             new Person
             {
                 Id = 2,
-                AppartmentId = 4,
+                ApartmentId = 4,
                 FirstName = "Chris",
                 LastName = "Jackson",
                 Gender = (int)Gender.Male,
                 Age = 32,
                 Email = "chrisjackson@outlook.com",
                 Phone = "+14257651212",
-                IsDeleted = true
+                IsDeleted = false
             },
             new Person
             {
                 Id = 3,
-                AppartmentId = 4,
+                ApartmentId = 4,
                 FirstName = "Lisa",
                 LastName = "Jackson",
                 Gender = (int)Gender.Female,
@@ -174,7 +175,7 @@ public static class TestData
             new Person
             {
                 Id = 4,
-                AppartmentId = 5,
+                ApartmentId = 5,
                 FirstName = "John",
                 LastName = "Doe",
                 Gender = (int)Gender.Male,
@@ -186,7 +187,7 @@ public static class TestData
             new Person
             {
                 Id = 5,
-                AppartmentId = 5,
+                ApartmentId = 5,
                 FirstName = "Anna",
                 LastName = "Doe",
                 Gender = (int)Gender.Female,
@@ -198,7 +199,7 @@ public static class TestData
             new Person
             {
                 Id = 6,
-                AppartmentId = 5,
+                ApartmentId = 5,
                 FirstName = "Katty",
                 LastName = "Doe",
                 Gender = (int)Gender.Female,
@@ -210,7 +211,7 @@ public static class TestData
             new Person
             {
                 Id = 7,
-                AppartmentId = 5,
+                ApartmentId = 5,
                 FirstName = "Jack",
                 LastName = "Doe",
                 Gender = (int)Gender.Male,
@@ -222,7 +223,7 @@ public static class TestData
             new Person
             {
                 Id = 8,
-                AppartmentId = 6,
+                ApartmentId = 6,
                 FirstName = "Albert",
                 LastName = "Einstein",
                 Gender = (int)Gender.Male,

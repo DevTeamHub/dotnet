@@ -7,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using DevTeam.Extensions.Abstractions;
+using DevTeam.GenericRepository;
+using DevTeam.GenericRepository.Tests.Context;
+using System.Security;
 
 namespace DevTeam.GenericRepository.Tests;
 
@@ -28,8 +31,13 @@ public class RepositoryTests
             .AddDbContext<IDbContext, RentalContext>()
             .AddDbContext<IRentalContext, RentalContext>()
             .AddDbContext<ISecurityContext, SecurityContext>()
+            .AddScoped<IUserContext<Person>, UserContext<Person>>()
+            .AddScoped<IUserContext, UserContext>()
             .AddScoped(typeof(IQueryExtension<,>), typeof(IncludeDeletedQueryExtension<,>))
             .AddScoped(typeof(IQueryExtension<,>), typeof(IsReadOnlyQueryExtension<,>))
+            .AddScoped(typeof(ISecurityQueryExtension<Person, TestQueryOptions>), typeof(PersonQueryExtension))
+            .AddScoped<IRelatedDataService<PermissionsData>, RelatedDataService>()
+            .AddScoped<IPermissionsService, PermissionsService>()
             .AddGenericRepository();
 
         _serviceProvider = services.BuildServiceProvider();
@@ -38,7 +46,7 @@ public class RepositoryTests
         _repository = _serviceProvider.GetRequiredService<IRepository<IRentalContext, TestQueryOptions>>();
 
 
-        _rentalContext = new RentalContext("OriginalRental");
+        //_rentalContext = new RentalContext("OriginalRental");
         _securityContext = new SecurityContext("OriginalSecurity");
     }
 
@@ -122,7 +130,7 @@ public class RepositoryTests
             if (model != null)
             {
                 Assert.AreEqual(entity.Id, model.Id);
-                Assert.AreEqual(entity.AppartmentId, model.AppartmentId);
+                Assert.AreEqual(entity.ApartmentId, model.ApartmentId);
                 Assert.AreEqual(entity.FirstName, model.FirstName);
                 Assert.AreEqual(entity.LastName, model.LastName);
                 Assert.AreEqual(entity.Age, model.Age);
@@ -177,7 +185,7 @@ public class RepositoryTests
             if (model != null)
             {
                 Assert.AreEqual(entity.Id, model.Id);
-                Assert.AreEqual(entity.AppartmentId, model.AppartmentId);
+                Assert.AreEqual(entity.ApartmentId, model.ApartmentId);
                 Assert.AreEqual(entity.FirstName, model.FirstName);
                 Assert.AreEqual(entity.LastName, model.LastName);
                 Assert.AreEqual(entity.Age, model.Age);
@@ -205,7 +213,7 @@ public class RepositoryTests
             Assert.IsNotNull(model);
             Assert.IsInstanceOfType(model, typeof(Person));
             Assert.AreEqual(searchEntity.Id, model.Id);
-            Assert.AreEqual(searchEntity.AppartmentId, model.AppartmentId);
+            Assert.AreEqual(searchEntity.ApartmentId, model.ApartmentId);
             Assert.AreEqual(searchEntity.FirstName, model.FirstName);
             Assert.AreEqual(searchEntity.LastName, model.LastName);
             Assert.AreEqual(searchEntity.Age, model.Age);
@@ -228,7 +236,7 @@ public class RepositoryTests
             Assert.IsNotNull(model);
             Assert.IsInstanceOfType(model, typeof(Person));
             Assert.AreEqual(searchEntity.Id, model.Id);
-            Assert.AreEqual(searchEntity.AppartmentId, model.AppartmentId);
+            Assert.AreEqual(searchEntity.ApartmentId, model.ApartmentId);
             Assert.AreEqual(searchEntity.FirstName, model.FirstName);
             Assert.AreEqual(searchEntity.LastName, model.LastName);
             Assert.AreEqual(searchEntity.Age, model.Age);
@@ -237,5 +245,24 @@ public class RepositoryTests
             Assert.AreEqual(searchEntity.Phone, model.Phone);
             Assert.AreEqual(searchEntity.IsDeleted, model.IsDeleted);
         }
+    }
+
+    [TestMethod]
+    public void Get_Not_Deleted_Items_With_Security_Filter()
+    {
+        var entities = _rentalContext.People.ToList();
+        var permissions = new PermissionsArgs
+        {
+            AccessPermission = (int)Permissions.ViewPeople,
+            OtherPermissions = new int[] { }
+        };
+        var modelsQuery = _repository.Query<Person, PermissionsArgs>(permissions);
+
+        Assert.IsNotNull(modelsQuery);
+        Assert.IsInstanceOfType(modelsQuery, typeof(IQueryable<Person>));
+
+        var models = modelsQuery.ToList();
+
+        Assert.AreEqual(entities.Count(x => !x.IsDeleted && x.ApartmentId == 4), models.Count);
     }
 }

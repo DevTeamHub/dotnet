@@ -61,8 +61,19 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
 
     public virtual IQueryable<TEntity> Query<TEntity, TArgs>(TArgs args, TOptions? options = null)
         where TEntity : class
+        where TArgs : PermissionsArgs
     {
-        return Query<TEntity>(options);
+        options ??= DefaultOptions;
+        var query = Query<TEntity>(options);
+
+        var securityQueryExtensions = _serviceProvider
+            .GetServices(typeof(ISecurityQueryExtension<TEntity, TOptions>))
+            .Cast<ISecurityQueryExtension<TEntity, TOptions>>()
+            .Where(x => x.CanApply(options))
+            .OrderBy(x => x.Order)
+            .ToList();
+
+        return securityQueryExtensions.Aggregate(query, (q, extension) => extension.ApplyExtension(q, args));
     }
 
     public virtual IQueryable<TEntity> GetList<TEntity>(Expression<Func<TEntity, bool>>? filter = null, TOptions? options = null)
@@ -80,6 +91,7 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
 
     public virtual IQueryable<TEntity> GetList<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class
+        where TArgs : PermissionsArgs
     {
         return Query<TEntity, TArgs>(args,options).Where(filter);
     }
@@ -94,6 +106,7 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
     public virtual IQueryable<TEntity> QueryOne<TEntity, TKey, TArgs>(TKey id, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
+        where TArgs : PermissionsArgs
     {
         return GetList<TEntity, TArgs>(x => x.Id.Equals(id), args, options);
     }
@@ -106,6 +119,7 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
 
     public virtual IQueryable<TEntity> QueryOne<TEntity, TArgs>(int id, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity
+        where TArgs : PermissionsArgs
     {
         return QueryOne<TEntity, int, TArgs>(id, args, options);
     }
@@ -118,8 +132,10 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
 
     public virtual TEntity? Get<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class
+        where TArgs : PermissionsArgs
     {
         return GetList(filter, args, options).FirstOrDefault();
+
     }
 
     public virtual Task<TEntity?> GetAsync<TEntity>(Expression<Func<TEntity, bool>> filter, TOptions? options = null)
@@ -132,6 +148,7 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
 
     public virtual Task<TEntity?> GetAsync<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class
+        where TArgs : PermissionsArgs
     {
 #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
         return GetList(filter, args, options).FirstOrDefaultAsync();
@@ -148,6 +165,7 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
     public virtual TEntity? Get<TEntity, TKey, TArgs>(TKey id, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
+        where TArgs : PermissionsArgs
     {
         return Get<TEntity, TArgs>(x => x.Id.Equals(id), args, options);
     }
@@ -162,6 +180,7 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
     public virtual Task<TEntity?> GetAsync<TEntity, TKey, TArgs>(TKey id, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
+        where TArgs : PermissionsArgs
     {
         return GetAsync<TEntity, TArgs>(x => x.Id.Equals(id), args, options);
     }
@@ -174,6 +193,7 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
 
     public virtual TEntity? Get<TEntity, TArgs>(int id, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity
+        where TArgs : PermissionsArgs
     {
         return Get<TEntity, int, TArgs>(id, args, options);
     }
@@ -186,6 +206,7 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
 
     public virtual Task<TEntity?> GetAsync<TEntity, TArgs>(int id, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity
+        where TArgs : PermissionsArgs
     {
         return GetAsync<TEntity, int, TArgs>(id, args, options);
     }
@@ -203,6 +224,7 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
                                                                      TArgs args,
                                                                      TOptions? options = null)
         where TEntity : class
+        where TArgs : PermissionsArgs
     {
         return GetList(filter, args, options).Select(selector).FirstOrDefault();
     }
@@ -221,6 +243,7 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
                                                                                 Expression<Func<TEntity, TProperty>> selector,
                                                                                 TArgs args, TOptions? options = null)
         where TEntity : class
+        where TArgs : PermissionsArgs
     {
 #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
         return GetList(filter, args, options).Select(selector).FirstOrDefaultAsync();
@@ -237,6 +260,7 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
     public virtual TProperty? GetProperty<TEntity, TProperty, TKey, TArgs>(TKey id, Expression<Func<TEntity, TProperty>> selector, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
+        where TArgs : PermissionsArgs
     {
         return GetProperty(x => x.Id.Equals(id), selector, args, options);
     }
@@ -251,6 +275,7 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
     public virtual Task<TProperty?> GetPropertyAsync<TEntity, TProperty, TKey, TArgs>(TKey id, Expression<Func<TEntity, TProperty>> selector, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
+        where TArgs : PermissionsArgs
     {
         return GetPropertyAsync(x => x.Id.Equals(id), selector, args, options);
     }
@@ -263,6 +288,7 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
 
     public virtual TProperty? GetProperty<TEntity, TProperty, TArgs>(int id, Expression<Func<TEntity, TProperty>> selector, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity
+        where TArgs : PermissionsArgs
     {
         return GetProperty<TEntity, TProperty, int, TArgs>(id, selector, args, options);
     }
@@ -275,6 +301,7 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
 
     public virtual Task<TProperty?> GetPropertyAsync<TEntity, TProperty, TArgs>(int id, Expression<Func<TEntity, TProperty>> selector, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity
+        where TArgs : PermissionsArgs
     {
         return GetPropertyAsync<TEntity, TProperty, int, TArgs>(id, selector, args, options);
     }
@@ -288,12 +315,14 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
 
     public virtual bool Any<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class
+        where TArgs : PermissionsArgs
     {
         return Query<TEntity>(options).Any(filter);
     }
 
     public virtual bool Any<TEntity, TArgs>(TArgs args, TOptions? options = null)
         where TEntity : class
+        where TArgs : PermissionsArgs
     {
         return Query<TEntity>(options).Any();
     }
@@ -307,12 +336,14 @@ public class Repository<TContext, TOptions> : IRepository<TContext, TOptions>
 
     public virtual Task<bool> AnyAsync<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class
+        where TArgs : PermissionsArgs
     {
         return Query<TEntity>(options).AnyAsync(filter);
     }
 
     public virtual Task<bool> AnyAsync<TEntity, TArgs>(TArgs args, TOptions? options = null)
         where TEntity : class
+        where TArgs : PermissionsArgs
     {
         return Query<TEntity>(options).AnyAsync();
     }
