@@ -25,7 +25,7 @@ namespace DevTeam.GenericRepository
         public Func<TOptions, bool> CanApply => x => x.ApplySecurity;
 
        public IQueryable<TEntity> ApplyExtension<TArgs>(IQueryable<TEntity> query, TArgs args)
-            where TArgs : PermissionsArgs
+            where TArgs : class, IPermissionsArgs, IServiceArgs
         {
             var permission = PermissionsService
                 .GetCurrentAccountPermissions()

@@ -60,58 +60,58 @@ public interface IRepository<TContext, TOptions>
         where TEntity : class;
     IQueryable<TEntity> Query<TEntity, TArgs>(TArgs args, TOptions? options = null)
         where TEntity : class
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
     IQueryable<TEntity> GetList<TEntity>(Expression<Func<TEntity, bool>>? filter = null, TOptions? options = null)
         where TEntity : class;
     IQueryable<TEntity> GetList<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
     IQueryable<TEntity> QueryOne<TEntity, TKey>(TKey id, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>;
     IQueryable<TEntity> QueryOne<TEntity, TKey, TArgs>(TKey id, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
     IQueryable<TEntity> QueryOne<TEntity>(int id, TOptions? options = null)
         where TEntity : class, IEntity;
     IQueryable<TEntity> QueryOne<TEntity, TArgs>(int id, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
     TEntity? Get<TEntity>(Expression<Func<TEntity, bool>> filter, TOptions? options = null)
         where TEntity : class;
     TEntity? Get<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
     Task<TEntity?> GetAsync<TEntity>(Expression<Func<TEntity, bool>> filter, TOptions? options = null)
         where TEntity : class;
     Task<TEntity?> GetAsync<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
     TEntity? Get<TEntity, TKey>(TKey id, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>;
     TEntity? Get<TEntity, TKey, TArgs>(TKey id, TArgs args, TOptions? options = null)
        where TEntity : class, IEntity<TKey>
        where TKey : IEquatable<TKey>
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
     Task<TEntity?> GetAsync<TEntity, TKey>(TKey id, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>;
     Task<TEntity?> GetAsync<TEntity, TKey, TArgs>(TKey id, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
     TEntity? Get<TEntity>(int id, TOptions? options = null)
         where TEntity : class, IEntity;
     TEntity? Get<TEntity, TArgs>(int id, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
     Task<TEntity?> GetAsync<TEntity>(int id, TOptions? options = null)
         where TEntity : class, IEntity;
     Task<TEntity?> GetAsync<TEntity, TArgs>(int id, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
     TProperty? GetProperty<TEntity, TProperty>(Expression<Func<TEntity, bool>> filter,
                                               Expression<Func<TEntity, TProperty>> selector,
                                               TOptions? options = null)
@@ -121,7 +121,7 @@ public interface IRepository<TContext, TOptions>
                                                      TArgs args,
                                                      TOptions? options = null)
         where TEntity : class
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
     Task<TProperty?> GetPropertyAsync<TEntity, TProperty>(Expression<Func<TEntity, bool>> filter,
                                                          Expression<Func<TEntity, TProperty>> selector,
                                                          TOptions? options = null)
@@ -131,47 +131,47 @@ public interface IRepository<TContext, TOptions>
                                                                 TArgs args, 
                                                                 TOptions? options = null)
         where TEntity : class
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
     TProperty? GetProperty<TEntity, TProperty, TKey>(TKey id, Expression<Func<TEntity, TProperty>> selector, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>;
     TProperty? GetProperty<TEntity, TProperty, TKey, TArgs>(TKey id, Expression<Func<TEntity, TProperty>> selector, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
     Task<TProperty?> GetPropertyAsync<TEntity, TProperty, TKey>(TKey id, Expression<Func<TEntity, TProperty>> selector, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>;
     Task<TProperty?> GetPropertyAsync<TEntity, TProperty, TKey, TArgs>(TKey id, Expression<Func<TEntity, TProperty>> selector, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
     TProperty? GetProperty<TEntity, TProperty>(int id, Expression<Func<TEntity, TProperty>> selector, TOptions? options = null)
         where TEntity : class, IEntity;
     TProperty? GetProperty<TEntity, TProperty, TArgs>(int id, Expression<Func<TEntity, TProperty>> selector, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
     Task<TProperty?> GetPropertyAsync<TEntity, TProperty>(int id, Expression<Func<TEntity, TProperty>> selector, TOptions? options = null)
         where TEntity : class, IEntity;
     Task<TProperty?> GetPropertyAsync<TEntity, TProperty, TArgs>(int id, Expression<Func<TEntity, TProperty>> selector, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
     bool Any<TEntity>(Expression<Func<TEntity, bool>>? filter = null, TOptions? options = null)
         where TEntity : class;
     bool Any<TEntity, TArgs>(TArgs args, TOptions? options = null)
         where TEntity : class
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
     bool Any<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
     Task<bool> AnyAsync<TEntity>(Expression<Func<TEntity, bool>>? filter = null, TOptions? options = null)
         where TEntity : class;
     Task<bool> AnyAsync<TEntity, TArgs>(TArgs args, TOptions? options = null)
         where TEntity : class
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
     Task<bool> AnyAsync<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
     TEntity Add<TEntity>(TEntity entity)
         where TEntity : class;
     Task<TEntity> AddAsync<TEntity>(TEntity entity)

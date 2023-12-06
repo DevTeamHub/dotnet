@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using DevTeam.GenericRepository;
 
 namespace DevTeam.GenericService;
 
@@ -18,7 +19,7 @@ public partial class GenericService<TContext, TOptions>
 
     public virtual IQueryable<TModel> QueryList<TEntity, TModel, TArgs>(TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class
-        where TArgs : IServiceArgs
+        where TArgs : class, IPermissionsArgs, IServiceArgs
     {
         var query = args.Type == ArgumentType.Mapping
             ? _readRepository.Query<TEntity>(options)
@@ -31,7 +32,7 @@ public partial class GenericService<TContext, TOptions>
 
     public virtual IQueryable<TModel> QueryList<TEntity, TModel, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class
-        where TArgs : IServiceArgs
+        where TArgs : class, IPermissionsArgs, IServiceArgs
     {
         var query = args.Type == ArgumentType.Mapping
             ? _readRepository.GetList(filter, options)
@@ -50,14 +51,14 @@ public partial class GenericService<TContext, TOptions>
 
     public virtual List<TModel> GetList<TEntity, TModel, TArgs>(TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class
-        where TArgs : IServiceArgs
+        where TArgs : class, IPermissionsArgs, IServiceArgs
     {
         return QueryList<TEntity, TModel, TArgs>(args, mappingName, options).ToList();
     }
 
     public virtual List<TModel> GetList<TEntity, TModel, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class
-        where TArgs : IServiceArgs
+        where TArgs : class, IPermissionsArgs, IServiceArgs
     {
         return QueryList<TEntity, TModel, TArgs>(filter, args, mappingName, options).ToList();
     }
@@ -70,14 +71,14 @@ public partial class GenericService<TContext, TOptions>
 
     public virtual Task<List<TModel>> GetListAsync<TEntity, TModel, TArgs>(TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class
-        where TArgs : IServiceArgs
+        where TArgs : class, IPermissionsArgs, IServiceArgs
     {
         return QueryList<TEntity, TModel, TArgs>(args, mappingName, options).ToListAsync();
     }
 
     public virtual Task<List<TModel>> GetListAsync<TEntity, TModel, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class
-        where TArgs : IServiceArgs
+        where TArgs : class, IPermissionsArgs, IServiceArgs
     {
         return QueryList<TEntity, TModel, TArgs>(filter, args, mappingName, options).ToListAsync();
     }

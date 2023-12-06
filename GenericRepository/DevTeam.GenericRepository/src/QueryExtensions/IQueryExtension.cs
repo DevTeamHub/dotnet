@@ -20,5 +20,5 @@ public interface ISecurityQueryExtension<TEntity, TOptions> : IQueryExtensionBas
     where TOptions : QueryOptions
 {
     public IQueryable<TEntity> ApplyExtension<TArgs>(IQueryable<TEntity> query, TArgs args)
-        where TArgs : PermissionsArgs;
+        where TArgs : class, IPermissionsArgs, IServiceArgs;
 }
