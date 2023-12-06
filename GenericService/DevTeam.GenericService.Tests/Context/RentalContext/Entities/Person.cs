@@ -11,7 +11,7 @@ public class Person : IDeleted
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;
     public int Age { get; set; }
-    public int Gender { get; set; }
+    public Gender Gender { get; set; }
     public string? Email { get; set; }
     public string? Phone { get; set; }
     public bool IsDeleted { get; set; }

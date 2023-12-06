@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using DevTeam.QueryMappings.Base;
+﻿using DevTeam.GenericRepository.AspNetCore;
 using DevTeam.QueryMappings.AspNetCore;
-using DevTeam.GenericRepository.AspNetCore;
+using DevTeam.QueryMappings.Base;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 namespace DevTeam.GenericService.AspNetCore;
@@ -22,9 +22,9 @@ public static class GenericServiceExtensions
         services
             .AddQueryMappings()
             .AddGenericRepository()
-            .AddScoped(typeof(IGenericService<>), typeof(GenericService<>))
+            .AddScoped(typeof(IGenericService<,>), typeof(GenericService<,>))
             .AddScoped<IGenericService, GenericService>()
-            .AddScoped(typeof(ISoftDeleteGenericService<>), typeof(SoftDeleteGenericService<>))
+            .AddScoped(typeof(ISoftDeleteGenericService<,>), typeof(SoftDeleteGenericService<,>))
             .AddScoped<ISoftDeleteGenericService, SoftDeleteGenericService>();
 
         return services;

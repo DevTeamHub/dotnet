@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using DevTeam.Extensions.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DevTeam.GenericRepository.AspNetCore;
 
@@ -15,14 +16,15 @@ public static class GenericRepositoryExtensions
     public static IServiceCollection AddGenericRepository(this IServiceCollection services)
     {
         services
-            .AddScoped(typeof(IRepository<>), typeof(Repository<>))
+            .AddScoped(typeof(IRepository<,>), typeof(Repository<,>))
             .AddScoped<IRepository, Repository>()
-            .AddScoped(typeof(IReadOnlyRepository<>), typeof(ReadOnlyRepository<>))
+            .AddScoped(typeof(IReadOnlyRepository<,>), typeof(ReadOnlyRepository<,>))
             .AddScoped<IReadOnlyRepository, ReadOnlyRepository>()
-            .AddScoped(typeof(ISoftDeleteRepository<>), typeof(SoftDeleteRepository<>))
+            .AddScoped(typeof(ISoftDeleteRepository<,>), typeof(SoftDeleteRepository<,>))
             .AddScoped<ISoftDeleteRepository, SoftDeleteRepository>()
-            .AddScoped(typeof(IReadOnlyDeleteRepository<>), typeof(ReadOnlyDeleteRepository<>))
-            .AddScoped<IReadOnlyDeleteRepository, ReadOnlyDeleteRepository>();
+            .AddScoped(typeof(IReadOnlyDeleteRepository<,>), typeof(ReadOnlyDeleteRepository<,>))
+            .AddScoped<IReadOnlyDeleteRepository, ReadOnlyDeleteRepository>()
+            .AddScoped<QueryOptions>();
 
         return services;
     }

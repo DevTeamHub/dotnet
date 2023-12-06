@@ -1,4 +1,5 @@
-﻿using DevTeam.GenericService.Pagination;
+﻿using DevTeam.GenericRepository;
+using DevTeam.GenericService.Pagination;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,34 +7,34 @@ using System.Threading.Tasks;
 
 namespace DevTeam.GenericService;
 
-public partial class GenericService<TContext>
+public partial class GenericService<TContext, TOptions>
 {
-    public virtual Task<List<TModel>> Search<TEntity, TModel, TSearchModel>(ISearchService<TEntity, TSearchModel> searchService, TSearchModel searchModel, string? mappingName = null)
+    public virtual Task<List<TModel>> Search<TEntity, TModel, TSearchModel>(ISearchService<TEntity, TSearchModel> searchService, TSearchModel searchModel, string? mappingName = null, TOptions? options = null)
     where TEntity : class
     where TSearchModel : PaginationParams
     {
-        var query = GetBaseQuery<TEntity>();
+        var query = GetBaseQuery<TEntity>(options);
         query = ApplyFilter(query, searchService, searchModel);
         query = ApplyPagination(query, searchModel);
         return _mappings.Map<TEntity, TModel>(query, mappingName).ToListAsync();
     }
 
-    public virtual Task<List<TModel>> Search<TEntity, TModel, TSearchModel, TArgs>(ISearchService<TEntity, TSearchModel> searchService, TSearchModel searchModel, TArgs args, string? mappingName = null)
+    public virtual Task<List<TModel>> Search<TEntity, TModel, TSearchModel, TArgs>(ISearchService<TEntity, TSearchModel> searchService, TSearchModel searchModel, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class
         where TSearchModel : PaginationParams
-        where TArgs : IServiceArgs
+        where TArgs : class, IPermissionsArgs, IServiceArgs
     {
-        var query = GetBaseQuery<TEntity, TArgs>(args);
+        var query = GetBaseQuery<TEntity, TArgs>(args, options);
         query = ApplyFilter(query, searchService, searchModel);
         query = ApplyPagination(query, searchModel);
         return _mappings.Map<TEntity, TModel, TArgs>(query, args, mappingName).ToListAsync();
     }
 
-    public virtual async Task<PaginationModel<TModel>> Pagination<TEntity, TModel, TSearchModel>(ISearchService<TEntity, TSearchModel> searchService, TSearchModel searchModel, string? mappingName = null)
+    public virtual async Task<PaginationModel<TModel>> Pagination<TEntity, TModel, TSearchModel>(ISearchService<TEntity, TSearchModel> searchService, TSearchModel searchModel, string? mappingName = null, TOptions? options = null)
         where TEntity : class
         where TSearchModel : PaginationParams
     {
-        var query = GetBaseQuery<TEntity>();
+        var query = GetBaseQuery<TEntity>(options);
         query = ApplyFilter(query, searchService, searchModel);
 
         var totalCount = await query.CountAsync();
@@ -45,12 +46,12 @@ public partial class GenericService<TContext>
         return new PaginationModel<TModel>(models, totalCount);
     }
 
-    public virtual async Task<PaginationModel<TModel>> Pagination<TEntity, TModel, TSearchModel, TArgs>(ISearchService<TEntity, TSearchModel> searchService, TSearchModel searchModel, TArgs args, string? mappingName = null)
+    public virtual async Task<PaginationModel<TModel>> Pagination<TEntity, TModel, TSearchModel, TArgs>(ISearchService<TEntity, TSearchModel> searchService, TSearchModel searchModel, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class
         where TSearchModel : PaginationParams
-        where TArgs : IServiceArgs
+        where TArgs : class, IPermissionsArgs, IServiceArgs
     {
-        var query = GetBaseQuery<TEntity, TArgs>(args);
+        var query = GetBaseQuery<TEntity, TArgs>(args, options);
         query = ApplyFilter(query, searchService, searchModel);
 
         var totalCount = await query.CountAsync();
@@ -66,19 +67,19 @@ public partial class GenericService<TContext>
         return new PaginationModel<TModel>(models, totalCount);
     }
 
-    private IQueryable<TEntity> GetBaseQuery<TEntity>()
+    private IQueryable<TEntity> GetBaseQuery<TEntity>(TOptions? options = null)
         where TEntity : class
     {
-        return _readRepository.Query<TEntity>(); 
+        return _readRepository.Query<TEntity>(options); 
     }
 
-    private IQueryable<TEntity> GetBaseQuery<TEntity, TArgs>(TArgs args)
+    private IQueryable<TEntity> GetBaseQuery<TEntity, TArgs>(TArgs args, TOptions? options = null)
         where TEntity : class
-        where TArgs : IServiceArgs
+        where TArgs : class, IPermissionsArgs, IServiceArgs
     {
         return args.Type == ArgumentType.Mapping
-            ? _readRepository.Query<TEntity>()
-            : _readRepository.Query<TEntity, TArgs>(args);
+            ? _readRepository.Query<TEntity>(options)
+            : _readRepository.Query<TEntity, TArgs>(args, options);
     }
 
     private IQueryable<TEntity> ApplyFilter<TEntity, TSearchModel>(IQueryable<TEntity> query, ISearchService<TEntity, TSearchModel> searchService, TSearchModel searchModel)

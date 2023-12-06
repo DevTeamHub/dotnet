@@ -17,8 +17,8 @@ namespace DevTeam.GenericService.Tests.Tests;
 public class GenericServiceTests
 {
     private static ServiceProvider _serviceProvider = null!;
-    private static IGenericService _service = null!;
-    private static IRepository _repository = null!;
+    private static IGenericService<TestQueryOptions> _service = null!;
+    private static IRepository<TestQueryOptions> _repository = null!;
     private static RentalContext _rentalContext = null!;
     private static SecurityContext _securityContext = null!;
 
@@ -31,13 +31,19 @@ public class GenericServiceTests
             .AddDbContext<IDbContext, RentalContext>()
             .AddDbContext<IRentalContext, RentalContext>()
             .AddDbContext<ISecurityContext, SecurityContext>()
-            .AddGenericServices();
+            .AddGenericServices()
+            .AddScoped(typeof(IGenericService<TestQueryOptions>), typeof(GenericService<TestQueryOptions>))
+            .AddScoped(typeof(IRepository<TestQueryOptions>), typeof(Repository<TestQueryOptions>))
+            .AddScoped(typeof(ISoftDeleteGenericService<TestQueryOptions>), typeof(SoftDeleteGenericService<TestQueryOptions>))
+            .AddScoped(typeof(IReadOnlyRepository<TestQueryOptions>), typeof(ReadOnlyRepository<TestQueryOptions>))
+            .AddScoped(typeof(IQueryExtension<,>), typeof(IncludeDeletedQueryExtension<,>))
+            .AddScoped(typeof(IQueryExtension<,>), typeof(IsReadOnlyQueryExtension<,>));
 
         _serviceProvider = services.BuildServiceProvider();
 
         _rentalContext = (RentalContext)_serviceProvider.GetRequiredService<IRentalContext>();
-        _service = _serviceProvider.GetRequiredService<IGenericService>();
-        _repository = _serviceProvider.GetRequiredService<IRepository>();
+        _service = _serviceProvider.GetRequiredService<IGenericService<TestQueryOptions>>();
+        _repository = _serviceProvider.GetRequiredService<IRepository<TestQueryOptions>>();
         var mappings = _serviceProvider.GetRequiredService<IMappingsList>();
 
         MappingsConfiguration.Register(mappings, typeof(AddressMappings).Assembly);
@@ -75,6 +81,11 @@ public class GenericServiceTests
 
         var entityResult = _repository.Get<Address>(modelId + 1);
 
+        Assert.IsNotNull(entityResult);
+        Assert.IsNotNull(sourceModel);
+        Assert.IsNotNull(result);
+        Assert.IsNotNull(returnResult);
+
         Assert.AreEqual(sourceModel.Street, result.Street);
         Assert.AreNotEqual(sourceModel.State, result.State);
         
@@ -102,6 +113,10 @@ public class GenericServiceTests
         var result = _service.Get<Address, AddressModel>(modelId + 1);
         var sourceModel = _service.Get<Address, AddressModel>(modelId);
 
+        Assert.IsNotNull(sourceModel);
+        Assert.IsNotNull(result);
+        Assert.IsNotNull(returnResult);
+
         Assert.AreEqual(sourceModel.Street, result.Street);
         Assert.AreNotEqual(sourceModel.State, result.State);
 
@@ -111,5 +126,72 @@ public class GenericServiceTests
         Assert.AreEqual(result.BuildingNumber, returnResult.BuildingNumber);
         Assert.AreEqual(result.Country, returnResult.Country);
         Assert.AreEqual(result.Id, returnResult.Id);
+    }
+
+    [TestMethod]
+    public void Should_Return_Items_Included_Deleted()
+    {
+        var entities = _rentalContext.People.ToList();
+
+        var options = new TestQueryOptions
+        {
+            IncludeDeleted = true,
+            IsReadOnly = true,
+        };
+        var models = _service.GetList<Person, PersonModel>(null, null, options);
+
+        Assert.IsNotNull(models);
+        Assert.IsInstanceOfType(models, typeof(List<PersonModel>));
+
+        Assert.AreEqual(entities.Count, models.Count);
+
+        foreach (var entity in entities)
+        {
+            var model = models.FirstOrDefault(x => x.Id == entity.Id);
+
+            if (model != null)
+            {
+                Assert.AreEqual(entity.Id, model.Id);
+                Assert.AreEqual(entity.FirstName + ' ' + entity.LastName, model.FullName);
+                Assert.AreEqual(entity.Age, model.Age);
+                Assert.AreEqual(entity.Gender, model.Gender);
+                Assert.AreEqual(entity.Email, model.Email);
+                Assert.AreEqual(entity.Phone, model.Phone);
+                Assert.AreEqual(entity.IsDeleted, model.IsDeleted);
+            }
+        }
+    }
+
+    [TestMethod]
+    public void Should_Return_Only_Not_Deleted_Items()
+    {
+        var entities = _rentalContext.People.ToList();
+
+        var models = _service.GetList<Person, PersonModel>();
+
+        Assert.IsNotNull(models);
+        Assert.IsInstanceOfType(models, typeof(List<PersonModel>));
+
+        Assert.AreEqual(entities.Count(x => !x.IsDeleted), models.Count);
+
+        foreach (var entity in entities)
+        {
+            var model = models.FirstOrDefault(x => x.Id == entity.Id);
+
+            if (model != null)
+            {
+                Assert.AreEqual(entity.Id, model.Id);
+                Assert.AreEqual(entity.FirstName + ' ' + entity.LastName, model.FullName);
+                Assert.AreEqual(entity.Age, model.Age);
+                Assert.AreEqual(entity.Gender, model.Gender);
+                Assert.AreEqual(entity.Email, model.Email);
+                Assert.AreEqual(entity.Phone, model.Phone);
+                Assert.AreEqual(entity.IsDeleted, false);
+            }
+            else
+            {
+                Assert.AreEqual(entity.IsDeleted, true);
+            }
+        }
     }
 }
