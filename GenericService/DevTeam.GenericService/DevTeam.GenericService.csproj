@@ -9,10 +9,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="src\" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\..\GenericRepository\DevTeam.GenericRepository\DevTeam.GenericRepository.csproj" />
 		<ProjectReference Include="..\..\QueryMappings\DevTeam.QueryMappings\DevTeam.QueryMappings.csproj" />
 	</ItemGroup>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DevTeam.Permissions.Core;
 
 namespace DevTeam.GenericRepository.Tests.Context.RentalContext
 {

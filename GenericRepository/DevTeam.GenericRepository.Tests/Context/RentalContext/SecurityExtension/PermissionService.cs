@@ -1,4 +1,5 @@
 ﻿using DevTeam.GenericRepository.Tests.Context.RentalContext.Entities;
+using DevTeam.Permissions.Core;
 
 namespace DevTeam.GenericRepository.Tests.Context.RentalContext
 {
@@ -22,7 +23,10 @@ namespace DevTeam.GenericRepository.Tests.Context.RentalContext
                 IsDeleted = false,
                 Permissions = new List<PermissionModel>
                 {
-                    new PermissionModel { Id = 1, Scopes = (int)PermissionScopes.Apartments }
+                    new PermissionModel { 
+                        Id = 1, 
+                        Scopes = (int)PermissionScopes.Apartments 
+                    }
                 }
             };
         }

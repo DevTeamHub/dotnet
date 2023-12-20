@@ -6,7 +6,7 @@
         {
             IncludeDeleted = false;
             IsReadOnly = false;
-            ApplySecurity = true;
+            ApplySecurity = false;
         }
 
         public bool IncludeDeleted {  get; set; }

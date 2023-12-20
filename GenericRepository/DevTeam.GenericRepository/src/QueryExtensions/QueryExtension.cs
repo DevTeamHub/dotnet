@@ -9,5 +9,6 @@ namespace DevTeam.GenericRepository
         public virtual int Order => 1;
         public abstract Func<TOptions, bool> CanApply { get; }
         public abstract IQueryable<TEntity> ApplyExtension(IQueryable<TEntity> query);
+        public abstract IQueryable<TEntity> ApplyExtension<TArgs>(IQueryable<TEntity> query, TArgs args);
     }
 }

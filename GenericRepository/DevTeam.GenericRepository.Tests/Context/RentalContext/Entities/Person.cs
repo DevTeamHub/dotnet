@@ -1,4 +1,5 @@
 ﻿using DevTeam.Extensions.Abstractions;
+using DevTeam.Permissions.Core;
 using System.ComponentModel.DataAnnotations;
 
 namespace DevTeam.GenericRepository.Tests.Context.RentalContext.Entities;

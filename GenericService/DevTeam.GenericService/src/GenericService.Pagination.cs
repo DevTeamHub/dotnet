@@ -22,7 +22,7 @@ public partial class GenericService<TContext, TOptions>
     public virtual Task<List<TModel>> Search<TEntity, TModel, TSearchModel, TArgs>(ISearchService<TEntity, TSearchModel> searchService, TSearchModel searchModel, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class
         where TSearchModel : PaginationParams
-        where TArgs : class, IPermissionsArgs, IServiceArgs
+        where TArgs : class, IServiceArgs
     {
         var query = GetBaseQuery<TEntity, TArgs>(args, options);
         query = ApplyFilter(query, searchService, searchModel);
@@ -49,7 +49,7 @@ public partial class GenericService<TContext, TOptions>
     public virtual async Task<PaginationModel<TModel>> Pagination<TEntity, TModel, TSearchModel, TArgs>(ISearchService<TEntity, TSearchModel> searchService, TSearchModel searchModel, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class
         where TSearchModel : PaginationParams
-        where TArgs : class, IPermissionsArgs, IServiceArgs
+        where TArgs : class, IServiceArgs
     {
         var query = GetBaseQuery<TEntity, TArgs>(args, options);
         query = ApplyFilter(query, searchService, searchModel);
@@ -75,7 +75,7 @@ public partial class GenericService<TContext, TOptions>
 
     private IQueryable<TEntity> GetBaseQuery<TEntity, TArgs>(TArgs args, TOptions? options = null)
         where TEntity : class
-        where TArgs : class, IPermissionsArgs, IServiceArgs
+        where TArgs : class, IServiceArgs
     {
         return args.Type == ArgumentType.Mapping
             ? _readRepository.Query<TEntity>(options)

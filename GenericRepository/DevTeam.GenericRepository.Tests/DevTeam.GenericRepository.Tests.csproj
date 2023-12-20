@@ -22,6 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\GenericService\DevTeam.GenericService.AspNetCore\DevTeam.GenericService.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\Permissions\DevTeam.Permissions.Core\DevTeam.Permissions.Core.csproj" />
     <ProjectReference Include="..\DevTeam.GenericRepository.AspNetCore\DevTeam.GenericRepository.AspNetCore.csproj" />
   </ItemGroup>
 

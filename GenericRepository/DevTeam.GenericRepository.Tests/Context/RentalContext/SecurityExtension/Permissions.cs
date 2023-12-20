@@ -1,6 +1,6 @@
 ﻿namespace DevTeam.GenericRepository.Tests.Context.RentalContext;
 
-public enum Permissions
+public enum TestPermissions
 {
     ViewPeople = 1,
 }

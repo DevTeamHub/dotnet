@@ -1,15 +1,13 @@
 ﻿using DevTeam.Extensions.EntityFrameworkCore;
+using DevTeam.GenericRepository.AspNetCore;
+using DevTeam.GenericService.AspNetCore;
+using DevTeam.GenericRepository.Tests.Context;
 using DevTeam.GenericRepository.Tests.Context.RentalContext;
 using DevTeam.GenericRepository.Tests.Context.RentalContext.Entities;
 using DevTeam.GenericRepository.Tests.Context.SecurityContext;
-using DevTeam.GenericRepository.AspNetCore;
+using DevTeam.Permissions.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
-using DevTeam.Extensions.Abstractions;
-using DevTeam.GenericRepository;
-using DevTeam.GenericRepository.Tests.Context;
-using System.Security;
 
 namespace DevTeam.GenericRepository.Tests;
 
@@ -31,13 +29,17 @@ public class RepositoryTests
             .AddDbContext<IDbContext, RentalContext>()
             .AddDbContext<IRentalContext, RentalContext>()
             .AddDbContext<ISecurityContext, SecurityContext>()
+
             .AddScoped<IUserContext<Person>, UserContext<Person>>()
-            .AddScoped<IUserContext, UserContext>()
+
             .AddScoped(typeof(IQueryExtension<,>), typeof(IncludeDeletedQueryExtension<,>))
             .AddScoped(typeof(IQueryExtension<,>), typeof(IsReadOnlyQueryExtension<,>))
-            .AddScoped(typeof(ISecurityQueryExtension<Person, TestQueryOptions>), typeof(PersonQueryExtension))
+            .AddScoped(typeof(IQueryExtension<Person, TestQueryOptions>), typeof(PersonQueryExtension))
+
             .AddScoped<IRelatedDataService<PermissionsData>, RelatedDataService>()
             .AddScoped<IPermissionsService, PermissionsService>()
+
+            .AddGenericServices()
             .AddGenericRepository();
 
         _serviceProvider = services.BuildServiceProvider();
@@ -45,8 +47,7 @@ public class RepositoryTests
         _rentalContext = (RentalContext)_serviceProvider.GetRequiredService<IRentalContext>();
         _repository = _serviceProvider.GetRequiredService<IRepository<IRentalContext, TestQueryOptions>>();
 
-
-        //_rentalContext = new RentalContext("OriginalRental");
+        _rentalContext = new RentalContext("OriginalRental");
         _securityContext = new SecurityContext("OriginalSecurity");
     }
 
@@ -253,7 +254,7 @@ public class RepositoryTests
         var entities = _rentalContext.People.ToList();
         var permissions = new PermissionsArgs
         {
-            AccessPermission = (int)Permissions.ViewPeople,
+            AccessPermission = (int)TestPermissions.ViewPeople,
             OtherPermissions = new int[] { }
         };
         var modelsQuery = _repository.Query<Person, PermissionsArgs>(permissions);

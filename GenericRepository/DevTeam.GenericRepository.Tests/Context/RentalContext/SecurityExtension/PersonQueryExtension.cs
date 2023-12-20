@@ -1,4 +1,5 @@
 ﻿using DevTeam.GenericRepository.Tests.Context.RentalContext.Entities;
+using DevTeam.Permissions.Core;
 
 namespace DevTeam.GenericRepository.Tests.Context.RentalContext
 {

@@ -1,22 +1,31 @@
-﻿using DevTeam.GenericRepository.Tests.Context.RentalContext;
+﻿using DevTeam.Extensions.Abstractions;
+using DevTeam.GenericRepository.Tests.Context.RentalContext;
 using DevTeam.GenericRepository.Tests.Context.RentalContext.Entities;
-using DevTeam.Extensions.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DevTeam.GenericService;
+using DevTeam.Permissions.Core;
 
 namespace DevTeam.GenericRepository.Tests.Context
 {
     public class RelatedDataService : IRelatedDataService<PermissionsData>
     {
         private readonly IUserContext<Person> _userContext;
+        private readonly IGenericService _service;
 
-        public RelatedDataService(IUserContext<Person> userContext)
+        public RelatedDataService(
+            IUserContext<Person> userContext,
+            IGenericService service
+            )
         {
+            _service = service;
             _userContext = userContext;
         }
+
+        public Task<List<PermissionsData>> GetRelatedData<TEntity>(List<int> requestIds)
+            where TEntity : class, IEntity
+        {
+            return _service.GetListAsync<TEntity, PermissionsData>(x => requestIds.Contains(x.Id));
+        }
+
 
         public PermissionsData GetCurrentAccountRelatedData()
         {

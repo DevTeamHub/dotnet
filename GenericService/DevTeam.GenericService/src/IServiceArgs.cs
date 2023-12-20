@@ -1,4 +1,4 @@
-﻿namespace DevTeam.GenericRepository;
+﻿namespace DevTeam.GenericService;
 
 public interface IServiceArgs
 {

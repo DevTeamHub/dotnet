@@ -1,4 +1,5 @@
-﻿namespace DevTeam.GenericRepository;
+﻿using DevTeam.GenericService;
+namespace DevTeam.Permissions.Core;
 
 public class PermissionsArgs : IPermissionsArgs, IServiceArgs
 {

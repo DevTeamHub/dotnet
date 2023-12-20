@@ -1,7 +1,5 @@
 ﻿using DevTeam.Extensions.Abstractions;
-using DevTeam.GenericRepository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -24,7 +22,7 @@ public partial class GenericService<TContext, TOptions>
     public virtual IQueryable<TModel> QueryOne<TEntity, TModel, TKey, TArgs>(TKey id, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
-        where TArgs : class, IPermissionsArgs, IServiceArgs
+        where TArgs : class, IServiceArgs
     {
         var query = args.Type == ArgumentType.Mapping
             ? _readRepository.QueryOne<TEntity, TKey>(id, options)
@@ -43,7 +41,7 @@ public partial class GenericService<TContext, TOptions>
 
     public virtual IQueryable<TModel> QueryOne<TEntity, TModel, TArgs>(int id, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class, IEntity
-        where TArgs : class, IPermissionsArgs, IServiceArgs
+        where TArgs : class, IServiceArgs
     {
         return QueryOne<TEntity, TModel, int, TArgs>(id, args, mappingName, options);
     }
@@ -56,7 +54,7 @@ public partial class GenericService<TContext, TOptions>
 
     public virtual TModel? Get<TEntity, TModel, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class
-        where TArgs : class, IPermissionsArgs, IServiceArgs
+        where TArgs : class, IServiceArgs
     {
         return QueryList<TEntity, TModel, TArgs>(filter, args, mappingName, options).FirstOrDefault();
     }
@@ -71,7 +69,7 @@ public partial class GenericService<TContext, TOptions>
 
     public virtual Task<TModel?> GetAsync<TEntity, TModel, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class
-        where TArgs : class, IPermissionsArgs, IServiceArgs
+        where TArgs : class, IServiceArgs
     {
 #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
         return QueryList<TEntity, TModel, TArgs>(filter, args, mappingName, options).FirstOrDefaultAsync();
@@ -88,7 +86,7 @@ public partial class GenericService<TContext, TOptions>
     public virtual TModel? Get<TEntity, TModel, TKey, TArgs>(TKey id, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
-        where TArgs : class, IPermissionsArgs, IServiceArgs
+        where TArgs : class, IServiceArgs
     {
         return QueryOne<TEntity, TModel, TKey, TArgs>(id, args, mappingName, options).FirstOrDefault();
     }
@@ -105,7 +103,7 @@ public partial class GenericService<TContext, TOptions>
     public virtual Task<TModel?> GetAsync<TEntity, TModel, TKey, TArgs>(TKey id, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
-        where TArgs : class, IPermissionsArgs, IServiceArgs
+        where TArgs : class, IServiceArgs
     {
 #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
         return QueryOne<TEntity, TModel, TKey, TArgs>(id, args, mappingName, options).FirstOrDefaultAsync();
@@ -120,7 +118,7 @@ public partial class GenericService<TContext, TOptions>
 
     public virtual TModel? Get<TEntity, TModel, TArgs>(int id, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class, IEntity
-        where TArgs : class, IPermissionsArgs, IServiceArgs
+        where TArgs : class, IServiceArgs
     {
         return QueryOne<TEntity, TModel, TArgs>(id, args, mappingName, options).FirstOrDefault();
     }
@@ -135,7 +133,7 @@ public partial class GenericService<TContext, TOptions>
 
     public virtual Task<TModel?> GetAsync<TEntity, TModel, TArgs>(int id, TArgs args, string? mappingName = null, TOptions? options = null)
         where TEntity : class, IEntity
-        where TArgs : class, IPermissionsArgs, IServiceArgs
+        where TArgs : class, IServiceArgs
     {
 #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
         return QueryOne<TEntity, TModel, TArgs>(id, args, mappingName, options).FirstOrDefaultAsync();
@@ -159,7 +157,7 @@ public partial class GenericService<TContext, TOptions>
                                                                     TArgs args,
                                                                     TOptions? options = null)
         where TEntity : class
-        where TArgs: class, IPermissionsArgs, IServiceArgs
+        where TArgs: class, IServiceArgs
     {
         return _readRepository.GetProperty(filter, selector, args, options);
     }
@@ -177,7 +175,7 @@ public partial class GenericService<TContext, TOptions>
                                                                                TArgs args,
                                                                                TOptions? options = null)
         where TEntity : class
-        where TArgs : class, IPermissionsArgs, IServiceArgs
+        where TArgs : class, IServiceArgs
     {
         return _readRepository.GetPropertyAsync(filter, selector, args, options);
     }
@@ -192,7 +190,7 @@ public partial class GenericService<TContext, TOptions>
     public virtual TProperty? GetProperty<TEntity, TProperty, TKey, TArgs>(TKey id, Expression<Func<TEntity, TProperty>> selector, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
-        where TArgs : class, IPermissionsArgs, IServiceArgs
+        where TArgs : class, IServiceArgs
     {
         return _readRepository.GetProperty(id, selector, args, options);
     }
@@ -207,7 +205,7 @@ public partial class GenericService<TContext, TOptions>
     public virtual Task<TProperty?> GetPropertyAsync<TEntity, TProperty, TKey, TArgs>(TKey id, Expression<Func<TEntity, TProperty>> selector, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
-        where TArgs : class, IPermissionsArgs, IServiceArgs
+        where TArgs : class, IServiceArgs
     {
         return _readRepository.GetPropertyAsync(id, selector, args, options);
     }
@@ -220,7 +218,7 @@ public partial class GenericService<TContext, TOptions>
 
     public virtual TProperty? GetProperty<TEntity, TProperty, TArgs>(int id, Expression<Func<TEntity, TProperty>> selector, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity
-        where TArgs : class, IPermissionsArgs, IServiceArgs
+        where TArgs : class, IServiceArgs
     {
         return _readRepository.GetProperty(id, selector, args, options);
     }
@@ -233,7 +231,7 @@ public partial class GenericService<TContext, TOptions>
 
     public virtual Task<TProperty?> GetPropertyAsync<TEntity, TProperty, TArgs>(int id, Expression<Func<TEntity, TProperty>> selector, TArgs args, TOptions? options = null)
         where TEntity : class, IEntity
-        where TArgs : class, IPermissionsArgs, IServiceArgs
+        where TArgs : class, IServiceArgs
     {
         return _readRepository.GetPropertyAsync(id, selector, args, options);
     }
@@ -250,14 +248,14 @@ public partial class GenericService<TContext, TOptions>
 
     public virtual bool Any<TEntity, TArgs>(TArgs args, TOptions? options = null)
         where TEntity : class
-        where TArgs : class, IPermissionsArgs, IServiceArgs
+        where TArgs : class, IServiceArgs
     {
         return _readRepository.Any<TEntity, TArgs>(args, options);
     }
 
     public virtual bool Any<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class
-        where TArgs : class, IPermissionsArgs, IServiceArgs
+        where TArgs : class, IServiceArgs
     {
         return _readRepository.Any(filter, args, options);
     }
@@ -270,14 +268,14 @@ public partial class GenericService<TContext, TOptions>
 
     public virtual Task<bool> AnyAsync<TEntity, TArgs>(Expression<Func<TEntity, bool>> filter, TArgs args, TOptions? options = null)
         where TEntity : class
-        where TArgs : class, IPermissionsArgs, IServiceArgs
+        where TArgs : class, IServiceArgs
     {
         return _readRepository.AnyAsync(filter, args, options);
     }
 
     public virtual Task<bool> AnyAsync<TEntity, TArgs>(TArgs args, TOptions? options = null)
         where TEntity : class
-        where TArgs : class, IPermissionsArgs, IServiceArgs
+        where TArgs : class, IServiceArgs
     {
         return _readRepository.AnyAsync<TEntity, TArgs>(args, options);
     }
