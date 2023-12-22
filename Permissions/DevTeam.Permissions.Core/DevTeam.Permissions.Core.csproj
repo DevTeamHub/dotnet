@@ -1,9 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <Nullable>enable</Nullable>
-	<LangVersion>latest</LangVersion>
+	  <PackageId>DevTeam.Permissions.Core</PackageId>
+	  <TargetFrameworks>$(BaseFrameworks)</TargetFrameworks>
+	  <Description>Permissions Core implementation for Entity Framework.</Description>
+	  <PackageTags>Permissions.Core;EntityFramework;IQueryable;</PackageTags>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
