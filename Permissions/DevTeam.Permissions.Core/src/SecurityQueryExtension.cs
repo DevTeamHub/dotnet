@@ -7,7 +7,7 @@ namespace DevTeam.Permissions.Core;
 public abstract class SecurityQueryExtension<TEntity, TRelatedData, TScopes, TOptions> : QueryExtension<TEntity, TOptions>
     where TRelatedData : RelatedData
     where TScopes : struct, Enum
-    where TOptions : QueryOptions
+    where TOptions : QueryOptions, ISecurityOptions
 {
     protected readonly IPermissionsService PermissionsService;
     protected readonly IRelatedDataService<TRelatedData> RelatedDataService;
@@ -29,24 +29,15 @@ public abstract class SecurityQueryExtension<TEntity, TRelatedData, TScopes, TOp
 
    public override IQueryable<TEntity> ApplyExtension<TArgs>(IQueryable<TEntity> query, TArgs args)
    {
-        if (!typeof(IPermissionsArgs).IsAssignableFrom(typeof(TArgs)))
+        if (!typeof(IPermissionsArgs).IsAssignableFrom(typeof(TArgs)) || args == null)
         {
-            return query;
+            return ApplyExtension(query);
         }
 
-        var accessPermissionProperty = typeof(TArgs).GetProperty("AccessPermission");
-
-        if (accessPermissionProperty == null)
-        {
-            return query;
-        }
-
-        var accessPermissionValue = accessPermissionProperty.GetValue(args);
-
-
+        var permissionArgs = (IPermissionsArgs)args;
         var permission = PermissionsService
             .GetCurrentAccountPermissions()
-            .First(x => x.Id == (int)accessPermissionValue);
+            .First(x => x.Id == permissionArgs.AccessPermission);
 
         var scopes = permission.Scopes.HasValue ? (TScopes?)Enum.ToObject(typeof(TScopes), permission.Scopes.Value) : null;
 
