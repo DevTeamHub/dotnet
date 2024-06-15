@@ -109,7 +109,7 @@ public abstract class Mapping
     /// <returns>Result of comparison that signalizes if current mapping has the same direction.</returns>
     public bool Is(Type from, Type to, string? name = null)
     {
-        if (!string.IsNullOrEmpty(name) && Name != name)
+        if (name != null && Name != name)
             return false;
 
         return from == From && to == To;
