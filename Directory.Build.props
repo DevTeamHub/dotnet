@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<BaseFrameworks>netstandard2.0;netstandard2.1;net6;net7;net8</BaseFrameworks>
 		<AllFrameworks>$(BaseFrameworks);netframework4.6.2;</AllFrameworks>
-		<Version>3.6</Version>
+		<Version>3.6.1</Version>
 		<Authors>dimabezzubenkov, dev-team</Authors>
 		<RepositoryUrl>https://github.com/DevTeamHub/dotnet</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
