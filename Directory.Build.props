@@ -1,7 +1,8 @@
 <Project>
 
 	<PropertyGroup>
-		<BaseFrameworks>netstandard2.0;netstandard2.1;net6;net7;net8</BaseFrameworks>
+		<RunFrameworks>net7;net8</RunFrameworks>
+		<BaseFrameworks>netstandard2.0;netstandard2.1;$(RunFrameworks);</BaseFrameworks>
 		<AllFrameworks>$(BaseFrameworks);netframework4.6.2;</AllFrameworks>
 		<Version>3.6</Version>
 		<Authors>dimabezzubenkov, dev-team</Authors>
