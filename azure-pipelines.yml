@@ -24,7 +24,7 @@ steps:
  
 - template: build-net-project.yml@templates
   parameters:
-    netSdkVersions: [$(PreviousVersion), $(CurrentVersion)]
+    netSdkVersions: [$(PreviousVersion), $(CurrentVersion), 8.x]
     solution: $(Solution) 
     configuration: $(Configuration)
 
