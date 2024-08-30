@@ -97,7 +97,7 @@ public class MappingServiceTests
     {
         var entities = _context.Addresses.ToList();
 
-        var models = _service.Map<Address, AddressModel>(entities);
+        var models = _service.Map<Address, AddressModel>(entities).ToList();
 
         Assert.IsNotNull(models);
         Assert.IsInstanceOfType(models, typeof(List<AddressModel>));
@@ -184,12 +184,12 @@ public class MappingServiceTests
     {
         var entities = _context.Addresses.ToList();
 
-        var shortModelsQuery = _service.Map<Address, AddressSummaryModel>(entities, MappingsNames.ShortAddressFormat);
+        var shortModelsQuery = _service.Map<Address, AddressSummaryModel>(entities, MappingsNames.ShortAddressFormat).ToList();
 
         Assert.IsNotNull(shortModelsQuery);
         Assert.IsInstanceOfType(shortModelsQuery, typeof(List<AddressSummaryModel>));
 
-        var extendedModelsQuery = _service.Map<Address, AddressSummaryModel>(entities, MappingsNames.ExtendedAddressFormat);
+        var extendedModelsQuery = _service.Map<Address, AddressSummaryModel>(entities, MappingsNames.ExtendedAddressFormat).ToList();
 
         Assert.IsNotNull(extendedModelsQuery);
         Assert.IsInstanceOfType(extendedModelsQuery, typeof(List<AddressSummaryModel>));

@@ -127,6 +127,40 @@ public class MappingService : IMappingService
     }
 
     /// <summary>
+    /// Applies the mapping to the provided <see cref="IEnumerable{T}"/>.
+    /// </summary>
+    /// <typeparam name="TEntity">Source type of mapping.</typeparam>
+    /// <typeparam name="TModel">Destination type of mapping.</typeparam>
+    /// <param name="query">Instance of <see cref="IEnumerable{T}"/> to apply mapping to.</param>
+    /// <param name="mapping"><see cref="ExpressionMapping{TFrom, TTo}"/> mapping.</param>
+    /// <returns>Result of mapping. Instance of <see cref="IQueryable{T}"/> object with applied mapping.</returns>
+    /// <exception cref="MappingException">Thrown if we are using incorrect version of Map() method or if mapping wasn't found.</exception>
+    protected virtual IEnumerable<TModel> Map<TEntity, TModel>(IEnumerable<TEntity> models, Mapping mapping)
+    {
+        var expressionMapping = (ExpressionMapping<TEntity, TModel>)mapping;
+        return expressionMapping.Apply(models);
+    }
+
+    /// <summary>
+    /// Searches for the mapping in the Storage and applies mapping to the provided <see cref="IEnumerable{T}"/>.
+    /// </summary>
+    /// <typeparam name="TEntity">Source type of mapping.</typeparam>
+    /// <typeparam name="TModel">Destination type of mapping.</typeparam>
+    /// <param name="query">Instance of <see cref="IEnumerable{T}"/> to apply mapping to.</param>
+    /// <param name="mappingType">Type of mapping that we will be searching for.</param>
+    /// <param name="name">Name of the mapping, if we want to search for mapping registered with some specific name. Should be null if we want to find mapping without name.</param>
+    /// <returns>Result of mapping. Instance of <see cref="IEnumerable{T}"/> object with applied mapping.</returns>
+    /// <exception cref="MappingException">Thrown if we are using incorrect version of Map() method or if mapping wasn't found.</exception>
+    protected virtual IEnumerable<TModel> Map<TEntity, TModel>(IEnumerable<TEntity> models, MappingType mappingType, string? name = null)
+    {
+        return ApplyMapping<TEntity, TModel, IEnumerable<TModel>>(
+            mapping => Map<TEntity, TModel>(models, mapping),
+            mappingType,
+            name
+        );
+    }
+
+    /// <summary>
     /// Searches for the mapping in the Storage and applies mapping to the every model in the provided list.
     /// </summary>
     /// <typeparam name="TFrom">Source model for mapping.</typeparam>
@@ -135,9 +169,9 @@ public class MappingService : IMappingService
     /// <param name="name">Name of the mapping, if we want to search for mapping registered with some specific name. Should be null if we want to find mapping without name.</param>
     /// <returns>Result of mapping. List of instances of destination objects.</returns>
     /// <exception cref="MappingException">Thrown if args are null or if we are using incorrect version of Map() method or if mapping wasn't found.</exception>
-    public virtual List<TTo> Map<TFrom, TTo>(List<TFrom> models, string? name = null)
+    public virtual IEnumerable<TTo> Map<TFrom, TTo>(IEnumerable<TFrom> models, string? name = null)
     {
-        return models.Select(item => Map<TFrom, TTo>(item, name)).ToList();
+        return Map<TFrom, TTo>(models, MappingType.Expression, name);
     }
 
     #endregion
