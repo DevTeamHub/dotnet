@@ -303,6 +303,50 @@ public class MappingService : IMappingService
     }
 
     /// <summary>
+    /// Applies the mapping to the provided <see cref="IEnumerable{T}"/>.
+    /// Passes parameters into mapping that can be used inside of mapping expression.
+    /// </summary>
+    /// <typeparam name="TEntity">Source type of mapping.</typeparam>
+    /// <typeparam name="TModel">Destination type of mapping.</typeparam>
+    /// <typeparam name="TArgs">Arguments type used in the mapping.</typeparam>
+    /// <param name="query">Instance of <see cref="IEnumerable{T}"/> to apply mapping to.</param>
+    /// <param name="args">Arguments that we want to pass into mapping to use them inside of mapping expression.</param>
+    /// <param name="mapping"><see cref="ExpressionMapping{TFrom, TTo}"/> mapping.</param>
+    /// <returns>Result of mapping. Instance of <see cref="IEnumerable{T}"/> object with applied mapping.</returns>
+    /// <exception cref="MappingException">Thrown if we are using incorrect version of Map method or if mapping wasn't found.</exception>
+    protected virtual IEnumerable<TModel> Map<TEntity, TModel, TArgs>(IEnumerable<TEntity> query, TArgs args, Mapping mapping)
+    {
+        mapping.ValidateArguments<TArgs>();
+        var parameterizedMapping = (ParameterizedMapping<TEntity, TModel, TArgs>)mapping;
+        return parameterizedMapping.Apply(query, args);
+    }
+
+    /// <summary>
+    /// Searches for the mapping in the Storage and applies mapping to the provided <see cref="IEnumerable{T}"/>.
+    /// Passes parameters into mapping that can be used inside of mapping expression.
+    /// </summary>
+    /// <typeparam name="TEntity">Source type of mapping.</typeparam>
+    /// <typeparam name="TModel">Destination type of mapping.</typeparam>
+    /// <typeparam name="TArgs">Type of arguments that we pass into mapping expression.</typeparam>
+    /// <param name="query">Instance of <see cref="IEnumerable{T}"/> to apply mapping to.</param>
+    /// <param name="mappingType">Type of mapping that we will be searching for.</param>
+    /// <param name="args">Arguments that we want to pass into mapping to use them inside of mapping expression.</param>
+    /// <param name="name">Name of the mapping, if we want to search for mapping registered with some specific name. Should be null if we want to find mapping without name.</param>
+    /// <returns>Result of mapping. Instance of <see cref="IEnumerable{T}"/> object with applied mapping.</returns>
+    /// <exception cref="MappingException">Thrown if args are null or if we are using incorrect version of Map() method or if mapping wasn't found.</exception>
+    protected IEnumerable<TModel> Map<TEntity, TModel, TArgs>(IEnumerable<TEntity> models, MappingType mappingType, TArgs args, string? name = null)
+    {
+        if (args == null)
+            throw new MappingException(Resources.ArgumentsAreRequiredException);
+
+        return ApplyMapping<TEntity, TModel, IEnumerable<TModel>>(
+            mapping => Map<TEntity, TModel, TArgs>(models, args, mapping),
+            mappingType,
+            name
+        );
+    }
+
+    /// <summary>
     /// Searches for the mapping in the Storage and applies mapping to the every model in the provided list.
     /// Passes parameters into the mapping that can be used inside of the mapping expression.
     /// </summary>
@@ -314,9 +358,9 @@ public class MappingService : IMappingService
     /// <param name="args">Arguments that we want to pass into mapping to use them inside of mapping expression.</param>
     /// <returns>Result of mapping. List of instances of destination objects.</returns>
     /// <exception cref="MappingException">Thrown if args are null or if we are using incorrect version of Map() method or if mapping wasn't found.</exception>
-    public virtual List<TTo> Map<TFrom, TTo, TArgs>(List<TFrom> models, TArgs args, string? name = null)
+    public virtual IEnumerable<TTo> Map<TFrom, TTo, TArgs>(IEnumerable<TFrom> models, TArgs args, string? name = null)
     {
-        return models.Select(item => Map<TFrom, TTo, TArgs>(item, args, name)).ToList();
+        return Map<TFrom, TTo, TArgs>(models, MappingType.Parameterized, args, name);
     }
 
     #endregion

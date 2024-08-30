@@ -83,7 +83,7 @@ public interface IMappingService
     /// <param name="args">Arguments that we want to pass into mapping to use them inside of mapping expression.</param>
     /// <returns>Result of mapping. List of instances of destination objects.</returns>
     /// <exception cref="MappingException">Thrown if args are null or if we are using incorrect version of Map() method or if mapping wasn't found.</exception>
-    List<TTo> Map<TFrom, TTo, TArgs>(List<TFrom> models, TArgs args, string? name = null);
+    IEnumerable<TTo> Map<TFrom, TTo, TArgs>(IEnumerable<TFrom> models, TArgs args, string? name = null);
 }
 
 /// <summary>

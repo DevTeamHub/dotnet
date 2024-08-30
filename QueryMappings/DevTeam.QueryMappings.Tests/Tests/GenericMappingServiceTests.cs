@@ -251,7 +251,7 @@ public class GenericMappingServiceTests
         var entities = _context.Apartments.ToList();
 
         var arguments = new ApartmentsArguments { UnitOfMeasure = "sq ft" };
-        var models = _service.Map<Apartment, ApartmentShortModel, ApartmentsArguments>(entities, arguments);
+        var models = _service.Map<Apartment, ApartmentShortModel, ApartmentsArguments>(entities, arguments).ToList();
 
         Assert.IsNotNull(models);
         Assert.IsInstanceOfType(models, typeof(List<ApartmentShortModel>));
@@ -319,7 +319,7 @@ public class GenericMappingServiceTests
         var entities = _context.Apartments.ToList();
 
         var arguments = new ApartmentsArguments { UnitOfMeasure = "sq meters" };
-        var models = _service.Map<Apartment, ApartmentModel, ApartmentsArguments>(entities, arguments, MappingsNames.AppartmentsWithBuilding);
+        var models = _service.Map<Apartment, ApartmentModel, ApartmentsArguments>(entities, arguments, MappingsNames.AppartmentsWithBuilding).ToList();
 
         Assert.IsNotNull(models);
         Assert.IsInstanceOfType(models, typeof(List<ApartmentModel>));

@@ -86,7 +86,7 @@ public partial class GenericService<TContext>
 
     #region AddRange
 
-    public virtual List<TEntity> AddRange<TModel, TEntity>(List<TModel> models, string? addMappingName = null)
+    public virtual IEnumerable<TEntity> AddRange<TModel, TEntity>(IEnumerable<TModel> models, string? addMappingName = null)
         where TEntity : class
     {
         var entities = _mappings.Map<TModel, TEntity>(models, addMappingName);
@@ -97,7 +97,7 @@ public partial class GenericService<TContext>
         return entities;
     }
 
-    public virtual List<TEntity> AddRange<TModel, TEntity, TArgs>(List<TModel> models, TArgs args, string? addMappingName = null)
+    public virtual IEnumerable<TEntity> AddRange<TModel, TEntity, TArgs>(IEnumerable<TModel> models, TArgs args, string? addMappingName = null)
         where TEntity : class
     {
         var entities = _mappings.Map<TModel, TEntity, TArgs>(models, args, addMappingName);
@@ -108,7 +108,7 @@ public partial class GenericService<TContext>
         return entities;
     }
 
-    public virtual List<TResult> AddRange<TModel, TEntity, TResult, TKey>(List<TModel> models, string? addMappingName = null, string? getMappingName = null)
+    public virtual IEnumerable<TResult> AddRange<TModel, TEntity, TResult, TKey>(IEnumerable<TModel> models, string? addMappingName = null, string? getMappingName = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
@@ -120,13 +120,13 @@ public partial class GenericService<TContext>
         return results;
     }
 
-    public virtual List<TResult> AddRange<TModel, TEntity, TResult>(List<TModel> models, string? addMappingName = null, string? getMappingName = null)
+    public virtual IEnumerable<TResult> AddRange<TModel, TEntity, TResult>(IEnumerable<TModel> models, string? addMappingName = null, string? getMappingName = null)
         where TEntity : class, IEntity
     {
         return AddRange<TModel, TEntity, TResult, int>(models, addMappingName, getMappingName);
     }
 
-    public virtual async Task<List<TEntity>> AddRangeAsync<TModel, TEntity>(List<TModel> models, string? addMappingName = null)
+    public virtual async Task<IEnumerable<TEntity>> AddRangeAsync<TModel, TEntity>(IEnumerable<TModel> models, string? addMappingName = null)
         where TEntity : class
     {
         var entities = _mappings.Map<TModel, TEntity>(models, addMappingName);
@@ -137,7 +137,7 @@ public partial class GenericService<TContext>
         return entities;
     }
 
-    public virtual async Task<List<TEntity>> AddRangeAsync<TModel, TEntity, TArgs>(List<TModel> models, TArgs args, string? addMappingName = null)
+    public virtual async Task<IEnumerable<TEntity>> AddRangeAsync<TModel, TEntity, TArgs>(IEnumerable<TModel> models, TArgs args, string? addMappingName = null)
         where TEntity : class
     {
         var entities = _mappings.Map<TModel, TEntity, TArgs>(models, args, addMappingName);
@@ -148,7 +148,7 @@ public partial class GenericService<TContext>
         return entities;
     }
 
-    public virtual async Task<List<TResult>> AddRangeAsync<TModel, TEntity, TResult, TKey>(List<TModel> models, string? addMappingName = null, string? getMappingName = null)
+    public virtual async Task<IEnumerable<TResult>> AddRangeAsync<TModel, TEntity, TResult, TKey>(IEnumerable<TModel> models, string? addMappingName = null, string? getMappingName = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>
     {
@@ -160,7 +160,7 @@ public partial class GenericService<TContext>
         return results;
     }
 
-    public virtual Task<List<TResult>> AddRangeAsync<TModel, TEntity, TResult>(List<TModel> models, string? addMappingName = null, string? getMappingName = null)
+    public virtual Task<IEnumerable<TResult>> AddRangeAsync<TModel, TEntity, TResult>(IEnumerable<TModel> models, string? addMappingName = null, string? getMappingName = null)
         where TEntity : class, IEntity
     {
         return AddRangeAsync<TModel, TEntity, TResult, int>(models, addMappingName, getMappingName);

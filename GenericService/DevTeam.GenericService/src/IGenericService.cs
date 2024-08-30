@@ -170,23 +170,23 @@ public interface IGenericService<TContext>
         where TKey : IEquatable<TKey>;
     Task<TResult?> AddAsync<TModel, TEntity, TResult>(TModel model, string? addMappingName = null, string? getMappingName = null)
         where TEntity : class, IEntity;
-    List<TEntity> AddRange<TModel, TEntity>(List<TModel> models, string? addMappingName = null)
+    IEnumerable<TEntity> AddRange<TModel, TEntity>(IEnumerable<TModel> models, string? addMappingName = null)
         where TEntity : class;
-    List<TEntity> AddRange<TModel, TEntity, TArgs>(List<TModel> models, TArgs args, string? addMappingName = null)
+    IEnumerable<TEntity> AddRange<TModel, TEntity, TArgs>(IEnumerable<TModel> models, TArgs args, string? addMappingName = null)
         where TEntity : class;
-    List<TResult> AddRange<TModel, TEntity, TResult, TKey>(List<TModel> models, string? addMappingName = null, string? getMappingName = null)
+    IEnumerable<TResult> AddRange<TModel, TEntity, TResult, TKey>(IEnumerable<TModel> models, string? addMappingName = null, string? getMappingName = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>;
-    List<TResult> AddRange<TModel, TEntity, TResult>(List<TModel> models, string? addMappingName = null, string? getMappingName = null)
+    IEnumerable<TResult> AddRange<TModel, TEntity, TResult>(IEnumerable<TModel> models, string? addMappingName = null, string? getMappingName = null)
         where TEntity : class, IEntity;
-    Task<List<TEntity>> AddRangeAsync<TModel, TEntity>(List<TModel> models, string? addMappingName = null)
+    Task<IEnumerable<TEntity>> AddRangeAsync<TModel, TEntity>(IEnumerable<TModel> models, string? addMappingName = null)
         where TEntity : class;
-    Task<List<TEntity>> AddRangeAsync<TModel, TEntity, TArgs>(List<TModel> models, TArgs args, string? addMappingName = null)
+    Task<IEnumerable<TEntity>> AddRangeAsync<TModel, TEntity, TArgs>(IEnumerable<TModel> models, TArgs args, string? addMappingName = null)
         where TEntity : class;
-    Task<List<TResult>> AddRangeAsync<TModel, TEntity, TResult, TKey>(List<TModel> models, string? addMappingName = null, string? getMappingName = null)
+    Task<IEnumerable<TResult>> AddRangeAsync<TModel, TEntity, TResult, TKey>(IEnumerable<TModel> models, string? addMappingName = null, string? getMappingName = null)
         where TEntity : class, IEntity<TKey>
         where TKey : IEquatable<TKey>;
-    Task<List<TResult>> AddRangeAsync<TModel, TEntity, TResult>(List<TModel> models, string? addMappingName = null, string? getMappingName = null)
+    Task<IEnumerable<TResult>> AddRangeAsync<TModel, TEntity, TResult>(IEnumerable<TModel> models, string? addMappingName = null, string? getMappingName = null)
         where TEntity : class, IEntity;
     TEntity? Update<TModel, TEntity, TKey>(TKey id, TModel model, Action<TModel, TEntity> updateFunc)
         where TEntity : class, IEntity<TKey>
