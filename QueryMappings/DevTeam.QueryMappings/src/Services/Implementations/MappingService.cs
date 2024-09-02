@@ -133,7 +133,7 @@ public class MappingService : IMappingService
     /// <typeparam name="TModel">Destination type of mapping.</typeparam>
     /// <param name="query">Instance of <see cref="List{T}"/> to apply mapping to.</param>
     /// <param name="mapping"><see cref="ExpressionMapping{TFrom, TTo}"/> mapping.</param>
-    /// <returns>Result of mapping. Instance of <see cref="IQueryable{T}"/> object with applied mapping.</returns>
+    /// <returns>Result of mapping. Instance of <see cref="List{T}"/> object with applied mapping.</returns>
     /// <exception cref="MappingException">Thrown if we are using incorrect version of Map() method or if mapping wasn't found.</exception>
     protected virtual List<TModel> Map<TEntity, TModel>(List<TEntity> models, Mapping mapping)
     {
