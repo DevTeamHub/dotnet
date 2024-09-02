@@ -326,14 +326,14 @@ public class Repository<TContext> : IRepository<TContext>
         return entity;
     }
 
-    public virtual IEnumerable<TEntity> AddRange<TEntity>(IEnumerable<TEntity> entities)
+    public virtual List<TEntity> AddRange<TEntity>(List<TEntity> entities)
         where TEntity : class
     {
         Context.Set<TEntity>().AddRange(entities);
         return entities;
     }
 
-    public virtual async Task<IEnumerable<TEntity>> AddRangeAsync<TEntity>(IEnumerable<TEntity> entities)
+    public virtual async Task<List<TEntity>> AddRangeAsync<TEntity>(List<TEntity> entities)
         where TEntity : class
     {
         await Context.Set<TEntity>().AddRangeAsync(entities);
@@ -513,12 +513,12 @@ public class Repository<TContext> : IRepository<TContext>
         DeleteRange(entities);
     }
 
-    public virtual void DeleteRange<TEntity>(IEnumerable<TEntity> entities)
+    public virtual void DeleteRange<TEntity>(List<TEntity> entities)
         where TEntity : class
     {
         if (typeof(TEntity).IsAssignableFrom(typeof(IDeleted)))
         {
-            entities.ToList().ForEach(entity =>
+            entities.ForEach(entity =>
             {
                 if (entity is IDeleted deleted)
                 {

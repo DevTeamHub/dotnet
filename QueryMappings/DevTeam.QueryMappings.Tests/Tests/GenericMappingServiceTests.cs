@@ -97,7 +97,7 @@ public class GenericMappingServiceTests
     {
         var entities = _context.Addresses.ToList();
 
-        var models = _service.Map<Address, AddressModel>(entities).ToList();
+        var models = _service.Map<Address, AddressModel>(entities);
 
         Assert.IsNotNull(models);
         Assert.IsInstanceOfType(models, typeof(List<AddressModel>));
@@ -184,12 +184,12 @@ public class GenericMappingServiceTests
     {
         var entities = _context.Addresses.ToList();
 
-        var shortModelsQuery = _service.Map<Address, AddressSummaryModel>(entities, MappingsNames.ShortAddressFormat).ToList();
+        var shortModelsQuery = _service.Map<Address, AddressSummaryModel>(entities, MappingsNames.ShortAddressFormat);
 
         Assert.IsNotNull(shortModelsQuery);
         Assert.IsInstanceOfType(shortModelsQuery, typeof(List<AddressSummaryModel>));
 
-        var extendedModelsQuery = _service.Map<Address, AddressSummaryModel>(entities, MappingsNames.ExtendedAddressFormat).ToList();
+        var extendedModelsQuery = _service.Map<Address, AddressSummaryModel>(entities, MappingsNames.ExtendedAddressFormat);
 
         Assert.IsNotNull(extendedModelsQuery);
         Assert.IsInstanceOfType(extendedModelsQuery, typeof(List<AddressSummaryModel>));
@@ -251,7 +251,7 @@ public class GenericMappingServiceTests
         var entities = _context.Apartments.ToList();
 
         var arguments = new ApartmentsArguments { UnitOfMeasure = "sq ft" };
-        var models = _service.Map<Apartment, ApartmentShortModel, ApartmentsArguments>(entities, arguments).ToList();
+        var models = _service.Map<Apartment, ApartmentShortModel, ApartmentsArguments>(entities, arguments);
 
         Assert.IsNotNull(models);
         Assert.IsInstanceOfType(models, typeof(List<ApartmentShortModel>));
@@ -319,7 +319,7 @@ public class GenericMappingServiceTests
         var entities = _context.Apartments.ToList();
 
         var arguments = new ApartmentsArguments { UnitOfMeasure = "sq meters" };
-        var models = _service.Map<Apartment, ApartmentModel, ApartmentsArguments>(entities, arguments, MappingsNames.AppartmentsWithBuilding).ToList();
+        var models = _service.Map<Apartment, ApartmentModel, ApartmentsArguments>(entities, arguments, MappingsNames.AppartmentsWithBuilding);
 
         Assert.IsNotNull(models);
         Assert.IsInstanceOfType(models, typeof(List<ApartmentModel>));

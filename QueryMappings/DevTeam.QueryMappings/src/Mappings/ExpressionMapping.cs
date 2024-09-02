@@ -39,13 +39,13 @@ public class ExpressionMapping<TFrom, TTo> : Mapping<TTo>
     }
 
     /// <summary>
-    /// Applies simple expression to <see cref="IEnumerable{T}"/> instance.
+    /// Applies simple expression to <see cref="List{T}"/> instance.
     /// </summary>
-    /// <param name="query"><see cref="IEnumerable{T}"/> instance.</param>
-    /// <returns>New <see cref="IEnumerable{T}"/> instance with applied expression.</returns>
-    public IEnumerable<TTo> Apply(IEnumerable<TFrom> query)
+    /// <param name="query"><see cref="List{T}"/> instance.</param>
+    /// <returns>New <see cref="List{T}"/> instance with applied expression.</returns>
+    public List<TTo> Apply(List<TFrom> query)
     {
-        return query.Select(_mappingFunc);
+        return query.Select(_mappingFunc).ToList();
     }
 
     /// <summary>

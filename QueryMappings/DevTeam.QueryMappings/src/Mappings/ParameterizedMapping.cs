@@ -41,17 +41,17 @@ public class ParameterizedMapping<TFrom, TTo, TArgs> : Mapping<TTo>
     }
 
     /// <summary>
-    /// Applies expression to <see cref="IEnumerable{T}"/> instance.
+    /// Applies expression to <see cref="List{T}"/> instance.
     /// Arguments can be used inside of the expression.
     /// </summary>
-    /// <param name="query"><see cref="IEnumerable{T}"/> instance.</param>
+    /// <param name="query"><see cref="List{T}"/> instance.</param>
     /// <param name="args">Arguments that we pass into mapping expression.</param>
-    /// <returns>New <see cref="IEnumerable{T}"/> instance with applied expression.</returns>
-    public IEnumerable<TTo> Apply(IEnumerable<TFrom> query, TArgs args)
+    /// <returns>New <see cref="List{T}"/> instance with applied expression.</returns>
+    public List<TTo> Apply(List<TFrom> query, TArgs args)
     {
         var expression = _mapping.Invoke(args);
         var func = expression.Compile();
-        return query.Select(func);
+        return query.Select(func).ToList();
     }
 
     /// <summary>

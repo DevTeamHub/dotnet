@@ -55,7 +55,7 @@ public interface IMappingService
     /// <param name="name">Name of the mapping, if we want to search for mapping registered with some specific name. Should be null if we want to find mapping without name.</param>
     /// <returns>Result of mapping. List of instances of destination objects.</returns>
     /// <exception cref="MappingException">Thrown if args are null or if we are using incorrect version of Map() method or if mapping wasn't found.</exception>
-    IEnumerable<TTo> Map<TFrom, TTo>(IEnumerable<TFrom> models, string? name = null);
+    List<TTo> Map<TFrom, TTo>(List<TFrom> models, string? name = null);
 
     /// <summary>
     /// Searches for the mapping in the Storage and applies mapping to the provided model.
@@ -83,7 +83,7 @@ public interface IMappingService
     /// <param name="args">Arguments that we want to pass into mapping to use them inside of mapping expression.</param>
     /// <returns>Result of mapping. List of instances of destination objects.</returns>
     /// <exception cref="MappingException">Thrown if args are null or if we are using incorrect version of Map() method or if mapping wasn't found.</exception>
-    IEnumerable<TTo> Map<TFrom, TTo, TArgs>(IEnumerable<TFrom> models, TArgs args, string? name = null);
+    List<TTo> Map<TFrom, TTo, TArgs>(List<TFrom> models, TArgs args, string? name = null);
 }
 
 /// <summary>

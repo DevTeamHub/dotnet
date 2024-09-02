@@ -132,9 +132,9 @@ public interface IRepository<TContext>
         where TEntity : class;
     Task<TEntity> AddAsync<TEntity>(TEntity entity)
         where TEntity : class;
-    IEnumerable<TEntity> AddRange<TEntity>(IEnumerable<TEntity> entities)
+    List<TEntity> AddRange<TEntity>(List<TEntity> entities)
         where TEntity : class;
-    Task<IEnumerable<TEntity>> AddRangeAsync<TEntity>(IEnumerable<TEntity> entities)
+    Task<List<TEntity>> AddRangeAsync<TEntity>(List<TEntity> entities)
         where TEntity : class;
     void Update<TEntity>(TEntity entity)
         where TEntity : class;
@@ -184,7 +184,7 @@ public interface IRepository<TContext>
         where TEntity : class;
     Task DeleteRangeAsync<TEntity>(Expression<Func<TEntity, bool>> filter)
         where TEntity : class;
-    void DeleteRange<TEntity>(IEnumerable<TEntity> entities)
+    void DeleteRange<TEntity>(List<TEntity> entities)
         where TEntity : class;
     int Save();
     Task<int> SaveAsync(CancellationToken cancellationToken = default);
