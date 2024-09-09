@@ -1,5 +1,6 @@
 ﻿using DevTeam.QueryMappings.Base;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -37,6 +38,20 @@ public class ParameterizedMapping<TFrom, TTo, TArgs> : Mapping<TTo>
     {
         var expression = _mapping.Invoke(args);
         return query.Select(expression);
+    }
+
+    /// <summary>
+    /// Applies expression to <see cref="List{T}"/> instance.
+    /// Arguments can be used inside of the expression.
+    /// </summary>
+    /// <param name="query"><see cref="List{T}"/> instance.</param>
+    /// <param name="args">Arguments that we pass into mapping expression.</param>
+    /// <returns>New <see cref="List{T}"/> instance with applied expression.</returns>
+    public List<TTo> Apply(List<TFrom> query, TArgs args)
+    {
+        var expression = _mapping.Invoke(args);
+        var func = expression.Compile();
+        return query.Select(func).ToList();
     }
 
     /// <summary>

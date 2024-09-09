@@ -1,5 +1,6 @@
 ﻿using DevTeam.QueryMappings.Base;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -35,6 +36,16 @@ public class ExpressionMapping<TFrom, TTo> : Mapping<TTo>
     public IQueryable<TTo> Apply(IQueryable<TFrom> query)
     {
         return query.Select(_mapping);
+    }
+
+    /// <summary>
+    /// Applies simple expression to <see cref="List{T}"/> instance.
+    /// </summary>
+    /// <param name="query"><see cref="List{T}"/> instance.</param>
+    /// <returns>New <see cref="List{T}"/> instance with applied expression.</returns>
+    public List<TTo> Apply(List<TFrom> query)
+    {
+        return query.Select(_mappingFunc).ToList();
     }
 
     /// <summary>
