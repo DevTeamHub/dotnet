@@ -1,10 +1,10 @@
 <Project>
 
 	<PropertyGroup>
-		<RunFrameworks>net7;net8</RunFrameworks>
+		<RunFrameworks>net8;net10.0</RunFrameworks>
 		<BaseFrameworks>netstandard2.0;netstandard2.1;$(RunFrameworks);</BaseFrameworks>
 		<AllFrameworks>$(BaseFrameworks);netframework4.6.2;</AllFrameworks>
-		<Version>3.6.1</Version>
+		<Version>3.7</Version>
 		<Authors>dimabezzubenkov, dev-team</Authors>
 		<RepositoryUrl>https://github.com/DevTeamHub/dotnet</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
